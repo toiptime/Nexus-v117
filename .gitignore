@@ -1,10 +1,16 @@
+#Project Custom
+out
+wz
+.idea
+*.iml
+#database.properties
+
 *.class
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 

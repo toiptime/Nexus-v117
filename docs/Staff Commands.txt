@@ -1,0 +1,172 @@
+Intern
+------------------------
+!cancelbuffs
+!lowhp
+!heal
+!mute [name]
+!unmute [name]
+!mutemap
+!unmutemap
+!spawn [id]
+!spawn [id] [amount]
+!healmap
+!location
+!clear [all / equipped / equip / use / setup / etc / cash]
+!itemcheck [name] [id]
+!song [id]
+!checkpoint [name]
+!checkvotepoint [name]
+!mapweather
+!listinstances
+!uptime
+!eventinstance
+!monsterdebug
+!lookreactor
+!lookportals
+!mynpcpos
+!clock [second]
+!warp [id / name]
+!say [text]
+!letter [green / red] [word]
+!whosfirst
+!whoslast
+!whosnext
+!itemvac
+!warpmap [id]
+!killall
+!find [npc / mob / item / map / skill / quest] [name]
+!map [id]
+!item [id]
+!jail [name] [minutes = forever]
+!warphere [name]
+!spawndebug
+!nearestportal
+!clearreport [name] [all / hack / bot / scam / fake / ad]
+!cheaters
+!reports
+!ccplayer [name] [channel]
+!disconnect [name]
+!hide
+!unhide
+!unchalk [name]
+!unchalkall
+!kill [name]
+!tag judo
+------------------------
+GM
+------------------------
+!warn [name] [reason]
+!warpoxtop
+!waroxleft
+!warpox
+!warpoxright
+!warpoxmiddle
+!emotion [name] [id] [duration]
+!givepet [name] [id] [name] [level] [closeness] [fullness]
+!opennpc [id]
+!openshop [id]
+!cleardrops
+!getskill [id] [level]
+!fame [name] [amount]
+!job [id]
+!shop [id]
+!levelup
+!leveluptill [amount]
+!item [id] [amount]
+!character [name]
+!potentialitem
+!level [amount]
+!event
+!removeitem [name] [id]
+!lockitem [name] [id]
+!killmap
+!smega [message]
+!speakmega [name] [message]
+!speakall [message]
+!speak [name] [message]
+!diseasemap [name] [seal / darkness / weaken / stun / curse / slow / seduce [24 / 29 cool] / reverse / zombify / potion / shadow / blind / freeze / potential] [level]
+!disease [type] [name] [level]
+!cloneme
+!disposeclone
+!setinstanceproperty [id]
+!listinstanceproperty [id]
+!leaveinstance
+!whosthere
+!startinstance [event manager] [event instance]
+!resetmobs
+!killmonsterbyoid
+!removenpc [id]
+!whitechat [text]
+!notice [text]
+!whatsmyip
+!yellow notice [text]
+!y notice [text]
+------------------------
+SGM
+------------------------
+!setname [current] [new] 
+!saveall
+!HellBan [name] [reason]
+!unbanip [name]
+!tempban [name] [reason] [hours]
+!drop [id] [amount]
+!vac = In hide mode
+!speakmap [message]
+!speakchannel [message]
+!speakworld [message]
+!monitor [name] - Disables chat / Can't hit
+!threads
+!offense [name]
+!hitall [id]
+!killalldrops
+!killallexp
+!npc [id]
+!pnpc [id]
+!pmob [id] [mobrespawntime]
+!playernpc [ign] [npc id]
+!servermessage [message]
+!ps [packet data]
+!respawn [id]
+!maxmesos [id]
+!mesos [amount]
+!mesosperson [name] [amount]
+!giftnx [name] [amount]
+!giftmaplepoint [amount]
+!giftvotepoint [name] [amount]
+!giftjumpingpoint [name] [amount]
+!giftdonorpoint [name] [amount] - Correct channel
+!giftrarepoint [name] [amount]
+!gaindonorpoint [amount]
+!gainrarepoint [amount]
+!gainvotepoint [amount]
+!reloadops
+!reloaddrops
+!reloadportal
+!reloadshops
+!reloadevents
+!resetmap
+!resetquest
+!sendnote [name] [text]
+!sendallnote [text]
+!mapitemsize
+!startrace
+!openuioption [id]
+!openuiwindow [id]
+!togglemega
+----------------------
+Administrator
+----------------------
+!warpcashshop [name]
+!autoregister
+!packet
+!stripall
+!strip [name]
+!mesosall [amount]
+!servernotice [text]
+!hottime <item id>
+!warpallhere
+!shutdown
+!shutdowntime
+!startprofiling
+!stopprofiling
+!sql

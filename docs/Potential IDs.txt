@@ -1,0 +1,206 @@
+000001 - STR: +#incSTR
+000002 - DEX: +#incDEX
+000003 - INT: +#incINT
+000004 - LUK: +#incLUK
+000005 - MaxHP: +#incMHP
+000006 - MaxMP: +#incMMP
+000007 - Accuracy: +#incACC
+000008 - Avoidability: +#incEVA
+000009 - Movement Speed: +#incSpeed
+000010 - Jump: +#incJump
+000011 - ATT: +#incPAD
+000012 - Magic ATT: +#incMAD
+000013 - Weapon DEF: +#incPDD
+000014 - Magic DEF: +#incMDD
+000901 - #prop% chance to go into a rage for #time seconds when attacked.
+000902 - #prop% chance to feel happy for #time seconds when attack.
+000903 - #prop% chance to fall in love for #time seconds when attacked.
+000904 - #prop% chance to get furious for #time seconds when attacked.
+000905 - #prop% chance to be deeply moved for #time seconds when attacked.
+010001 - STR: +#incSTR
+010002 - DEX: +#incDEX
+010003 - INT: +#incINT
+010004 - LUK: +#incLUK
+010005 - MaxHP: +#incMHP
+010006 - MaxMP: +#incMMP
+010007 - Accuracy: +#incACC
+010008 - Avoidability: +#incEVA
+010009 - Movement Speed: +#incSpeed
+010010 - Jump: +#incJump
+010011 - ATT: +#incPAD
+010012 - Magic ATT: +#incMAD
+010013 - Weapon DEF: +#incPDD
+010014 - Magic DEF: +#incMDD
+010041 - STR: +#incSTRr%
+010042 - DEX: +#incDEXr%
+010043 - INT: +#incINTr%
+010044 - LUK: +#incLUKr%
+010045 - MaxHP: +#incMHPr%
+010046 - MaxMP: +#incMMPr%
+010047 - Accuracy: +#incACCr%
+010048 - Avoidability: +#incEVAr%
+010051 - ATT: +#incPADr%
+010052 - Magic ATT: +#incMADr%
+010053 - Weapon DEF: +#incPDDr%
+010054 - Magic DEF: +#incMDDr%
+010055 - Critical Rate: +#incCr%
+010070 - Total Damage: +#incDAMr%
+010081 - All Stats: +#incSTR
+010151 - Recover #RecoveryHP HP every 4 seconds.
+010156 - Recover #RecoveryMP MP every 4 seconds.
+010201 - #prop% chance to recover #HP HP when attacking.
+010206 - #prop% chance to recover #MP MP when attacking.
+010221 - #prop% chance to apply Lv. #level Poison when attacking.
+010226 - #prop% chance to apply Lv. #level Stun when attacking.
+010231 - #prop% chance to apply Lv. #level Slow when attacking.
+010236 - #prop% chance to apply Lv. #level Blind when attacking.
+010241 - #prop% chance to apply Lv. #level Freeze when attacking.
+010246 - #prop% chance to apply Lv. #level Seal when attacking.
+010291 - Ignores #ignoreTargetDEF% of the enemy's DEF when attacking.
+020001 - STR: +#incSTR
+020002 - DEX: +#incDEX
+020003 - INT: +#incINT
+020004 - LUK: +#incLUK
+020005 - MaxHP: +#incMHP
+020006 - MaxMP: +#incMMP
+020007 - Accuracy: +#incACC
+020008 - Avoidability: +#incEVA
+020009 - Movement Speed: +#incSpeed
+020010 - Jump: +#incJump
+020011 - ATT: +#incPAD
+020012 - Magic ATT: +#incMAD
+020013 - Weapon DEF: +#incPDD
+020014 - Magic DEF: +#incMDD
+020041 - STR: +#incSTRr%
+020042 - DEX: +#incDEXr%
+020043 - INT: +#incINTr%
+020044 - LUK: +#incLUKr%
+020045 - MaxHP: +#incMHPr%
+020046 - MaxMP: +#incMMPr%
+020047 - Accuracy: +#incACCr%
+020048 - Avoidability: +#incEVAr%
+020051 - ATT: +#incPADr%
+020052 - Magic ATT: +#incMADr%
+020053 - Weapon DEF: +#incPDDr%
+020054 - Magic DEF: +#incMDDr%
+020055 - Critical Rate: +#incCr%
+020070 - Total Damage: +#incDAMr%
+020086 - All Stats: +#incSTRr%
+020201 - #prop% chance to recover #HP HP when attacking.
+020206 - #prop% chance to recover #MP MP when attacking.
+020291 - Ignores #ignoreTargetDEF% of the enemy's DEF when attacking.
+020351 - #prop% chance to ignore #ignoreDAM damage when attacked.
+020352 - #prop% chance to ignore #ignoreDAM damage when attacked.
+020353 - #prop% chance to ignore #ignoreDAM damage when attacked.
+020366 - Invincible for #time more seconds after getting attacked.
+020396 - Abnormal Status Duration: -#time sec.
+020401 - #prop% chance to recover #HP HP after defeating an enemy.
+020406 - #prop% chance to recover #MP MP after defeating an enemy.
+030001 - STR: +#incSTR
+030002 - DEX: +#incDEX
+030003 - INT: +#incINT
+030004 - LUK: +#incLUK
+030005 - MaxHP: +#incMHP
+030006 - MaxMP: +#incMMP
+030007 - Accuracy: +#incACC
+030008 - Avoidability: +#incEVA
+030009 - Movement Speed: +#incSpeed
+030010 - Jump: +#incJump
+030011 - ATT: +#incPAD
+030012 - Magic ATT: +#incMAD
+030013 - Weapon DEF: +#incPDD
+030014 - Magic DEF: +#incMDD
+030041 - STR: +#incSTRr%
+030042 - DEX: +#incDEXr%
+030043 - INT: +#incINTr%
+030044 - LUK: +#incLUKr%
+030045 - MaxHP: +#incMHPr%
+030046 - MaxMP: +#incMMPr%
+030047 - Accuracy: +#incACCr%
+030048 - Avoidability: +#incEVAr%
+030051 - ATT: +#incPADr%
+030052 - Magic ATT: +#incMADr%
+030053 - Weapon DEF: +#incPDDr%
+030054 - Magic DEF: +#incMDDr%
+030055 - Critical Rate: +#incCr%
+030070 - Total Damage: +#incDAMr%
+030086 - All Stats: +#incSTRr%
+030106 - All Skills: +#incAllskill Levels
+030107 - All Skills: +#incAllskill Levels
+030291 - Ignores #ignoreTargetDEF% of the enemy's DEF when attacking.
+030356 - #prop% chance to ignore #ignoreDAMr% damage when attacked.
+030357 - #prop% chance to ignore #ignoreDAMr% damage when attacked.
+030366 - Invincible for #time more seconds after getting attacked.
+030371 - #prop% chance to become invincible for #time seconds when attacked.
+030551 - HP Recovery Items and Skills: +#RecoveryUP%
+030601 - Damage to Bosses: +#incDAMr%
+030602 - Damage to Bosses: +#incDAMr%
+030701 - #prop% chance to apply Auto Steal.
+030702 - #prop% chance to apply Auto Steal.
+031001 - Enables the <Decent Haste> skill
+031002 - Enables the <Decent Mystic Door> skill
+031003 - Enables the <Decent Sharp Eyes> skill
+031004 - Enables the <Decent Hyper Body> skill
+040001 - STR: +#incSTR
+040002 - DEX: +#incDEX
+040003 - INT: +#incINT
+040004 - LUK: +#incLUK
+040005 - MaxHP: +#incMHP
+040006 - MaxMP: +#incMMP
+040007 - Accuracy: +#incACC
+040008 - Avoidability: +#incEVA
+040009 - Movement Speed: +#incSpeed
+040010 - Jump: +#incJump
+040011 - ATT: +#incPAD
+040012 - Magic ATT: +#incMAD
+040013 - Weapon DEF: +#incPDD
+040014 - Magic DEF: +#incMDD
+040041 - STR: +#incSTRr%
+040042 - DEX: +#incDEXr%
+040043 - INT: +#incINTr%
+040044 - LUK: +#incLUKr%
+040045 - MaxHP: +#incMHPr%
+040046 - MaxMP: +#incMMPr%
+040047 - Accuracy: +#incACCr%
+040048 - Avoidability: +#incEVAr%
+040051 - ATT: +#incPADr%
+040052 - Magic ATT: +#incMADr%
+040053 - Weapon DEF: +#incPDDr%
+040054 - Magic DEF: +#incMDDr%
+040055 - Critical Rate: +#incCr%
+040056 - Min Crit Damage: +#incCriticaldamageMin%
+040057 - Max Crit Damage: +#incCriticaldamageMax%
+040070 - Total Damage: +#incDAMr%
+040081 - All Stats: +#incSTR
+040086 - All Stats: +#incSTRr%
+040106 - All Skills: +#incAllskill Levels
+040107 - All Skills: +#incAllskill Levels
+040111 - All Elemental Resistances: +#incTerR%
+040116 - Abnormal Status Resistance: +#incAsrR%
+040291 - Ignores #ignoreTargetDEF% of the enemy's DEF when attacking.
+040292 - Ignores #ignoreTargetDEF% of the enemy's DEF when attacking.
+040356 - #prop% chance to ignore #ignoreDAMr% damage when attacked.
+040357 - #prop% chance to ignore #ignoreDAMr% damage when attacked.
+040366 - Invincible for #time more seconds after getting attacked.
+040371 - #prop% chance to become invincible for #time seconds when attacked.
+040376 - #prop% chance to reflect #DAMreflect% damage.
+040377 - #prop% chance to reflect #DAMreflect% damage.
+040501 - Skill MP Cost: -#mpconReduce%
+040502 - Skill MP Cost: -#mpconReduce%
+040551 - HP Recovery Items and Skills: +#RecoveryUP%
+040556 - Skill Cooldown: -#reduceCooltime sec.
+040557 - Skill Cooldown: -#reduceCooltime sec.
+040601 - Damage to Bosses: +#incDAMr%
+040602 - Damage to Bosses: +#incDAMr%
+040603 - Damage to Bosses: +#incDAMr%
+040650 - Mesos Obtained: +#incMesoProp%
+040656 - Item Drop Rate: +#incRewardProp%
+040701 - #prop% chance to apply Auto Steal.
+040702 - #prop% chance to apply Auto Steal.
+040703 - #prop% chance to apply Auto Steal.
+041005 - Enables the <Decent Combat Orders> skill
+041006 - Enables the <Decent Advanced Blessing> skill
+041007 - Enables the <Decent Speed Infusion> skill
+060001 - Total Damage: +#incDAMr%
+060002 - All Stats: +#incSTRr%
+060003 - Damage to Bosses: +#incDAMr%
