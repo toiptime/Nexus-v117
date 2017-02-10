@@ -444,13 +444,13 @@ public class MapleInventoryManipulator {
         //if (before == 0) {
         //    switch (item.getItemId()) {
         //        case AramiaFireWorks.KEG_ID:
-        //            c.getPlayer().dropMessage(5, "You have gained a Powder Keg, you can give this in to Aramia of Henesys.");
+        //            c.getPlayer().print(5, "You have gained a Powder Keg, you can give this in to Aramia of Henesys.");
         //            break;
         //        case AramiaFireWorks.SUN_ID:
-        //            c.getPlayer().dropMessage(5, "You have gained a Warm Sun, you can give this in to Maple Tree Hill through @joyce.");
+        //            c.getPlayer().print(5, "You have gained a Warm Sun, you can give this in to Maple Tree Hill through @joyce.");
         //            break;
         //        case AramiaFireWorks.DEC_ID:
-        //            c.getPlayer().dropMessage(5, "You have gained a Tree Decoration, you can give this in to White Christmas Hill through @joyce.");
+        //            c.getPlayer().print(5, "You have gained a Tree Decoration, you can give this in to White Christmas Hill through @joyce.");
         //            break;
         //    }
         //}
@@ -598,7 +598,7 @@ public class MapleInventoryManipulator {
                 if (eSlot > 0) {
                     final MapleStatEffect ee = ii.getItemEffect(eSlot);
                     if (dst % 100 > ee.getSlotCount() || ee.getType() != ii.getBagType(source.getItemId()) || ee.getType() <= 0) {
-                        c.getPlayer().dropMessage(1, "You may not move that item to the bag.");
+                        c.getPlayer().print(1, "You may not move that item to the bag.");
                         c.getSession().write(CWvsContext.enableActions());
                         return;
                     } else {
@@ -606,12 +606,12 @@ public class MapleInventoryManipulator {
                         bag = true;
                     }
                 } else {
-                    c.getPlayer().dropMessage(1, "You may not move it to that bag.");
+                    c.getPlayer().print(1, "You may not move it to that bag.");
                     c.getSession().write(CWvsContext.enableActions());
                     return;
                 }
             } else {
-                c.getPlayer().dropMessage(1, "You may not move it there.");
+                c.getPlayer().print(1, "You may not move it there.");
                 c.getSession().write(CWvsContext.enableActions());
                 return;
             }
@@ -672,26 +672,26 @@ public class MapleInventoryManipulator {
             return;
         }
         if (GameConstants.isGMEquip(source.getItemId()) && !c.getPlayer().isStaff()) {
-            c.getPlayer().dropMessage(1, "Only Game Masters are allowed to equip this item.");
+            c.getPlayer().print(1, "Only Game Masters are allowed to equip this item.");
             c.getPlayer().removeAll(source.getItemId(), false);
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
         //if (GameConstants.isMadeByGM(c, source.getItemId(), src) && !c.getPlayer().isStaff()) {
-        //    c.getPlayer().dropMessage(1, "You are not allowed to use GM-Made equips.");
+        //    c.getPlayer().print(1, "You are not allowed to use GM-Made equips.");
         //    c.getSession().write(CWvsContext.enableActions());
         //    return;
         //}
         
         /*if (GameConstants.isOverPoweredEquip(c, source.getItemId(), src) && !c.getPlayer().isStaff()) {
-            c.getPlayer().dropMessage(1, "It seems that the item is way too over powered, please report to the Admin if you think that the system is wrong.");
+            c.getPlayer().print(1, "It seems that the item is way too over powered, please report to the Admin if you think that the system is wrong.");
             //c.getPlayer().removeAll(source.getItemId(), false); //System might be wrong
             c.getSession().write(CWvsContext.enableActions());
             return;
         }*/
         /*if (GameConstants.isPhantom(c.getPlayer().getJob()) || GameConstants.isMihile(c.getPlayer().getJob())) {
             if (source.getItemId() == 1112663 || source.getItemId() == 1112586) {
-                c.getPlayer().dropMessage(1, "White Angelic Blessing, and Dark Angelic Blessing are currently not working for Mihile and Phantom.");
+                c.getPlayer().print(1, "White Angelic Blessing, and Dark Angelic Blessing are currently not working for Mihile and Phantom.");
                 c.getSession().write(CWvsContext.enableActions());
                 return;
             }
@@ -755,7 +755,7 @@ public class MapleInventoryManipulator {
                     List<Integer> theList = c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).listIds();
                     for (Integer i : s.id) {
                         if (theList.contains(i)) {
-                            c.getPlayer().dropMessage(1, "You may not equip this item because you already have a " + (StringUtil.makeEnumHumanReadable(s.name())) + " equipped.");
+                            c.getPlayer().print(1, "You may not equip this item because you already have a " + (StringUtil.makeEnumHumanReadable(s.name())) + " equipped.");
                             c.getSession().write(CWvsContext.enableActions());
                             return;
                         }

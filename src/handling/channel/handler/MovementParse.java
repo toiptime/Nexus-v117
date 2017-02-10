@@ -22,6 +22,7 @@ package handling.channel.handler;
 import server.maps.AnimatedMapleMapObject;
 import server.movement.*;
 import tools.FileoutputUtil;
+import tools.Logger;
 import tools.data.LittleEndianAccessor;
 
 import java.awt.*;
@@ -161,7 +162,7 @@ public class MovementParse {
                     break;
                 }
                 default:
-                    System.out.println("Kind movement: " + kind + ", Remaining : " + (numCommands - res.size()) + " New type of movement ID : " + command + ", packet : " + lea.toString(true));
+                    Logger.println("Kind movement: " + kind + ", Remaining : " + (numCommands - res.size()) + " New type of movement ID : " + command + ", packet : " + lea.toString(true));
                     FileoutputUtil.log(FileoutputUtil.Movement_Log, "Kind movement: " + kind + ", Remaining : " + (numCommands - res.size()) + " New type of movement ID : " + command + ", packet : " + lea.toString(true));
                     return null;
             }

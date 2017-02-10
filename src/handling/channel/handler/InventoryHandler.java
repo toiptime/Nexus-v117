@@ -41,6 +41,7 @@ import server.quest.MapleQuest;
 import server.shops.HiredMerchant;
 import server.shops.IMaplePlayerShop;
 import tools.FileoutputUtil;
+import tools.Logger;
 import tools.Pair;
 import tools.data.LittleEndianAccessor;
 import tools.packet.*;
@@ -231,10 +232,10 @@ public class InventoryHandler {
                         }
                     }
                 } else {
-                    chr.dropMessage(6, "Unknown error.");
+                    chr.print(6, "Unknown error.");
                 }
             } else {
-                chr.dropMessage(6, "Insufficient inventory slot.");
+                chr.print(6, "Insufficient inventory slot.");
             }
         }
         return false;
@@ -247,7 +248,7 @@ public class InventoryHandler {
         }
         final long time = System.currentTimeMillis();
         if (chr.getNextConsume() > time) {
-            chr.dropMessage(5, "You may not use this item yet.");
+            chr.print(5, "You may not use this item yet.");
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
@@ -329,7 +330,7 @@ public class InventoryHandler {
         // Can only use once-> 2nd and 3rd must use NPC.
         final Equip eqq = (Equip) toMount;
         if (eqq.getSocketState() != 0) { // Used before
-            c.getPlayer().dropMessage(1, "This item already has a socket.");
+            c.getPlayer().print(1, "This item already has a socket.");
         } else {
             eqq.setSocket1(0); // First socket, GMS removed the other 2
             MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, alienSocket.getPosition(), (short) 1, false);
@@ -337,7 +338,7 @@ public class InventoryHandler {
         }
         c.getSession().write(MTSCSPacket.useAlienSocket(true));
         c.getPlayer().fakeRelog();
-        c.getPlayer().dropMessage(1, "Added 1 socket successfully to " + toMount);
+        c.getPlayer().print(1, "Added 1 socket successfully to " + toMount);
     }
 
     public static final void UseNebulite(final LittleEndianAccessor slea, final MapleClient c) {
@@ -382,7 +383,7 @@ public class InventoryHandler {
         final int mesos = slea.readInt();
         final int premiumQuantity = slea.readInt();
         if (nebulite1 == null || nebulite2 == null || nebuliteId1 != nebulite1.getItemId() || nebuliteId2 != nebulite2.getItemId() || (mesos == 0 && premiumQuantity == 0) || (mesos != 0 && premiumQuantity != 0) || mesos < 0 || premiumQuantity < 0 || c.getPlayer().hasBlockedInventory()) {
-            c.getPlayer().dropMessage(1, "Failed to fuse Nebulite.");
+            c.getPlayer().print(1, "Failed to fuse Nebulite.");
             c.getSession().write(InventoryPacket.getInventoryFull());
             return;
         }
@@ -893,7 +894,7 @@ public class InventoryHandler {
                     if (warped) { // Removal of gold compass
                         MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (byte) 1, false);
                     } else { // Or mabe some other message.
-                        c.getPlayer().dropMessage(5, "All maps are currently in use, please try again later.");
+                        c.getPlayer().print(5, "All maps are currently in use, please try again later.");
                     }
                     break;
                 }
@@ -903,19 +904,19 @@ public class InventoryHandler {
                             if (MapleInventoryManipulator.checkSpace(c, 2049400, 1, "") && MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, toUse.getItemId(), 25, true, false)) {
                                 MapleInventoryManipulator.addById(c, 2049400, (short) 1, "Scripted item: " + toUse.getItemId() + " on " + FileoutputUtil.CurrentReadable_Date());
                             } else {
-                                c.getPlayer().dropMessage(5, "Please make some space.");
+                                c.getPlayer().print(5, "Please make some space.");
                             }
                         } else if (c.getPlayer().getInventory(MapleInventoryType.USE).countById(2430112) >= 10) {
                             if (MapleInventoryManipulator.checkSpace(c, 2049400, 1, "") && MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, toUse.getItemId(), 10, true, false)) {
                                 MapleInventoryManipulator.addById(c, 2049401, (short) 1, "Scripted item: " + toUse.getItemId() + " on " + FileoutputUtil.CurrentReadable_Date());
                             } else {
-                                c.getPlayer().dropMessage(5, "Please make some space.");
+                                c.getPlayer().print(5, "Please make some space.");
                             }
                         } else {
-                            c.getPlayer().dropMessage(5, "There needs to be 10 Fragments for a Potential Scroll, 25 for Advanced Potential Scroll.");
+                            c.getPlayer().print(5, "There needs to be 10 Fragments for a Potential Scroll, 25 for Advanced Potential Scroll.");
                         }
                     } else {
-                        c.getPlayer().dropMessage(5, "Please make some space.");
+                        c.getPlayer().print(5, "Please make some space.");
                     }
                     break;
                 case 2430481: // Super miracle cube fragment
@@ -924,19 +925,19 @@ public class InventoryHandler {
                             if (MapleInventoryManipulator.checkSpace(c, 2049701, 1, "") && MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, toUse.getItemId(), 30, true, false)) {
                                 MapleInventoryManipulator.addById(c, 2049701, (short) 1, "Scripted item: " + toUse.getItemId() + " on " + FileoutputUtil.CurrentReadable_Date());
                             } else {
-                                c.getPlayer().dropMessage(5, "Please make some space.");
+                                c.getPlayer().print(5, "Please make some space.");
                             }
                         } else if (c.getPlayer().getInventory(MapleInventoryType.USE).countById(2430481) >= 20) {
                             if (MapleInventoryManipulator.checkSpace(c, 2049300, 1, "") && MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, toUse.getItemId(), 20, true, false)) {
                                 MapleInventoryManipulator.addById(c, 2049300, (short) 1, "Scripted item: " + toUse.getItemId() + " on " + FileoutputUtil.CurrentReadable_Date());
                             } else {
-                                c.getPlayer().dropMessage(5, "Please make some space.");
+                                c.getPlayer().print(5, "Please make some space.");
                             }
                         } else {
-                            c.getPlayer().dropMessage(5, "There needs to be 20 Fragments for a Advanced Equip Enhancement Scroll, 30 for Epic Potential Scroll 80%.");
+                            c.getPlayer().print(5, "There needs to be 20 Fragments for a Advanced Equip Enhancement Scroll, 30 for Epic Potential Scroll 80%.");
                         }
                     } else {
-                        c.getPlayer().dropMessage(5, "Please make some space.");
+                        c.getPlayer().print(5, "Please make some space.");
                     }
                     break;
                 case 2430691: // Nebulite diffuser fragment
@@ -945,13 +946,13 @@ public class InventoryHandler {
                             if (MapleInventoryManipulator.checkSpace(c, 5750001, 1, "") && MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, toUse.getItemId(), 10, true, false)) {
                                 MapleInventoryManipulator.addById(c, 5750001, (short) 1, "Scripted item: " + toUse.getItemId() + " on " + FileoutputUtil.CurrentReadable_Date());
                             } else {
-                                c.getPlayer().dropMessage(5, "Please make some space.");
+                                c.getPlayer().print(5, "Please make some space.");
                             }
                         } else {
-                            c.getPlayer().dropMessage(5, "There needs to be 10 Fragments for a Nebulite Diffuser.");
+                            c.getPlayer().print(5, "There needs to be 10 Fragments for a Nebulite Diffuser.");
                         }
                     } else {
-                        c.getPlayer().dropMessage(5, "Please make some space.");
+                        c.getPlayer().print(5, "Please make some space.");
                     }
                     break;
                 case 2430748: // Premium fusion ticket
@@ -960,13 +961,13 @@ public class InventoryHandler {
                             if (MapleInventoryManipulator.checkSpace(c, 4420000, 1, "") && MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, toUse.getItemId(), 20, true, false)) {
                                 MapleInventoryManipulator.addById(c, 4420000, (short) 1, "Scripted item: " + toUse.getItemId() + " on " + FileoutputUtil.CurrentReadable_Date());
                             } else {
-                                c.getPlayer().dropMessage(5, "Please make some space.");
+                                c.getPlayer().print(5, "Please make some space.");
                             }
                         } else {
-                            c.getPlayer().dropMessage(5, "There needs to be 20 Fragments for a Premium Fusion Ticket.");
+                            c.getPlayer().print(5, "There needs to be 20 Fragments for a Premium Fusion Ticket.");
                         }
                     } else {
-                        c.getPlayer().dropMessage(5, "Please make some space.");
+                        c.getPlayer().print(5, "Please make some space.");
                     }
                     break;
                 case 2430692: // Nebulite box
@@ -986,13 +987,13 @@ public class InventoryHandler {
                                 MapleInventoryManipulator.addById(c, newId, (short) 1, "Scripted item: " + toUse.getItemId() + " on " + FileoutputUtil.CurrentReadable_Date());
                                 c.getSession().write(InfoPacket.getShowItemGain(newId, (short) 1, true));
                             } else {
-                                c.getPlayer().dropMessage(5, "Please make some space.");
+                                c.getPlayer().print(5, "Please make some space.");
                             }
                         } else {
-                            c.getPlayer().dropMessage(5, "You do not have a Nebulite Box.");
+                            c.getPlayer().print(5, "You do not have a Nebulite Box.");
                         }
                     } else {
-                        c.getPlayer().dropMessage(5, "Please make some space.");
+                        c.getPlayer().print(5, "Please make some space.");
                     }
                     break;
                 case 5680019: {// Starling hair
@@ -1014,7 +1015,7 @@ public class InventoryHandler {
                     break;
                 }
                 case 3994225:
-                    c.getPlayer().dropMessage(5, "Please bring this item to the NPC.");
+                    c.getPlayer().print(5, "Please bring this item to the NPC.");
                     break;
                 case 2430212: // Energy drink
                     MapleQuestStatus marr = c.getPlayer().getQuestNAdd(MapleQuest.getInstance(GameConstants.ENERGY_DRINK));
@@ -1023,7 +1024,7 @@ public class InventoryHandler {
                     }
                     long lastTime = Long.parseLong(marr.getCustomData());
                     if (lastTime + (600000) > System.currentTimeMillis()) {
-                        c.getPlayer().dropMessage(5, "You can only use one energy drink per 10 minutes.");
+                        c.getPlayer().print(5, "You can only use one energy drink per 10 minutes.");
                     } else if (c.getPlayer().getFatigue() > 0) {
                         MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (byte) 1, false);
                         c.getPlayer().setFatigue(c.getPlayer().getFatigue() - 5);
@@ -1036,7 +1037,7 @@ public class InventoryHandler {
                     }
                     lastTime = Long.parseLong(marr.getCustomData());
                     if (lastTime + (600000) > System.currentTimeMillis()) {
-                        c.getPlayer().dropMessage(5, "You can only use one energy drink per 10 minutes.");
+                        c.getPlayer().print(5, "You can only use one energy drink per 10 minutes.");
                     } else if (c.getPlayer().getFatigue() > 0) {
                         MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (byte) 1, false);
                         c.getPlayer().setFatigue(c.getPlayer().getFatigue() - 10);
@@ -1062,7 +1063,7 @@ public class InventoryHandler {
                     }
                     lastTime = Long.parseLong(marr.getCustomData());
                     if (lastTime + (600000) > System.currentTimeMillis()) {
-                        c.getPlayer().dropMessage(5, "You can only use one energy drink per 10 minutes.");
+                        c.getPlayer().print(5, "You can only use one energy drink per 10 minutes.");
                     } else if (c.getPlayer().getFatigue() > 0) {
                         MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (byte) 1, false);
                         c.getPlayer().setFatigue(c.getPlayer().getFatigue() - 40);
@@ -1087,19 +1088,19 @@ public class InventoryHandler {
                             if (MapleInventoryManipulator.checkSpace(c, 4310010, 1, "") && MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, toUse.getItemId(), 1, true, false)) {
                                 MapleInventoryManipulator.addById(c, 4310010, (short) 1, "Scripted item: " + toUse.getItemId() + " on " + FileoutputUtil.CurrentReadable_Date());
                             } else {
-                                c.getPlayer().dropMessage(5, "Please make some space.");
+                                c.getPlayer().print(5, "Please make some space.");
                             }
                         } else if (c.getPlayer().getInventory(MapleInventoryType.ETC).countById(4000630) >= 50) {
                             if (MapleInventoryManipulator.checkSpace(c, 4310009, 1, "") && MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, toUse.getItemId(), 1, true, false)) {
                                 MapleInventoryManipulator.addById(c, 4310009, (short) 1, "Scripted item: " + toUse.getItemId() + " on " + FileoutputUtil.CurrentReadable_Date());
                             } else {
-                                c.getPlayer().dropMessage(5, "Please make some space.");
+                                c.getPlayer().print(5, "Please make some space.");
                             }
                         } else {
-                            c.getPlayer().dropMessage(5, "The corrupted power of the medal is too strong. To purify the medal, you need at least #r50#k #bPurification Totems#k.");
+                            c.getPlayer().print(5, "The corrupted power of the medal is too strong. To purify the medal, you need at least #r50#k #bPurification Totems#k.");
                         }
                     } else {
-                        c.getPlayer().dropMessage(5, "Please make some space.");
+                        c.getPlayer().print(5, "Please make some space.");
                     }
                     break;
                 case 2430159:
@@ -1108,20 +1109,20 @@ public class InventoryHandler {
                     break;
                 case 2430200: //thunder stone
                     if (c.getPlayer().getQuestStatus(31152) != 2) {
-                        c.getPlayer().dropMessage(5, "You have no idea how to use it.");
+                        c.getPlayer().print(5, "You have no idea how to use it.");
                     } else {
                         if (c.getPlayer().getInventory(MapleInventoryType.ETC).getNumFreeSlot() >= 1) {
                             if (c.getPlayer().getInventory(MapleInventoryType.ETC).countById(4000660) >= 1 && c.getPlayer().getInventory(MapleInventoryType.ETC).countById(4000661) >= 1 && c.getPlayer().getInventory(MapleInventoryType.ETC).countById(4000662) >= 1 && c.getPlayer().getInventory(MapleInventoryType.ETC).countById(4000663) >= 1) {
                                 if (MapleInventoryManipulator.checkSpace(c, 4032923, 1, "") && MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, toUse.getItemId(), 1, true, false) && MapleInventoryManipulator.removeById(c, MapleInventoryType.ETC, 4000660, 1, true, false) && MapleInventoryManipulator.removeById(c, MapleInventoryType.ETC, 4000661, 1, true, false) && MapleInventoryManipulator.removeById(c, MapleInventoryType.ETC, 4000662, 1, true, false) && MapleInventoryManipulator.removeById(c, MapleInventoryType.ETC, 4000663, 1, true, false)) {
                                     MapleInventoryManipulator.addById(c, 4032923, (short) 1, "Scripted item: " + toUse.getItemId() + " on " + FileoutputUtil.CurrentReadable_Date());
                                 } else {
-                                    c.getPlayer().dropMessage(5, "Please make some space.");
+                                    c.getPlayer().print(5, "Please make some space.");
                                 }
                             } else {
-                                c.getPlayer().dropMessage(5, "There needs to be 1 of each Stone for a Dream Key.");
+                                c.getPlayer().print(5, "There needs to be 1 of each Stone for a Dream Key.");
                             }
                         } else {
-                            c.getPlayer().dropMessage(5, "Please make some space.");
+                            c.getPlayer().print(5, "Please make some space.");
                         }
                     }
                     break;
@@ -1130,7 +1131,7 @@ public class InventoryHandler {
                         MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (byte) 1, false);
                         c.getPlayer().gainExp(20000 + (c.getPlayer().getLevel() * 50 * c.getChannelServer().getExpRate(c.getPlayer().getWorld())), true, true, false);
                     } else {
-                        c.getPlayer().dropMessage(5, "You may not use this item.");
+                        c.getPlayer().print(5, "You may not use this item.");
                     }
                     break;
                 case 2430131: // Energy charge
@@ -1150,10 +1151,10 @@ public class InventoryHandler {
                             MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (byte) 1, false);
                             MapleInventoryManipulator.addById(c, 1492080, (short) 1, "Scripted item: " + itemId + " on " + FileoutputUtil.CurrentReadable_Date());
                         } else {
-                            c.getPlayer().dropMessage(5, "You may not use this item.");
+                            c.getPlayer().print(5, "You may not use this item.");
                         }
                     } else {
-                        c.getPlayer().dropMessage(5, "Make some space.");
+                        c.getPlayer().print(5, "Make some space.");
                     }
                     break;
                 case 2430182:
@@ -1766,17 +1767,17 @@ public class InventoryHandler {
                             if (MapleInventoryManipulator.checkSpace(c, 5000217, 1, "") && MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, toUse.getItemId(), 1, true, false)) {
                                 MapleInventoryManipulator.addById(c, 5000217, (short) 1, "", MaplePet.createPet(5000217, "Blackheart", 1, 0, 100, MapleInventoryIdentifier.getInstance(), 0, (short) 0), (long) 45, "Scripted item: " + toUse.getItemId() + " on " + FileoutputUtil.CurrentReadable_Date());
                             } else {
-                                c.getPlayer().dropMessage(0, "Please make more space");
+                                c.getPlayer().print(0, "Please make more space");
                             }
                         } else { // 70% for Hilla's Pet's earrings
                             if (MapleInventoryManipulator.checkSpace(c, 1802354, 1, "") && MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, toUse.getItemId(), 1, true, false)) {
                                 MapleInventoryManipulator.addById(c, 1802354, (short) 1, "Scripted item: " + toUse.getItemId() + " on " + FileoutputUtil.CurrentReadable_Date());
                             } else {
-                                c.getPlayer().dropMessage(0, "Please make more space");
+                                c.getPlayer().print(0, "Please make more space");
                             }
                         }
                     } else {
-                        c.getPlayer().dropMessage(0, "Please make more space");
+                        c.getPlayer().print(0, "Please make more space");
                     }
                     break;
                 }
@@ -1798,13 +1799,13 @@ public class InventoryHandler {
                 }
             }
             if (c.getPlayer().getSkillLevel(mountid) > 0) {
-                c.getPlayer().dropMessage(5, "You already have this skill.");
+                c.getPlayer().print(5, "You already have this skill.");
             } else if (SkillFactory.getSkill(mountid) == null || GameConstants.getMountItem(mountid, c.getPlayer()) == 0) {
-                c.getPlayer().dropMessage(5, "The skill could not be gained.");
+                c.getPlayer().print(5, "The skill could not be gained.");
             } else if (expiration_days > 0) {
                 MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (byte) 1, false);
                 c.getPlayer().changeSingleSkillLevel(SkillFactory.getSkill(mountid), (byte) 1, (byte) 1, System.currentTimeMillis() + expiration_days * 24 * 60 * 60 * 1000);
-                c.getPlayer().dropMessage(5, "The skill has been attained.");
+                c.getPlayer().print(5, "The skill has been attained.");
             }
         }
         c.getSession().write(CWvsContext.enableActions());
@@ -1845,7 +1846,7 @@ public class InventoryHandler {
 
             //c.getSession().write(CField.gameMsg("Inner Potential has been reconfigured.")); //not sure if it's working
 
-            c.getPlayer().dropMessage(5, "Inner Potential has been reconfigured.");
+            c.getPlayer().print(5, "Inner Potential has been reconfigured.");
         }
         c.getSession().write(CWvsContext.enableActions());
     }
@@ -1927,7 +1928,7 @@ public class InventoryHandler {
             final Item item = MapleInventoryManipulator.addbyId_Gachapon(c, reward, (short) amount);
 
             if (item == null) {
-                chr.dropMessage(5, "Please check your item inventory and see if you have a Master Key, or if the inventory is full.");
+                chr.print(5, "Please check your item inventory and see if you have a Master Key, or if the inventory is full.");
                 c.getSession().write(CWvsContext.enableActions());
                 return;
             }
@@ -1939,7 +1940,7 @@ public class InventoryHandler {
                 World.Broadcast.broadcastSmega(CWvsContext.getGachaponMega(c.getPlayer().getName(), " : got a(n)", item, (byte) 2, "[" + box + " Chest]"));
             }
         } else {
-            chr.dropMessage(5, "Please check your item inventory and see if you have a Master Key, or if the inventory is full.");
+            chr.print(5, "Please check your item inventory and see if you have a Master Key, or if the inventory is full.");
             c.getSession().write(CWvsContext.enableActions());
         }
     }
@@ -1978,7 +1979,7 @@ public class InventoryHandler {
                         }
                         used = true;
                     } else {
-                        c.getPlayer().dropMessage(1, "Unknown error has occurred.");
+                        c.getPlayer().print(1, "Unknown error has occurred.");
                     }
                 }
                 break;
@@ -2067,13 +2068,13 @@ public class InventoryHandler {
                     case 2048: // Hp
                         if (/*playerst.getMaxMp() < ((c.getPlayer().getLevel() * 14) + 134) || */c.getPlayer().getHpApUsed() <= 0 || c.getPlayer().getHpApUsed() >= 10000) {
                             used = false;
-                            c.getPlayer().dropMessage(1, "You need points in HP or MP in order to take points out.");
+                            c.getPlayer().print(1, "You need points in HP or MP in order to take points out.");
                         }
                         break;
                     case 8192: // Mp
                         if (/*playerst.getMaxMp() < ((c.getPlayer().getLevel() * 14) + 134) || */c.getPlayer().getHpApUsed() <= 0 || c.getPlayer().getHpApUsed() >= 10000) {
                             used = false;
-                            c.getPlayer().dropMessage(1, "You need points in HP or MP in order to take points out.");
+                            c.getPlayer().print(1, "You need points in HP or MP in order to take points out.");
                         }
                         break;
                 }
@@ -2245,7 +2246,7 @@ public class InventoryHandler {
             }
             case 5220084: {// Booster pack
                 if (c.getPlayer().getInventory(MapleInventoryType.USE).getNumFreeSlot() < 3) {
-                    c.getPlayer().dropMessage(5, "Make 3 USE space.");
+                    c.getPlayer().print(5, "Make 3 USE space.");
                     break;
                 }
                 used = true;
@@ -2283,18 +2284,18 @@ public class InventoryHandler {
             case 5050008:
             case 5050009: {
                 if (itemId >= 5050005 && !GameConstants.isEvan(c.getPlayer().getJob())) {
-                    c.getPlayer().dropMessage(1, "This reset is only for Evans.");
+                    c.getPlayer().print(1, "This reset is only for Evans.");
                     break;
                 } // Well i dont really care other than this o.o
                 if (itemId < 5050005 && GameConstants.isEvan(c.getPlayer().getJob())) {
-                    c.getPlayer().dropMessage(1, "This reset is only for non-Evans.");
+                    c.getPlayer().print(1, "This reset is only for non-Evans.");
                     break;
                 } // Well i dont really care other than this o.o
                 int skill1 = slea.readInt();
                 int skill2 = slea.readInt();
                 for (int i : GameConstants.blockedSkills) {
                     if (skill1 == i) {
-                        c.getPlayer().dropMessage(1, "You may not add this skill.");
+                        c.getPlayer().print(1, "You may not add this skill.");
                         return;
                     }
                 }
@@ -2303,25 +2304,25 @@ public class InventoryHandler {
                 Skill skillSPFrom = SkillFactory.getSkill(skill2);
 
                 if (skillSPTo.isBeginnerSkill() || skillSPFrom.isBeginnerSkill()) {
-                    c.getPlayer().dropMessage(1, "You may not add beginner skills.");
+                    c.getPlayer().print(1, "You may not add beginner skills.");
                     break;
                 }
                 if (GameConstants.getSkillBookForSkill(skill1) != GameConstants.getSkillBookForSkill(skill2)) { // Resistance evan
-                    c.getPlayer().dropMessage(1, "You may not add different job skills.");
+                    c.getPlayer().print(1, "You may not add different job skills.");
                     break;
                 }
                 //if (GameConstants.getJobNumber(skill1 / 10000) > GameConstants.getJobNumber(skill2 / 10000)) { // Putting 3rd job skillpoints into 4th job for example
-                //    c.getPlayer().dropMessage(1, "You may not add skillpoints to a higher job.");
+                //    c.getPlayer().print(1, "You may not add skillpoints to a higher job.");
                 //    break;
                 //}
                 if ((c.getPlayer().getSkillLevel(skillSPTo) + 1 <= skillSPTo.getMaxLevel()) && c.getPlayer().getSkillLevel(skillSPFrom) > 0 && skillSPTo.canBeLearnedBy(c.getPlayer().getJob())) {
                     if (skillSPTo.isFourthJob() && (c.getPlayer().getSkillLevel(skillSPTo) + 1 > c.getPlayer().getMasterLevel(skillSPTo))) {
-                        c.getPlayer().dropMessage(1, "You will exceed the master level.");
+                        c.getPlayer().print(1, "You will exceed the master level.");
                         break;
                     }
                     if (itemId >= 5050005) {
                         if (GameConstants.getSkillBookForSkill(skill1) != (itemId - 5050005) * 2 && GameConstants.getSkillBookForSkill(skill1) != (itemId - 5050005) * 2 + 1) {
-                            c.getPlayer().dropMessage(1, "You may not add this job SP using this reset.");
+                            c.getPlayer().print(1, "You may not add this job SP using this reset.");
                             break;
                         }
                     } else {
@@ -2342,7 +2343,7 @@ public class InventoryHandler {
                                 break;
                         }
                         if (theJob != itemId - 5050000) { // You may only subtract from the skill if the ID matches Sp reset
-                            c.getPlayer().dropMessage(1, "You may not subtract from this skill. Use the appropriate SP reset.");
+                            c.getPlayer().print(1, "You may not subtract from this skill. Use the appropriate SP reset.");
                             break;
                         }
                     }
@@ -2370,7 +2371,7 @@ public class InventoryHandler {
                         c.getPlayer().forceReAddItem(item, MapleInventoryType.EQUIPPED);
                         used = true;
                     } else {
-                        c.getPlayer().dropMessage(1, "It may not be used on this item.");
+                        c.getPlayer().print(1, "It may not be used on this item.");
                     }
                 }
                 break;
@@ -2391,7 +2392,7 @@ public class InventoryHandler {
                         c.getPlayer().forceReAddItem(item, MapleInventoryType.EQUIPPED);
                         used = true;
                     } else {
-                        c.getPlayer().dropMessage(1, "It may not be used on this item.");
+                        c.getPlayer().print(1, "It may not be used on this item.");
                     }
                 }
                 break;
@@ -2412,7 +2413,7 @@ public class InventoryHandler {
                         c.getPlayer().forceReAddItem(item, MapleInventoryType.EQUIPPED);
                         used = true;
                     } else {
-                        c.getPlayer().dropMessage(1, "It may not be used on this item.");
+                        c.getPlayer().print(1, "It may not be used on this item.");
                     }
                 }
                 break;
@@ -2433,7 +2434,7 @@ public class InventoryHandler {
                         c.getPlayer().forceReAddItem(item, MapleInventoryType.EQUIPPED);
                         used = true;
                     } else {
-                        c.getPlayer().dropMessage(1, "It may not be used on this item.");
+                        c.getPlayer().print(1, "It may not be used on this item.");
                     }
                 }
                 break;
@@ -2454,7 +2455,7 @@ public class InventoryHandler {
                         c.getPlayer().forceReAddItem(item, MapleInventoryType.EQUIPPED);
                         used = true;
                     } else {
-                        c.getPlayer().dropMessage(1, "It may not be used on this item.");
+                        c.getPlayer().print(1, "It may not be used on this item.");
                     }
                 }
                 break;
@@ -2495,7 +2496,7 @@ public class InventoryHandler {
                         c.getPlayer().forceReAddItem_NoUpdate(item, MapleInventoryType.EQUIP);
                         used = true;
                     } else {
-                        c.getPlayer().dropMessage(5, "This item's Potential cannot be reset.");
+                        c.getPlayer().print(5, "This item's Potential cannot be reset.");
                     }
                 } else {
                     c.getPlayer().getMap().broadcastMessage(CField.showPotentialReset(c.getPlayer().getId(), false, itemId));
@@ -2514,7 +2515,7 @@ public class InventoryHandler {
                         MapleInventoryManipulator.addById(c, 2430112, (short) 1, "Cube" + " on " + FileoutputUtil.CurrentReadable_Date());
                         used = true;
                     } else {
-                        c.getPlayer().dropMessage(5, "This item's Potential cannot be reset.");
+                        c.getPlayer().print(5, "This item's Potential cannot be reset.");
                     }
                 } else {
                     c.getPlayer().getMap().broadcastMessage(CField.showPotentialReset(c.getPlayer().getId(), false, itemId));
@@ -2524,7 +2525,7 @@ public class InventoryHandler {
             case 5062100:
             case 5062001: { // Premium cube
                 if (c.getPlayer().getLevel() < 10) {
-                    c.getPlayer().dropMessage(1, "You may not use this until level 10.");
+                    c.getPlayer().print(1, "You may not use this until level 10.");
                 } else {
                     final Item item = c.getPlayer().getInventory(MapleInventoryType.EQUIP).getItem((byte) slea.readInt());
                     if (item != null && c.getPlayer().getInventory(MapleInventoryType.USE).getNumFreeSlot() >= 1) {
@@ -2537,7 +2538,7 @@ public class InventoryHandler {
                             MapleInventoryManipulator.addById(c, 2430112, (short) 1, "Cube" + " on " + FileoutputUtil.CurrentReadable_Date());
                             used = true;
                         } else {
-                            c.getPlayer().dropMessage(5, "This item's Potential cannot be reset.");
+                            c.getPlayer().print(5, "This item's Potential cannot be reset.");
                         }
                     } else {
                         c.getPlayer().getMap().broadcastMessage(CField.showPotentialReset(c.getPlayer().getId(), false, itemId));
@@ -2547,7 +2548,7 @@ public class InventoryHandler {
             }
             case 5062002: { // Super miracle cube
                 if (c.getPlayer().getLevel() < 10) {
-                    c.getPlayer().dropMessage(1, "You may not use this until level 10.");
+                    c.getPlayer().print(1, "You may not use this until level 10.");
                 } else {
                     final Item item = c.getPlayer().getInventory(MapleInventoryType.EQUIP).getItem((byte) slea.readInt());
                     if (item != null && c.getPlayer().getInventory(MapleInventoryType.USE).getNumFreeSlot() >= 1) {
@@ -2560,7 +2561,7 @@ public class InventoryHandler {
                             MapleInventoryManipulator.addById(c, 2430481, (short) 1, "Cube" + " on " + FileoutputUtil.CurrentReadable_Date());
                             used = true;
                         } else {
-                            c.getPlayer().dropMessage(5, "This item's Potential cannot be reset.");
+                            c.getPlayer().print(5, "This item's Potential cannot be reset.");
                         }
                     } else {
                         c.getPlayer().getMap().broadcastMessage(CField.showPotentialReset(c.getPlayer().getId(), false, itemId));
@@ -2580,7 +2581,7 @@ public class InventoryHandler {
                         MapleInventoryManipulator.addById(c, 2430481, (short) 1, "Cube" + " on " + FileoutputUtil.CurrentReadable_Date());
                         used = true;
                     } else {
-                        c.getPlayer().dropMessage(5, "This item's Potential cannot be reset.");
+                        c.getPlayer().print(5, "This item's Potential cannot be reset.");
                     }
                 } else {
                     c.getPlayer().getMap().broadcastMessage(CField.showPotentialReset(c.getPlayer().getId(), false, itemId));
@@ -2599,7 +2600,7 @@ public class InventoryHandler {
                         MapleInventoryManipulator.addById(c, 2430759, (short) 1, "Cube" + " on " + FileoutputUtil.CurrentReadable_Date());
                         used = true;
                     } else {
-                        c.getPlayer().dropMessage(5, "This item's Potential cannot be reset.");
+                        c.getPlayer().print(5, "This item's Potential cannot be reset.");
                     }
                 } else {
                     c.getPlayer().getMap().broadcastMessage(CField.showPotentialReset(c.getPlayer().getId(), false, itemId));
@@ -2608,7 +2609,7 @@ public class InventoryHandler {
             }
             case 5750000: { // Alien cube
                 if (c.getPlayer().getLevel() < 10) {
-                    c.getPlayer().dropMessage(1, "You may not use this until level 10.");
+                    c.getPlayer().print(1, "You may not use this until level 10.");
                 } else {
                     final Item item = c.getPlayer().getInventory(MapleInventoryType.SETUP).getItem((byte) slea.readInt());
                     if (item != null && c.getPlayer().getInventory(MapleInventoryType.USE).getNumFreeSlot() >= 1 && c.getPlayer().getInventory(MapleInventoryType.SETUP).getNumFreeSlot() >= 1) {
@@ -2629,17 +2630,17 @@ public class InventoryHandler {
                             MapleInventoryManipulator.addById(c, 2430691, (short) 1, "Alien Cube" + " on " + FileoutputUtil.CurrentReadable_Date());
                             used = true;
                         } else {
-                            c.getPlayer().dropMessage(1, "Grade S Nebulite cannot be added.");
+                            c.getPlayer().print(1, "Grade S Nebulite cannot be added.");
                         }
                     } else {
-                        c.getPlayer().dropMessage(5, "You do not have sufficient inventory slot.");
+                        c.getPlayer().print(5, "You do not have sufficient inventory slot.");
                     }
                 }
                 break;
             }
             case 5750001: { // Socket diffuser
                 if (c.getPlayer().getLevel() < 10) {
-                    c.getPlayer().dropMessage(1, "You may not use this until level 10.");
+                    c.getPlayer().print(1, "You may not use this until level 10.");
                 } else {
                     final Item item = c.getPlayer().getInventory(MapleInventoryType.EQUIP).getItem((byte) slea.readInt());
                     if (item != null) {
@@ -2650,10 +2651,10 @@ public class InventoryHandler {
                             c.getPlayer().forceReAddItem_NoUpdate(item, MapleInventoryType.EQUIP);
                             used = true;
                         } else {
-                            c.getPlayer().dropMessage(5, "This item do not have a socket.");
+                            c.getPlayer().print(5, "This item do not have a socket.");
                         }
                     } else {
-                        c.getPlayer().dropMessage(5, "This item's nebulite cannot be removed.");
+                        c.getPlayer().print(5, "This item's nebulite cannot be removed.");
                     }
                 }
                 break;
@@ -2716,7 +2717,7 @@ public class InventoryHandler {
                         c.getPlayer().fakeRelog();
                         used = true;
                     } else {
-                        c.getPlayer().dropMessage(5, "You may not use it on this item.");
+                        c.getPlayer().print(5, "You may not use it on this item.");
                         c.getSession().write(MTSCSPacket.ViciousHammer(true, (byte) 0));
                     }
                 }
@@ -2826,7 +2827,7 @@ public class InventoryHandler {
             }
             case 2531000:
             case 5064000: {
-                //System.out.println("slea..." + slea.toString());
+                //Logger.println("slea..." + slea.toString());
                 final MapleInventoryType type = MapleInventoryType.getByType((byte) slea.readInt());
                 final Item item = c.getPlayer().getInventory(type).getItem((byte) slea.readInt());
                 // Another int here, lock = 5A E5 F2 0A, 7 day = D2 30 F3 0A
@@ -2862,15 +2863,15 @@ public class InventoryHandler {
 
             case 5070000: { // Megaphone
                 if (c.getPlayer().getLevel() < 10) {
-                    c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
+                    c.getPlayer().print(5, "Must be level 10 or higher.");
                     break;
                 }
                 if (c.getPlayer().getMapId() == GameConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used while in jail.");
+                    c.getPlayer().print(5, "Cannot be used while in jail.");
                     break;
                 }
                 if (!c.getPlayer().getCheatTracker().canSmega()) {
-                    c.getPlayer().dropMessage(5, "You may only use this every 15 seconds.");
+                    c.getPlayer().print(5, "You may only use this every 15 seconds.");
                     break;
                 }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {
@@ -2888,21 +2889,21 @@ public class InventoryHandler {
                     c.getPlayer().getMap().broadcastMessage(CWvsContext.serverNotice(2, sb.toString()));
                     used = true;
                 } else {
-                    c.getPlayer().dropMessage(5, "The usage of Megaphone is currently disabled.");
+                    c.getPlayer().print(5, "The usage of Megaphone is currently disabled.");
                 }
                 break;
             }
             case 5071000: { // Megaphone
                 if (c.getPlayer().getLevel() < 10) {
-                    c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
+                    c.getPlayer().print(5, "Must be level 10 or higher.");
                     break;
                 }
                 if (c.getPlayer().getMapId() == GameConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used while in jail.");
+                    c.getPlayer().print(5, "Cannot be used while in jail.");
                     break;
                 }
                 if (!c.getPlayer().getCheatTracker().canSmega()) {
-                    c.getPlayer().dropMessage(5, "You may only use this every 15 seconds.");
+                    c.getPlayer().print(5, "You may only use this every 15 seconds.");
                     break;
                 }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {
@@ -2920,21 +2921,21 @@ public class InventoryHandler {
                     c.getChannelServer().broadcastSmegaPacket(CWvsContext.serverNotice(2, sb.toString()));
                     used = true;
                 } else {
-                    c.getPlayer().dropMessage(5, "The usage of Megaphone is currently disabled.");
+                    c.getPlayer().print(5, "The usage of Megaphone is currently disabled.");
                 }
                 break;
             }
             case 5077000: { // 3 line Megaphone
                 if (c.getPlayer().getLevel() < 10) {
-                    c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
+                    c.getPlayer().print(5, "Must be level 10 or higher.");
                     break;
                 }
                 if (c.getPlayer().getMapId() == GameConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used while in jail.");
+                    c.getPlayer().print(5, "Cannot be used while in jail.");
                     break;
                 }
                 if (!c.getPlayer().getCheatTracker().canSmega()) {
-                    c.getPlayer().dropMessage(5, "You may only use this every 15 seconds.");
+                    c.getPlayer().print(5, "You may only use this every 15 seconds.");
                     break;
                 }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {
@@ -2956,21 +2957,21 @@ public class InventoryHandler {
                     World.Broadcast.broadcastSmega(CWvsContext.tripleSmega(messages, ear, c.getChannel()));
                     used = true;
                 } else {
-                    c.getPlayer().dropMessage(5, "The usage of Megaphone is currently disabled.");
+                    c.getPlayer().print(5, "The usage of Megaphone is currently disabled.");
                 }
                 break;
             }
             case 5079004: { // Heart Megaphone
                 if (c.getPlayer().getLevel() < 10) {
-                    c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
+                    c.getPlayer().print(5, "Must be level 10 or higher.");
                     break;
                 }
                 if (c.getPlayer().getMapId() == GameConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used while in jail.");
+                    c.getPlayer().print(5, "Cannot be used while in jail.");
                     break;
                 }
                 if (!c.getPlayer().getCheatTracker().canSmega()) {
-                    c.getPlayer().dropMessage(5, "You may only use this every 15 seconds.");
+                    c.getPlayer().print(5, "You may only use this every 15 seconds.");
                     break;
                 }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {
@@ -2982,21 +2983,21 @@ public class InventoryHandler {
                     World.Broadcast.broadcastSmega(CWvsContext.echoMegaphone(c.getPlayer().getName(), message));
                     used = true;
                 } else {
-                    c.getPlayer().dropMessage(5, "The usage of Megaphone is currently disabled.");
+                    c.getPlayer().print(5, "The usage of Megaphone is currently disabled.");
                 }
                 break;
             }
             case 5073000: { // Heart Megaphone
                 if (c.getPlayer().getLevel() < 10) {
-                    c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
+                    c.getPlayer().print(5, "Must be level 10 or higher.");
                     break;
                 }
                 if (c.getPlayer().getMapId() == GameConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used while in jail.");
+                    c.getPlayer().print(5, "Cannot be used while in jail.");
                     break;
                 }
                 if (!c.getPlayer().getCheatTracker().canSmega()) {
-                    c.getPlayer().dropMessage(5, "You may only use this every 15 seconds.");
+                    c.getPlayer().print(5, "You may only use this every 15 seconds.");
                     break;
                 }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {
@@ -3015,21 +3016,21 @@ public class InventoryHandler {
                     World.Broadcast.broadcastSmega(CWvsContext.serverNotice(9, c.getChannel(), sb.toString(), ear));
                     used = true;
                 } else {
-                    c.getPlayer().dropMessage(5, "The usage of Megaphone is currently disabled.");
+                    c.getPlayer().print(5, "The usage of Megaphone is currently disabled.");
                 }
                 break;
             }
             case 5074000: { // Skull Megaphone
                 if (c.getPlayer().getLevel() < 10) {
-                    c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
+                    c.getPlayer().print(5, "Must be level 10 or higher.");
                     break;
                 }
                 if (c.getPlayer().getMapId() == GameConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used while in jail.");
+                    c.getPlayer().print(5, "Cannot be used while in jail.");
                     break;
                 }
                 if (!c.getPlayer().getCheatTracker().canSmega()) {
-                    c.getPlayer().dropMessage(5, "You may only use this every 15 seconds.");
+                    c.getPlayer().print(5, "You may only use this every 15 seconds.");
                     break;
                 }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {
@@ -3049,21 +3050,21 @@ public class InventoryHandler {
                     World.Broadcast.broadcastSmega(CWvsContext.serverNotice(22, c.getChannel(), sb.toString(), ear));
                     used = true;
                 } else {
-                    c.getPlayer().dropMessage(5, "The usage of Megaphone is currently disabled.");
+                    c.getPlayer().print(5, "The usage of Megaphone is currently disabled.");
                 }
                 break;
             }
             case 5072000: { // Super Megaphone
                 if (c.getPlayer().getLevel() < 10) {
-                    c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
+                    c.getPlayer().print(5, "Must be level 10 or higher.");
                     break;
                 }
                 if (c.getPlayer().getMapId() == GameConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used while in jail.");
+                    c.getPlayer().print(5, "Cannot be used while in jail.");
                     break;
                 }
                 if (!c.getPlayer().getCheatTracker().canSmega()) {
-                    c.getPlayer().dropMessage(5, "You may only use this every 15 seconds.");
+                    c.getPlayer().print(5, "You may only use this every 15 seconds.");
                     break;
                 }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {
@@ -3083,21 +3084,21 @@ public class InventoryHandler {
                     World.Broadcast.broadcastSmega(CWvsContext.serverNotice(3, c.getChannel(), sb.toString(), ear));
                     used = true;
                 } else {
-                    c.getPlayer().dropMessage(5, "The usage of Megaphone is currently disabled.");
+                    c.getPlayer().print(5, "The usage of Megaphone is currently disabled.");
                 }
                 break;
             }
             case 5076000: { // Item Megaphone
                 if (c.getPlayer().getLevel() < 10) {
-                    c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
+                    c.getPlayer().print(5, "Must be level 10 or higher.");
                     break;
                 }
                 if (c.getPlayer().getMapId() == GameConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used while in jail.");
+                    c.getPlayer().print(5, "Cannot be used while in jail.");
                     break;
                 }
                 if (!c.getPlayer().getCheatTracker().canSmega()) {
-                    c.getPlayer().dropMessage(5, "You may only use this every 15 seconds.");
+                    c.getPlayer().print(5, "You may only use this every 15 seconds.");
                     break;
                 }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {
@@ -3126,29 +3127,29 @@ public class InventoryHandler {
                     World.Broadcast.broadcastSmega(CWvsContext.itemMegaphone(sb.toString(), ear, c.getChannel(), item));
                     used = true;
                 } else {
-                    c.getPlayer().dropMessage(5, "The usage of Megaphone is currently disabled.");
+                    c.getPlayer().print(5, "The usage of Megaphone is currently disabled.");
                 }
                 break;
             }
             case 5075000: // MapleTV Messenger
             case 5075001: // MapleTV Star Messenger
             case 5075002: { // MapleTV Heart Messenger
-                c.getPlayer().dropMessage(5, "There are no MapleTVs to broadcast the message to.");
+                c.getPlayer().print(5, "There are no MapleTVs to broadcast the message to.");
                 break;
             }
             case 5075003:
             case 5075004:
             case 5075005: {
                 if (c.getPlayer().getLevel() < 10) {
-                    c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
+                    c.getPlayer().print(5, "Must be level 10 or higher.");
                     break;
                 }
                 if (c.getPlayer().getMapId() == GameConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used while in jail.");
+                    c.getPlayer().print(5, "Cannot be used while in jail.");
                     break;
                 }
                 if (!c.getPlayer().getCheatTracker().canSmega()) {
-                    c.getPlayer().dropMessage(5, "You may only use this every 15 seconds.");
+                    c.getPlayer().print(5, "You may only use this every 15 seconds.");
                     break;
                 }
                 int tvType = itemId % 10;
@@ -3160,7 +3161,7 @@ public class InventoryHandler {
                 if (tvType == 0 || tvType == 3) { // Doesn't allow two
                     victim = null;
                 } else if (victim == null) {
-                    c.getPlayer().dropMessage(1, "That character is not in the channel.");
+                    c.getPlayer().print(1, "That character is not in the channel.");
                     break;
                 }
                 String message = slea.readMapleAsciiString();
@@ -3457,7 +3458,7 @@ public class InventoryHandler {
                     c.getSession().write(CWvsContext.getOwlSearched(itemSearch, hms));
                     used = true;
                 } else {
-                    c.getPlayer().dropMessage(1, "Unable to find the item.");
+                    c.getPlayer().print(1, "Unable to find the item.");
                 }
                 break;
             }
@@ -3478,7 +3479,7 @@ public class InventoryHandler {
                     if (e.isRunning()) {
                         for (int i : e.getType().mapids) {
                             if (c.getPlayer().getMapId() == i) {
-                                c.getPlayer().dropMessage(5, "You may not use that here.");
+                                c.getPlayer().print(5, "You may not use that here.");
                                 c.getSession().write(CWvsContext.enableActions());
                                 return;
                             }
@@ -3501,15 +3502,15 @@ public class InventoryHandler {
             case 5390008:
             case 5390009: {
                 if (c.getPlayer().getLevel() < 10) {
-                    c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
+                    c.getPlayer().print(5, "Must be level 10 or higher.");
                     break;
                 }
                 if (c.getPlayer().getMapId() == GameConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used while in jail.");
+                    c.getPlayer().print(5, "Cannot be used while in jail.");
                     break;
                 }
                 if (!c.getPlayer().getCheatTracker().canAvatarSmega()) {
-                    c.getPlayer().dropMessage(5, "You may only use this every 5 minutes.");
+                    c.getPlayer().print(5, "You may only use this every 5 minutes.");
                     break;
                 }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {
@@ -3532,7 +3533,7 @@ public class InventoryHandler {
                     World.Broadcast.broadcastSmega(CWvsContext.getAvatarMega(c.getPlayer(), c.getChannel(), itemId, lines, ear));
                     used = true;
                 } else {
-                    c.getPlayer().dropMessage(5, "The usage of Megaphone is currently disabled.");
+                    c.getPlayer().print(5, "The usage of Megaphone is currently disabled.");
                 }
                 break;
             }
@@ -3541,15 +3542,15 @@ public class InventoryHandler {
             case 5450000: { // Mu Mu the Travelling Merchant
                 for (int i : GameConstants.blockedMaps) {
                     if (c.getPlayer().getMapId() == i) {
-                        c.getPlayer().dropMessage(5, "You may not use this command in the current map.");
+                        c.getPlayer().print(5, "You may not use this command in the current map.");
                         c.getSession().write(CWvsContext.enableActions());
                         return;
                     }
                 }
                 if (c.getPlayer().hasBlockedInventory() || c.getPlayer().getMap().getSquadByMap() != null || c.getPlayer().getEventInstance() != null || c.getPlayer().getMap().getEMByMap() != null || c.getPlayer().getMapId() >= 990000000) {
-                    c.getPlayer().dropMessage(5, "You may not use this command in the current map.");
+                    c.getPlayer().print(5, "You may not use this command in the current map.");
                 } else if ((c.getPlayer().getMapId() >= 680000210 && c.getPlayer().getMapId() <= 680000502) || (c.getPlayer().getMapId() / 1000 == 980000 && c.getPlayer().getMapId() != 980000000) || (c.getPlayer().getMapId() / 100 == 1030008) || (c.getPlayer().getMapId() / 100 == 922010) || (c.getPlayer().getMapId() / 10 == 13003000)) {
-                    c.getPlayer().dropMessage(5, "You may not use this command in the current map.");
+                    c.getPlayer().print(5, "You may not use this command in the current map.");
                 } else {
                     MapleShopFactory.getInstance().getShop(61).sendShop(c);
                 }
@@ -3614,8 +3615,8 @@ public class InventoryHandler {
                 } else if (itemId / 10000 == 553) {
                     UseRewardItem(slot, itemId, c, c.getPlayer());// This too
                 } else if (itemId / 10000 != 519) {
-                    System.out.println("Unhandled CS item : " + itemId);
-                    System.out.println(slea.toString(true));
+                    Logger.println("Unhandled CS item : " + itemId);
+                    Logger.println(slea.toString(true));
                 }
                 break;
         }
@@ -3626,10 +3627,10 @@ public class InventoryHandler {
         c.getSession().write(CWvsContext.enableActions());
         if (cc) {
             if (!c.getPlayer().isAlive() || c.getPlayer().getEventInstance() != null || FieldLimitType.ChannelSwitch.check(c.getPlayer().getMap().getFieldLimit())) {
-                c.getPlayer().dropMessage(1, "Auto relog failed.");
+                c.getPlayer().print(1, "Auto relog failed.");
                 return;
             }
-            c.getPlayer().dropMessage(5, "Auto relogging. Please wait.");
+            c.getPlayer().print(5, "Auto relogging. Please wait.");
             c.getPlayer().fakeRelog();
             if (c.getPlayer().getScrolledPosition() != 0) {
                 c.getSession().write(CWvsContext.pamSongUI());
@@ -3713,7 +3714,7 @@ public class InventoryHandler {
             } else {
                 if (MapleItemInformationProvider.getInstance().isPickupBlocked(mapitem.getItemId())) {
                     c.getSession().write(CWvsContext.enableActions());
-                    c.getPlayer().dropMessage(5, "This item cannot be picked up.");
+                    c.getPlayer().print(5, "This item cannot be picked up.");
                 } else if (c.getPlayer().inPVP() && Integer.parseInt(c.getPlayer().getEventInstance().getProperty("ice")) == c.getPlayer().getId()) {
                     c.getSession().write(InventoryPacket.getInventoryFull());
                     c.getSession().write(InventoryPacket.getShowInventoryFull());
@@ -3751,7 +3752,7 @@ public class InventoryHandler {
         if (chr == null) {
             return;
         }
-        //System.out.println("PETS: " + slea.toString());
+        //Logger.println("PETS: " + slea.toString());
         c.getPlayer().setScrolledPosition((short) 0);
         final byte petz = c.getPlayer().getPetIndex((int) slea.readLong());
         final MaplePet pet = chr.getPet(petz);
@@ -3761,7 +3762,7 @@ public class InventoryHandler {
         final MapleMapObject ob = chr.getMap().getMapObject(slea.readInt(), MapleMapObjectType.ITEM);
 
         if (ob == null || pet == null) {
-            //System.out.println("Ob or pet is null");
+            //Logger.println("Ob or pet is null");
             return;
         }
         final MapleMapItem mapitem = (MapleMapItem) ob;
@@ -3924,7 +3925,7 @@ public class InventoryHandler {
 
     private static final boolean getIncubatedItems(MapleClient c, int itemId) {
         if (c.getPlayer().getInventory(MapleInventoryType.EQUIP).getNumFreeSlot() < 2 || c.getPlayer().getInventory(MapleInventoryType.USE).getNumFreeSlot() < 2 || c.getPlayer().getInventory(MapleInventoryType.SETUP).getNumFreeSlot() < 2) {
-            c.getPlayer().dropMessage(5, "Please make room in your inventory.");
+            c.getPlayer().print(5, "Please make room in your inventory.");
             return false;
         }
         final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
@@ -3953,7 +3954,7 @@ public class InventoryHandler {
                 c.getSession().write(CWvsContext.getOwlSearched(itemSearch, hms));
                 MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, itemid, 1, true, false);
             } else {
-                c.getPlayer().dropMessage(1, "Unable to find the item.");
+                c.getPlayer().print(1, "Unable to find the item.");
             }
         }
         c.getSession().write(CWvsContext.enableActions());
@@ -3964,7 +3965,7 @@ public class InventoryHandler {
             if (c.getPlayer().getMapId() >= 910000000 && c.getPlayer().getMapId() <= 910000022) {
                 c.getSession().write(CWvsContext.getOwlOpen());
             } else {
-                c.getPlayer().dropMessage(5, "This can only be used inside the Free Market.");
+                c.getPlayer().print(5, "This can only be used inside the Free Market.");
                 c.getSession().write(CWvsContext.enableActions());
             }
         }
@@ -4036,12 +4037,12 @@ public class InventoryHandler {
                         c.getSession().write(PlayerShopPacket.getHiredMerch(c.getPlayer(), merchant, false));
                     } else {
                         if (!merchant.isOpen() || !merchant.isAvailable()) {
-                            c.getPlayer().dropMessage(1, "The owner of the store is currently undergoing store maintenance. Please try again later.");
+                            c.getPlayer().print(1, "The owner of the store is currently undergoing store maintenance. Please try again later.");
                         } else {
                             if (merchant.getFreeSlot() == -1) {
-                                c.getPlayer().dropMessage(1, "You can't enter the room due to full capacity.");
+                                c.getPlayer().print(1, "You can't enter the room due to full capacity.");
                             } else if (merchant.isInBlackList(c.getPlayer().getName())) {
-                                c.getPlayer().dropMessage(1, "You may not enter this store.");
+                                c.getPlayer().print(1, "You may not enter this store.");
                             } else {
                                 c.getPlayer().setPlayerShop(merchant);
                                 merchant.addVisitor(c.getPlayer());
@@ -4050,7 +4051,7 @@ public class InventoryHandler {
                         }
                     }
                 } else {
-                    c.getPlayer().dropMessage(1, "The room is already closed.");
+                    c.getPlayer().print(1, "The room is already closed.");
                 }
             } else {
                 c.getSession().write(CWvsContext.getOwlMessage(23));

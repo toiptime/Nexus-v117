@@ -27,6 +27,7 @@ import constants.ServerConstants.PlayerGMRank;
 import database.DatabaseConnection;
 import handling.channel.ChannelServer;
 import tools.FileoutputUtil;
+import tools.Logger;
 
 import java.lang.reflect.Modifier;
 import java.sql.PreparedStatement;
@@ -89,10 +90,10 @@ public class CommandProcessor {
         }
         switch (type) {
             case NORMAL:
-                c.getPlayer().dropMessage(6, msg);
+                c.getPlayer().print(6, msg);
                 break;
             case TRADE:
-                c.getPlayer().dropMessage(-2, "Error : " + msg);
+                c.getPlayer().print(-2, "Error : " + msg);
                 break;
         }
 
@@ -108,7 +109,7 @@ public class CommandProcessor {
                 }
             }
         }
-        c.getPlayer().dropMessage(6, sb.toString());
+        c.getPlayer().print(6, sb.toString());
     }
 
     public static boolean processCommand(MapleClient c, String line, CommandType type) {
@@ -128,9 +129,9 @@ public class CommandProcessor {
             try {
                 int ret = co.execute(c, splitted);
                 if (ret == 0 && c.getPlayer().getId() == 1)//Failure
-                    System.out.println("Failed to execute command");
+                    Logger.println("Failed to execute command");
                 else if (ret > 0 && c.getPlayer().getId() == 1)
-                    System.out.println("Command executed successfully");
+                    Logger.println("Command executed successfully");
             } catch (Exception e) {
                 sendDisplayMessage(c, "There was an error.", type);
                 if (c.getPlayer().isGM()) {
@@ -172,7 +173,7 @@ public class CommandProcessor {
                     }
                     if (ret > 0 && c.getPlayer() != null) { // Incase d/c after command or something
                         if (c.getPlayer().getId() == 1)//GLaDOS
-                            System.out.println("Command executed successfully");
+                            Logger.println("Command executed successfully");
                         else if (c.getPlayer().isGM())
                             logCommandToDB(c.getPlayer(), line, "gmlog");
                         else

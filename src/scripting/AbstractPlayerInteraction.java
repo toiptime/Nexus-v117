@@ -176,7 +176,7 @@ public abstract class AbstractPlayerInteraction {
     public final void warpByName(final int mapid, final String chrname) {
         MapleCharacter chr = c.getChannelServer().getPlayerStorage().getCharacterByName(chrname);
         if (chr == null) {
-            c.getPlayer().dropMessage(1, "Could not find the character.");
+            c.getPlayer().print(1, "Could not find the character.");
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
@@ -535,8 +535,8 @@ public abstract class AbstractPlayerInteraction {
                 final String name = ii.getName(id);
                 if (id / 10000 == 114 && name != null && name.length() > 0) { // Medal
                     final String msg = "< " + name + " > has been rewarded.";
-                    cg.getPlayer().dropMessage(-1, msg);
-                    cg.getPlayer().dropMessage(5, msg);
+                    cg.getPlayer().print(-1, msg);
+                    cg.getPlayer().print(5, msg);
                 }
                 MapleInventoryManipulator.addbyItem(cg, item.copy());
             } else {
@@ -580,7 +580,7 @@ public abstract class AbstractPlayerInteraction {
     }
 
     public final void playerMessage(final int type, final String message) {
-        c.getPlayer().dropMessage(type, message);
+        c.getPlayer().print(type, message);
     }
 
     public final void mapMessage(final int type, final String message) {

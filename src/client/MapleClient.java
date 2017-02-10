@@ -12,14 +12,13 @@ import handling.world.family.MapleFamilyCharacter;
 import handling.world.guild.MapleGuildCharacter;
 import org.apache.mina.common.IoSession;
 import server.CharacterCardFactory;
-import server.Randomizer;
 import server.Timer.PingTimer;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import server.shops.IMaplePlayerShop;
 import tools.FileoutputUtil;
+import tools.Logger;
 import tools.MapleAESOFB;
-import tools.MockIOSession;
 import tools.Pair;
 import tools.packet.CField;
 import tools.packet.LoginPacket;
@@ -366,7 +365,7 @@ public class MapleClient implements Serializable {
             }
             psu.close();
         } catch (SQLException sqlE) {
-            System.out.println("Failed to update character cards. Reason: " + sqlE.toString());
+            Logger.println("Failed to update character cards. Reason: " + sqlE.toString());
         }
     }
 
@@ -1151,7 +1150,7 @@ public class MapleClient implements Serializable {
 
             return canlogin;
         } catch (final SQLException e) {
-            System.out.println("Failed in checking IP address for client.");
+            Logger.println("Failed in checking IP address for client.");
         }
         return true;
     }
@@ -1450,7 +1449,7 @@ public class MapleClient implements Serializable {
     }
 
     public boolean isLocalhost() {
-        return ServerConstants.Use_Localhost;
+        return ServerConstants.USE_LOCALHOST;
     }
 
     protected static final class CharNameAndId {

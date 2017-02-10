@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tools;
 
 import tools.data.ByteArrayByteStream;
@@ -30,13 +26,13 @@ public class PacketDecodeTool {
         long next_long;
         for (int length = 0; length < bytes.length; length++) {
             if (slea.readInt() % 100 < 10 && slea.available() >= 4) {
-                System.out.println(slea.readLastInt());
+                Logger.println(slea.readLastInt());
             } else {
                 slea.unReadInt();
-                System.out.println(slea.readByte());
+                Logger.println(slea.readByte());
             }
         }
-        //System.out.println(slea.readMapleAsciiString());
+        //Logger.println(slea.readMapleAsciiString());
     }
 
     public static byte[] getByteArrayFromHexString(final String hex) {

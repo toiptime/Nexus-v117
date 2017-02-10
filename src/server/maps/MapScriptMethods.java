@@ -34,6 +34,7 @@ import server.maps.MapleNodes.DirectionInfo;
 import server.quest.MapleQuest;
 import server.quest.MapleQuest.MedalQuest;
 import tools.FileoutputUtil;
+import tools.Logger;
 import tools.packet.CField;
 import tools.packet.CField.EffectPacket;
 import tools.packet.CField.NPCPacket;
@@ -568,7 +569,7 @@ public class MapScriptMethods {
                 break;
             }
             default: {
-                System.out.println("Unhandled script : " + scriptName + ", type : onFirstUserEnter - MAPID " + c.getPlayer().getMapId());
+                Logger.println("Unhandled script : " + scriptName + ", type : onFirstUserEnter - MAPID " + c.getPlayer().getMapId());
                 FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Unhandled script : " + scriptName + ", type : onFirstUserEnter - MAPID " + c.getPlayer().getMapId());
                 break;
             }
@@ -677,13 +678,13 @@ public class MapScriptMethods {
                         q += mf.getMap(922010401 + i).getAllMonstersThreadsafe().size();
                     }
                     if (q > 0) {
-                        c.getPlayer().dropMessage(-1, "There are still " + q + " monsters remaining.");
+                        c.getPlayer().print(-1, "There are still " + q + " monsters remaining.");
                     }
                 } else if (c.getPlayer().getMapId() >= 922010401 && c.getPlayer().getMapId() <= 922010405) {
                     if (c.getPlayer().getMap().getAllMonstersThreadsafe().size() > 0) {
-                        c.getPlayer().dropMessage(-1, "There are still some monsters remaining in this map.");
+                        c.getPlayer().print(-1, "There are still some monsters remaining in this map.");
                     } else {
-                        c.getPlayer().dropMessage(-1, "There are no monsters remaining in this map.");
+                        c.getPlayer().print(-1, "There are no monsters remaining in this map.");
                     }
                 }
                 break;
@@ -774,7 +775,7 @@ public class MapScriptMethods {
             case merOutStandAlone: {
                 if (c.getPlayer().getQuestStatus(24001) == 1) {
                     MapleQuest.getInstance(24001).forceComplete(c.getPlayer(), 0);
-                    c.getPlayer().dropMessage(5, "Quest complete.");
+                    c.getPlayer().print(5, "Quest complete.");
                 }
                 break;
             }
@@ -899,7 +900,7 @@ public class MapScriptMethods {
                 showIntro(c, data);
                 break;
             case mPark_stageEff:
-                c.getPlayer().dropMessage(-1, "All Monsters must be eliminated before proceeding to the next stage.");
+                c.getPlayer().print(-1, "All Monsters must be eliminated before proceeding to the next stage.");
                 switch ((c.getPlayer().getMapId() % 1000) / 100) {
                     case 0:
                     case 1:
@@ -1007,8 +1008,8 @@ public class MapScriptMethods {
                         number++;
                         c.getPlayer().updateInfoQuest(m.questid - 2005, sb.toString());
                         MapleQuest.getInstance(m.questid - 1995).forceStart(c.getPlayer(), 0, String.valueOf(number));
-                        c.getPlayer().dropMessage(-1, "Visited " + number + "/" + m.maps.length + " regions.");
-                        c.getPlayer().dropMessage(-1, "Title " + String.valueOf(m) + " Explorer currently in progress");
+                        c.getPlayer().print(-1, "Visited " + number + "/" + m.maps.length + " regions.");
+                        c.getPlayer().print(-1, "Title " + String.valueOf(m) + " Explorer currently in progress");
                         c.getSession().write(CWvsContext.showQuestMsg("Title " + String.valueOf(m) + " Explorer currently in progress " + number + "/" + m.maps.length + " completed"));
                     }
                 }
@@ -1082,6 +1083,8 @@ public class MapScriptMethods {
                 }, 5 * 60 * 1000);
                 break;
             }
+            case map_913070003:
+                break;
             case map_913070004: {
                 try {
                     c.getSession().write(CField.UIPacket.IntroEnableUI(1));
@@ -1492,6 +1495,8 @@ public class MapScriptMethods {
                 showIntro(c, "Effect/Direction3.img/goLith/Scene" + (c.getPlayer().getGender() == 0 ? "0" : "1"));
                 break;
             }
+            case incubation_dragon:
+                break;
             case TD_MC_Openning: {
                 showIntro(c, "Effect/Direction2.img/open");
                 break;
@@ -1596,8 +1601,10 @@ public class MapScriptMethods {
                 //left blank because pyramidsubway handles this.
                 break;
             }
+            case NULL:
+                break;
             default: {
-                System.out.println("Unhandled script : " + scriptName + ", type : onUserEnter - MAPID " + c.getPlayer().getMapId());
+                Logger.println("Unhandled script : " + scriptName + ", type : onUserEnter - MAPID " + c.getPlayer().getMapId());
                 FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Unhandled script : " + scriptName + ", type : onUserEnter - MAPID " + c.getPlayer().getMapId());
                 break;
             }

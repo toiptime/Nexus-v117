@@ -39,6 +39,7 @@ import server.maps.MapleMap;
 import server.maps.MapleMapFactory;
 import server.quest.MapleQuest;
 import tools.FileoutputUtil;
+import tools.Logger;
 import tools.Pair;
 import tools.packet.CField;
 import tools.packet.CWvsContext.InfoPacket;
@@ -92,7 +93,7 @@ public class EventInstanceManager {
             ex.printStackTrace();
         } catch (Exception ex) {
             FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : playerEntry:\n" + ex);
-            System.out.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : playerEntry:\n" + ex);
+            Logger.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : playerEntry:\n" + ex);
         }
     }
 
@@ -105,7 +106,7 @@ public class EventInstanceManager {
         } catch (NullPointerException npe) {
         } catch (Exception ex) {
             FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : changedMap:\n" + ex);
-            System.out.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : changedMap:\n" + ex);
+            Logger.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : changedMap:\n" + ex);
         }
     }
 
@@ -122,7 +123,7 @@ public class EventInstanceManager {
                     em.getIv().invokeFunction("scheduledTimeout", eim);
                 } catch (Exception ex) {
                     FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : scheduledTimeout:\n" + ex);
-                    System.out.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : scheduledTimeout:\n" + ex);
+                    Logger.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : scheduledTimeout:\n" + ex);
                 }
             }
         }, delay);
@@ -160,7 +161,7 @@ public class EventInstanceManager {
 
         } catch (Exception ex) {
             FileoutputUtil.outputFileError(FileoutputUtil.ScriptEx_Log, ex);
-            System.out.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : restartEventTimer:\n");
+            Logger.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : restartEventTimer:\n");
             ex.printStackTrace();
         }
     }
@@ -363,7 +364,7 @@ public class EventInstanceManager {
                 em.getIv().invokeFunction("allMonstersDead", this);
             } catch (Exception ex) {
                 FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : allMonstersDead:\n" + ex);
-                System.out.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : allMonstersDead:\n" + ex);
+                Logger.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : allMonstersDead:\n" + ex);
             }
         }
     }
@@ -376,7 +377,7 @@ public class EventInstanceManager {
             em.getIv().invokeFunction("playerDead", this, chr);
         } catch (Exception ex) {
             FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : playerDead:\n" + ex);
-            System.out.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : playerDead:\n" + ex);
+            Logger.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : playerDead:\n" + ex);
         }
     }
 
@@ -391,7 +392,7 @@ public class EventInstanceManager {
             }
         } catch (Exception ex) {
             FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : playerRevive:\n" + ex);
-            System.out.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : playerRevive:\n" + ex);
+            Logger.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : playerRevive:\n" + ex);
         }
         return true;
     }
@@ -464,10 +465,10 @@ public class EventInstanceManager {
                 em.getIv().invokeFunction("monsterKilled", this, chr, mob.getStats().getCP() > 0 ? mob.getStats().getCP() : mob.getStats().getPoint());
             }
         } catch (ScriptException ex) {
-            System.out.println("Event Name" + (em == null ? "null" : em.getName()) + ", Instance Name : " + name + ", Method Name : monsterValue:\n" + ex);
+            Logger.println("Event Name" + (em == null ? "null" : em.getName()) + ", Instance Name : " + name + ", Method Name : monsterValue:\n" + ex);
             FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Event Name" + (em == null ? "null" : em.getName()) + ", Instance Name : " + name + ", Method Name : monsterValue:\n" + ex);
         } catch (NoSuchMethodException ex) {
-            System.out.println("Event Name" + (em == null ? "null" : em.getName()) + ", Instance Name : " + name + ", Method Name : monsterValue:\n" + ex);
+            Logger.println("Event Name" + (em == null ? "null" : em.getName()) + ", Instance Name : " + name + ", Method Name : monsterValue:\n" + ex);
             FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Event Name" + (em == null ? "null" : em.getName()) + ", Instance Name : " + name + ", Method Name : monsterValue:\n" + ex);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -482,10 +483,10 @@ public class EventInstanceManager {
         try {
             em.getIv().invokeFunction("monsterDamaged", this, chr, mob.getId(), damage);
         } catch (ScriptException ex) {
-            System.out.println("Event Name" + (em == null ? "null" : em.getName()) + ", Instance Name : " + name + ", Method Name : monsterValue:\n" + ex);
+            Logger.println("Event Name" + (em == null ? "null" : em.getName()) + ", Instance Name : " + name + ", Method Name : monsterValue:\n" + ex);
             FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Event Name" + (em == null ? "null" : em.getName()) + ", Instance name : " + name + ", method Name : monsterValue:\n" + ex);
         } catch (NoSuchMethodException ex) {
-            System.out.println("Event Name" + (em == null ? "null" : em.getName()) + ", Instance Name : " + name + ", Method Name : monsterValue:\n" + ex);
+            Logger.println("Event Name" + (em == null ? "null" : em.getName()) + ", Instance Name : " + name + ", Method Name : monsterValue:\n" + ex);
             FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Event Name" + (em == null ? "null" : em.getName()) + ", Instance name : " + name + ", method Name : monsterValue:\n" + ex);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -500,10 +501,10 @@ public class EventInstanceManager {
         try {
             em.getIv().invokeFunction("addPVPScore", this, chr, score);
         } catch (ScriptException ex) {
-            System.out.println("Event Name" + (em == null ? "null" : em.getName()) + ", Instance Name : " + name + ", Method Name : monsterValue:\n" + ex);
+            Logger.println("Event Name" + (em == null ? "null" : em.getName()) + ", Instance Name : " + name + ", Method Name : monsterValue:\n" + ex);
             FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Event Name" + (em == null ? "null" : em.getName()) + ", Instance Name : " + name + ", Method Name : monsterValue:\n" + ex);
         } catch (NoSuchMethodException ex) {
-            System.out.println("Event Name" + (em == null ? "null" : em.getName()) + ", Instance Name : " + name + ", Method Name : monsterValue:\n" + ex);
+            Logger.println("Event Name" + (em == null ? "null" : em.getName()) + ", Instance Name : " + name + ", Method Name : monsterValue:\n" + ex);
             FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Event Name" + (em == null ? "null" : em.getName()) + ", Instance Name : " + name + ", Method Name : monsterValue:\n" + ex);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -564,7 +565,7 @@ public class EventInstanceManager {
             isInstanced = null;
             em.disposeInstance(name);
         } catch (Exception e) {
-            System.out.println("Caused by : " + emN + " instance name: " + name + " method: dispose:");
+            Logger.println("Caused by : " + emN + " instance name: " + name + " method: dispose:");
             e.printStackTrace();
             FileoutputUtil.outputFileError(FileoutputUtil.ScriptEx_Log, e);
         }
@@ -602,7 +603,7 @@ public class EventInstanceManager {
             return;
         }
         for (MapleCharacter chr : getPlayers()) {
-            chr.dropMessage(type, msg);
+            chr.print(type, msg);
         }
     }
 
@@ -735,7 +736,7 @@ public class EventInstanceManager {
                     em.getIv().invokeFunction(methodName, EventInstanceManager.this);
                 } catch (NullPointerException npe) {
                 } catch (Exception ex) {
-                    System.out.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : " + methodName + ":\n" + ex);
+                    Logger.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : " + methodName + ":\n" + ex);
                     FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name (Schedule) : " + methodName + " :\n" + ex);
                 }
             }
@@ -778,7 +779,7 @@ public class EventInstanceManager {
         try {
             em.getIv().invokeFunction("leftParty", this, chr);
         } catch (Exception ex) {
-            System.out.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : leftParty:\n" + ex);
+            Logger.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : leftParty:\n" + ex);
             FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : leftParty:\n" + ex);
         }
     }
@@ -790,7 +791,7 @@ public class EventInstanceManager {
         try {
             em.getIv().invokeFunction("disbandParty", this);
         } catch (Exception ex) {
-            System.out.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : disbandParty:\n" + ex);
+            Logger.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : disbandParty:\n" + ex);
             FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : disbandParty:\n" + ex);
         }
     }
@@ -803,7 +804,7 @@ public class EventInstanceManager {
         try {
             em.getIv().invokeFunction("clearPQ", this);
         } catch (Exception ex) {
-            System.out.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : clearPQ:\n" + ex);
+            Logger.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : clearPQ:\n" + ex);
             FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : clearPQ:\n" + ex);
         }
     }
@@ -815,7 +816,7 @@ public class EventInstanceManager {
         try {
             em.getIv().invokeFunction("playerExit", this, chr);
         } catch (Exception ex) {
-            System.out.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : playerExit:\n" + ex);
+            Logger.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : playerExit:\n" + ex);
             FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Event name" + em.getName() + ", Instance Name : " + name + ", Method Name : playerExit:\n" + ex);
         }
     }
@@ -847,7 +848,7 @@ public class EventInstanceManager {
         try {
             em.getIv().invokeFunction("registerCarnivalParty", this, carnivalParty);
         } catch (ScriptException ex) {
-            System.out.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : registerCarnivalParty:\n" + ex);
+            Logger.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : registerCarnivalParty:\n" + ex);
             FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : registerCarnivalParty:\n" + ex);
         } catch (NoSuchMethodException ex) {
             //ignore
@@ -861,7 +862,7 @@ public class EventInstanceManager {
         try {
             em.getIv().invokeFunction("onMapLoad", this, chr);
         } catch (ScriptException ex) {
-            System.out.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : onMapLoad:\n" + ex);
+            Logger.println("Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : onMapLoad:\n" + ex);
             FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Event Name" + em.getName() + ", Instance Name : " + name + ", Method Name : onMapLoad:\n" + ex);
         } catch (NoSuchMethodException ex) {
             // Ignore, we don't want to update this for all events.

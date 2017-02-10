@@ -87,8 +87,8 @@ public class SuperGMCommand {
      MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
      victim.canTalk(false);
 
-     victim.dropMessage(6, c.getPlayer().getName().toString() + " has muted you");
-     c.getPlayer().dropMessage(5, victim.getName().toString() + " has been muted");
+     victim.print(6, c.getPlayer().getName().toString() + " has muted you");
+     c.getPlayer().print(5, victim.getName().toString() + " has been muted");
      return 1;
      }
      }
@@ -100,8 +100,8 @@ public class SuperGMCommand {
      MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
      victim.canTalk(true);
 
-     victim.dropMessage(6, c.getPlayer().getName().toString() + " has unmuted you");
-     c.getPlayer().dropMessage(5, victim.getName().toString() + " has been unmuted");
+     victim.print(6, c.getPlayer().getName().toString() + " has unmuted you");
+     c.getPlayer().print(5, victim.getName().toString() + " has been unmuted");
      return 1;
      }
      }
@@ -113,7 +113,7 @@ public class SuperGMCommand {
      for (MapleCharacter chr : c.getPlayer().getMap().getCharactersThreadsafe()) {
      chr.canTalk(false);
      }
-     c.getPlayer().dropMessage(6, "The map has been muted");
+     c.getPlayer().print(6, "The map has been muted");
      return 1;
      }
      }
@@ -125,7 +125,7 @@ public class SuperGMCommand {
      for (MapleCharacter chr : c.getPlayer().getMap().getCharactersThreadsafe()) {
      chr.canTalk(true);
      }
-     c.getPlayer().dropMessage(6, "The map has been unmuted");
+     c.getPlayer().print(6, "The map has been unmuted");
      return 1;
      }
      }
@@ -136,15 +136,15 @@ public class SuperGMCommand {
         public int execute(MapleClient c, String[] splitted) {
             MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
             if (splitted.length < 2) {
-                c.getPlayer().dropMessage(6, "[Syntax] !setname [current] [new]");
+                c.getPlayer().print(6, "[Syntax] !setname [current] [new]");
                 return 0;
             }
             if (victim == null) {
-                c.getPlayer().dropMessage(0, "Could not find the player.");
+                c.getPlayer().print(0, "Could not find the player.");
                 return 0;
             }
             if (c.getPlayer().getGMLevel() < 5 && !victim.isGM()) {
-                c.getPlayer().dropMessage(6, "Only an administrator can change player's name.");
+                c.getPlayer().print(6, "Only an administrator can change player's name.");
                 return 0;
             }
             victim.setName(splitted[2]);
@@ -162,9 +162,9 @@ public class SuperGMCommand {
                 if (splitted.length > 1) {
                     StringBuilder sb = new StringBuilder();
                     sb.append(StringUtil.joinStringFrom(splitted, 1));
-                    mch.dropMessage(1, sb.toString());
+                    mch.print(1, sb.toString());
                 } else {
-                    c.getPlayer().dropMessage(6, "[Syntax] !popup [message]");
+                    c.getPlayer().print(6, "[Syntax] !popup [message]");
                     return 0;
                 }
             }
@@ -179,7 +179,7 @@ public class SuperGMCommand {
             for (MapleCharacter mch : c.getChannelServer().getPlayerStorage().getAllCharacters()) {
                 mch.saveToDB(false, false);
             }
-            c.getPlayer().dropMessage(6, "All characters data has been saved!");
+            c.getPlayer().print(6, "All characters data has been saved!");
             return 1;
         }
     }
@@ -190,7 +190,7 @@ public class SuperGMCommand {
         public int execute(MapleClient c, String[] splitted) {
             for (MapleCharacter mch : c.getChannelServer().getPlayerStorage().getAllCharacters()) {
                 mch.getAndroid().saveToDb();
-                mch.dropMessage(0, "All androids data has been saved!");
+                mch.print(0, "All androids data has been saved!");
             }
             return 1;
         }
@@ -234,7 +234,7 @@ public class SuperGMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 2) {
-                c.getPlayer().dropMessage(6, "[Syntax] !" + getCommand() + " [name]");
+                c.getPlayer().print(6, "[Syntax] !" + getCommand() + " [name]");
                 return 0;
             }
             byte ret;
@@ -244,26 +244,26 @@ public class SuperGMCommand {
                 ret = MapleClient.unban(splitted[1]);
             }
             if (ret == -2) {
-                c.getPlayer().dropMessage(6, "[" + getCommand() + "] SQL error.");
+                c.getPlayer().print(6, "[" + getCommand() + "] SQL error.");
                 return 0;
             } else if (ret == -1) {
-                c.getPlayer().dropMessage(6, "[" + getCommand() + "] The character does not exist.");
+                c.getPlayer().print(6, "[" + getCommand() + "] The character does not exist.");
                 return 0;
             } else {
-                c.getPlayer().dropMessage(6, "[" + getCommand() + "] Successfully unbanned!");
+                c.getPlayer().print(6, "[" + getCommand() + "] Successfully unbanned!");
 
             }
             byte ret_ = MapleClient.unbanIPMacs(splitted[1]);
             if (ret_ == -2) {
-                c.getPlayer().dropMessage(6, "[Unban IP] SQL error.");
+                c.getPlayer().print(6, "[Unban IP] SQL error.");
             } else if (ret_ == -1) {
-                c.getPlayer().dropMessage(6, "[Unban IP] The character does not exist.");
+                c.getPlayer().print(6, "[Unban IP] The character does not exist.");
             } else if (ret_ == 0) {
-                c.getPlayer().dropMessage(6, "[Unban IP] No IP or Mac with that character exists!");
+                c.getPlayer().print(6, "[Unban IP] No IP or Mac with that character exists!");
             } else if (ret_ == 1) {
-                c.getPlayer().dropMessage(6, "[Unban IP] IP/Mac -- one of them was found and unbanned.");
+                c.getPlayer().print(6, "[Unban IP] IP/Mac -- one of them was found and unbanned.");
             } else if (ret_ == 2) {
-                c.getPlayer().dropMessage(6, "[Unban IP] Both IP and Macs were unbanned.");
+                c.getPlayer().print(6, "[Unban IP] Both IP and Macs were unbanned.");
             }
             return ret_ > 0 ? 1 : 0;
         }
@@ -274,20 +274,20 @@ public class SuperGMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 2) {
-                c.getPlayer().dropMessage(6, "[Syntax] !unbanip [name]");
+                c.getPlayer().print(6, "[Syntax] !unbanip [name]");
                 return 0;
             }
             byte ret = MapleClient.unbanIPMacs(splitted[1]);
             if (ret == -2) {
-                c.getPlayer().dropMessage(6, "[Unban IP] SQL error.");
+                c.getPlayer().print(6, "[Unban IP] SQL error.");
             } else if (ret == -1) {
-                c.getPlayer().dropMessage(6, "[Unban IP] The character does not exist.");
+                c.getPlayer().print(6, "[Unban IP] The character does not exist.");
             } else if (ret == 0) {
-                c.getPlayer().dropMessage(6, "[Unban IP] No IP or Mac with that character exists!");
+                c.getPlayer().print(6, "[Unban IP] No IP or Mac with that character exists!");
             } else if (ret == 1) {
-                c.getPlayer().dropMessage(6, "[Unban IP] IP / Mac -- one of them was found and unbanned.");
+                c.getPlayer().print(6, "[Unban IP] IP / Mac -- one of them was found and unbanned.");
             } else if (ret == 2) {
-                c.getPlayer().dropMessage(6, "[Unban IP] Both IP and Macs were unbanned.");
+                c.getPlayer().print(6, "[Unban IP] Both IP and Macs were unbanned.");
             }
             if (ret > 0) {
                 return 1;
@@ -444,7 +444,7 @@ public class SuperGMCommand {
                     add = false;
                 }
             } else {
-                c.getPlayer().dropMessage(6, "[Syntax] !unlockinv [all / equipped / equip / use / setup / etc / cash]");
+                c.getPlayer().print(6, "[Syntax] !unlockinv [all / equipped / equip / use / setup / etc / cash]");
             }
 
             for (Entry<Item, MapleInventoryType> eq : eqs.entrySet()) {
@@ -476,12 +476,12 @@ public class SuperGMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 4) {
-                c.getPlayer().dropMessage(6, "[Syntax] !tempban [name] [reasons] [hours]");
+                c.getPlayer().print(6, "[Syntax] !tempban [name] [reasons] [hours]");
                 StringBuilder s = new StringBuilder("Temporarily Ban Reasons: ");
                 for (int i = 0; i < types.length; i++) {
                     s.append(i + 1).append(" - ").append(types[i]).append(", ");
                 }
-                c.getPlayer().dropMessage(6, s.toString());
+                c.getPlayer().print(6, s.toString());
                 return 0;
             }
             final MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
@@ -493,11 +493,11 @@ public class SuperGMCommand {
             final DateFormat df = DateFormat.getInstance();
 
             if (victim == null || reason < 0 || reason >= types.length) {
-                c.getPlayer().dropMessage(6, "Unable to find character or reason was not valid, use the command !tempban to see reasons");
+                c.getPlayer().print(6, "Unable to find character or reason was not valid, use the command !tempban to see reasons");
                 return 0;
             }
             victim.tempban("Temporarily banned by " + c.getPlayer().getName() + " for " + types[reason] + " reason", cal, reason, ipBan);
-            c.getPlayer().dropMessage(6, "The character " + splitted[1] + " has been successfully temporarily banned till " + df.format(cal.getTime()));
+            c.getPlayer().print(6, "The character " + splitted[1] + " has been successfully temporarily banned till " + df.format(cal.getTime()));
             return 1;
         }
     }
@@ -517,11 +517,11 @@ public class SuperGMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 3) {
-                c.getPlayer().dropMessage(5, "[Syntax] !" + getCommand() + " [name] [reason]");
+                c.getPlayer().print(5, "[Syntax] !" + getCommand() + " [name] [reason]");
                 return 0;
             }
             if (splitted.length < 5) {
-                c.getPlayer().dropMessage(5, "Please, enter the full ban reason otherwise the banned person will be auto un-banned.");
+                c.getPlayer().print(5, "Please, enter the full ban reason otherwise the banned person will be auto un-banned.");
                 return 0;
             }
             StringBuilder sb = new StringBuilder();
@@ -535,22 +535,22 @@ public class SuperGMCommand {
                 if (c.getPlayer().getGMLevel() > target.getGMLevel() || c.getPlayer().isAdmin()) {
                     //sb.append(" (IP: ").append(target.getClient().getSessionIPAddress()).append(")");
                     if (target.ban(sb.toString(), hellban || ipBan, false, hellban)) {
-                        c.getPlayer().dropMessage(6, "[" + getCommand() + "] Successfully banned " + splitted[1] + ".");
+                        c.getPlayer().print(6, "[" + getCommand() + "] Successfully banned " + splitted[1] + ".");
                         return 1;
                     } else {
-                        c.getPlayer().dropMessage(6, "[" + getCommand() + "] Failed to ban.");
+                        c.getPlayer().print(6, "[" + getCommand() + "] Failed to ban.");
                         return 0;
                     }
                 } else {
-                    c.getPlayer().dropMessage(6, "[" + getCommand() + "] May not ban Game Master...");
+                    c.getPlayer().print(6, "[" + getCommand() + "] May not ban Game Master...");
                     return 1;
                 }
             } else {
                 if (MapleCharacter.ban(splitted[1], sb.toString(), false, c.getPlayer().isAdmin() ? 250 : c.getPlayer().getGMLevel(), hellban)) {
-                    c.getPlayer().dropMessage(6, "[" + getCommand() + "] Successfully offline banned " + splitted[1] + ".");
+                    c.getPlayer().print(6, "[" + getCommand() + "] Successfully offline banned " + splitted[1] + ".");
                     return 1;
                 } else {
-                    c.getPlayer().dropMessage(6, "[" + getCommand() + "] Failed to ban " + splitted[1]);
+                    c.getPlayer().print(6, "[" + getCommand() + "] Failed to ban " + splitted[1]);
                     return 0;
                 }
             }
@@ -576,7 +576,7 @@ public class SuperGMCommand {
             final short quantity = (short) CommandProcessorUtil.getOptionalIntArg(splitted, 2, 1);
             MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
             if (!ii.itemExists(itemId)) {
-                c.getPlayer().dropMessage(5, itemId + " does not exist");
+                c.getPlayer().print(5, itemId + " does not exist");
             } else {
                 Item toDrop;
                 if (GameConstants.getInventoryType(itemId) == MapleInventoryType.EQUIP) {
@@ -600,16 +600,16 @@ public class SuperGMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 3) {
-                c.getPlayer().dropMessage(6, "Need [name] [itemid]");
+                c.getPlayer().print(6, "Need [name] [itemid]");
                 return 0;
             }
             int itemId = Integer.parseInt(splitted[2]);
             if (!GameConstants.isEffectRing(itemId)) {
-                c.getPlayer().dropMessage(6, "Invalid Item ID.");
+                c.getPlayer().print(6, "Invalid Item ID.");
             } else {
                 MapleCharacter fff = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
                 if (fff == null) {
-                    c.getPlayer().dropMessage(6, "Player must be online");
+                    c.getPlayer().print(6, "Player must be online");
                 } else {
                     int[] ringID = {MapleInventoryIdentifier.getInstance(), MapleInventoryIdentifier.getInstance()};
                     try {
@@ -617,11 +617,11 @@ public class SuperGMCommand {
                         for (int i = 0; i < chrz.length; i++) {
                             Equip eq = (Equip) MapleItemInformationProvider.getInstance().getEquipById(itemId, ringID[i]);
                             if (eq == null) {
-                                c.getPlayer().dropMessage(6, "Invalid Item ID.");
+                                c.getPlayer().print(6, "Invalid Item ID.");
                                 return 0;
                             }
                             MapleInventoryManipulator.addbyItem(chrz[i].getClient(), eq.copy());
-                            chrz[i].dropMessage(6, "Successfully married with " + chrz[i == 0 ? 1 : 0].getName());
+                            chrz[i].print(6, "Successfully married with " + chrz[i == 0 ? 1 : 0].getName());
                         }
                         MapleRing.addToDB(itemId, c.getPlayer(), fff.getName(), fff.getId(), ringID);
                     } catch (SQLException e) {
@@ -638,7 +638,7 @@ public class SuperGMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (!c.getPlayer().isHidden()) {
-                c.getPlayer().dropMessage(6, "You can only vac monsters while in hide mode.");
+                c.getPlayer().print(6, "You can only vac monsters while in hide mode.");
                 return 0;
             } else {
                 for (final MapleMapObject mmo : c.getPlayer().getMap().getAllMonstersThreadsafe()) {
@@ -700,13 +700,13 @@ public class SuperGMCommand {
             if (target != null) {
                 if (target.getClient().isMonitored()) {
                     target.getClient().setMonitored(false);
-                    c.getPlayer().dropMessage(5, "Not monitoring " + target.getName() + " anymore.");
+                    c.getPlayer().print(5, "Not monitoring " + target.getName() + " anymore.");
                 } else {
                     target.getClient().setMonitored(true);
-                    c.getPlayer().dropMessage(5, "Monitoring " + target.getName() + ".");
+                    c.getPlayer().print(5, "Monitoring " + target.getName() + ".");
                 }
             } else {
-                c.getPlayer().dropMessage(5, "Target not found on the current channel.");
+                c.getPlayer().print(5, "Target not found on the current channel.");
                 return 0;
             }
             return 1;
@@ -753,7 +753,7 @@ public class SuperGMCommand {
             for (int i = 0; i < threads.length; i++) {
                 String tstring = threads[i].toString();
                 if (tstring.toLowerCase().indexOf(filter.toLowerCase()) > -1) {
-                    c.getPlayer().dropMessage(6, i + ": " + tstring);
+                    c.getPlayer().print(6, i + ": " + tstring);
                 }
             }
             return 1;
@@ -770,9 +770,9 @@ public class SuperGMCommand {
             Thread[] threads = new Thread[Thread.activeCount()];
             Thread.enumerate(threads);
             Thread t = threads[Integer.parseInt(splitted[1])];
-            c.getPlayer().dropMessage(6, t.toString() + ":");
+            c.getPlayer().print(6, t.toString() + ":");
             for (StackTraceElement elem : t.getStackTrace()) {
-                c.getPlayer().dropMessage(6, elem.toString());
+                c.getPlayer().print(6, elem.toString());
             }
             return 1;
         }
@@ -786,7 +786,7 @@ public class SuperGMCommand {
                 CheatingOffense co = CheatingOffense.valueOf(splitted[1]);
                 co.setEnabled(!co.isEnabled());
             } catch (IllegalArgumentException iae) {
-                c.getPlayer().dropMessage(6, "Offense " + splitted[1] + " not found");
+                c.getPlayer().print(6, "Offense " + splitted[1] + " not found");
             }
             return 1;
         }
@@ -797,7 +797,7 @@ public class SuperGMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             World.toggleMegaphoneMuteState();
-            c.getPlayer().dropMessage(6, "Megaphone state : " + (c.getChannelServer().getMegaphoneMuteState() ? "Enabled" : "Disabled"));
+            c.getPlayer().print(6, "Megaphone state : " + (c.getChannelServer().getMegaphoneMuteState() ? "Enabled" : "Disabled"));
             return 1;
         }
     }
@@ -856,7 +856,7 @@ public class SuperGMCommand {
                 }
             }
             if (map == null) {
-                c.getPlayer().dropMessage(6, "Map does not exist");
+                c.getPlayer().print(6, "Map does not exist");
                 return 0;
             }
             int damage = Integer.parseInt(splitted[1]);
@@ -923,7 +923,7 @@ public class SuperGMCommand {
                 }
             }
             if (map == null) {
-                c.getPlayer().dropMessage(6, "Map does not exist");
+                c.getPlayer().print(6, "Map does not exist");
                 return 0;
             }
             MapleMonster mob;
@@ -952,7 +952,7 @@ public class SuperGMCommand {
                 }
             }
             if (map == null) {
-                c.getPlayer().dropMessage(6, "Map does not exist");
+                c.getPlayer().print(6, "Map does not exist");
                 return 0;
             }
             MapleMonster mob;
@@ -980,7 +980,7 @@ public class SuperGMCommand {
                 c.getPlayer().getMap().addMapObject(npc);
                 c.getPlayer().getMap().broadcastMessage(NPCPacket.spawnNPC(npc, true));
             } else {
-                c.getPlayer().dropMessage(6, "You have entered an invalid NPC ID");
+                c.getPlayer().print(6, "You have entered an invalid NPC ID");
                 return 0;
             }
             return 1;
@@ -992,7 +992,7 @@ public class SuperGMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 1) {
-                c.getPlayer().dropMessage(6, "!pnpc [npcid]");
+                c.getPlayer().print(6, "!pnpc [npcid]");
                 return 0;
             }
             int npcId = Integer.parseInt(splitted[1]);
@@ -1024,13 +1024,13 @@ public class SuperGMCommand {
                         ps.executeUpdate();
                     }
                 } catch (SQLException e) {
-                    c.getPlayer().dropMessage(6, "Failed to save NPC to the database");
+                    c.getPlayer().print(6, "Failed to save NPC to the database");
                 }
                 c.getPlayer().getMap().addMapObject(npc);
                 c.getPlayer().getMap().broadcastMessage(NPCPacket.spawnNPC(npc, true));
-                c.getPlayer().dropMessage(6, "Please do not reload this map or else the NPC will disappear till the next restart.");
+                c.getPlayer().print(6, "Please do not reload this map or else the NPC will disappear till the next restart.");
             } else {
-                c.getPlayer().dropMessage(6, "You have entered an invalid Npc-Id");
+                c.getPlayer().print(6, "You have entered an invalid Npc-Id");
                 return 0;
             }
             return 1;
@@ -1042,7 +1042,7 @@ public class SuperGMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 2) {
-                c.getPlayer().dropMessage(6, "!pmob [mobid] [mobTime]");
+                c.getPlayer().print(6, "!pmob [mobid] [mobTime]");
                 return 0;
             }
             int mobid = Integer.parseInt(splitted[1]);
@@ -1051,7 +1051,7 @@ public class SuperGMCommand {
             try {
                 npc = MapleLifeFactory.getMonster(mobid);
             } catch (RuntimeException e) {
-                c.getPlayer().dropMessage(5, "Error: " + e.getMessage());
+                c.getPlayer().print(5, "Error: " + e.getMessage());
                 return 0;
             }
             if (npc != null) {
@@ -1081,12 +1081,12 @@ public class SuperGMCommand {
                         ps.executeUpdate();
                     }
                 } catch (SQLException e) {
-                    c.getPlayer().dropMessage(6, "Failed to save NPC to the database");
+                    c.getPlayer().print(6, "Failed to save NPC to the database");
                 }
                 c.getPlayer().getMap().addMonsterSpawn(npc, mobTime, (byte) -1, null);
-                c.getPlayer().dropMessage(6, "Please do not reload this map or else the MOB will disappear till the next restart.");
+                c.getPlayer().print(6, "Please do not reload this map or else the MOB will disappear till the next restart.");
             } else {
-                c.getPlayer().dropMessage(6, "You have entered an invalid Mob ID");
+                c.getPlayer().print(6, "You have entered an invalid Mob ID");
                 return 0;
             }
             return 1;
@@ -1099,22 +1099,22 @@ public class SuperGMCommand {
         public int execute(MapleClient c, String[] splitted) {
             //try {
             if (splitted.length < 3) {
-                c.getPlayer().dropMessage(6, "!playernpc [IGN] [NPC ID]");
+                c.getPlayer().print(6, "!playernpc [IGN] [NPC ID]");
                 return 0;
             }
             MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
             if (victim == null) {
-                c.getPlayer().dropMessage(6, victim.getName() + " does not exist");
+                c.getPlayer().print(6, victim.getName() + " does not exist");
                 return 0;
             }
-            c.getPlayer().dropMessage(6, "Making Player NPC...");
+            c.getPlayer().print(6, "Making Player NPC...");
             MapleClient cs = new MapleClient(null, null, new MockIOSession());
             MapleCharacter chhr = MapleCharacter.loadCharFromDB(MapleCharacterUtil.getIdByName(splitted[1]), cs, false);
             PlayerNPC npc = new PlayerNPC(chhr, Integer.parseInt(splitted[2]), c.getPlayer().getMap(), c.getPlayer());
             npc.addToServer();
-            c.getPlayer().dropMessage(6, "Done");
+            c.getPlayer().print(6, "Done");
             /*  } catch (Exception e) {
-             c.getPlayer().dropMessage(6, "NPC failed... : " + e.getMessage());
+             c.getPlayer().print(6, "NPC failed... : " + e.getMessage());
              e.printStackTrace();
              }*/
             return 1;
@@ -1127,16 +1127,16 @@ public class SuperGMCommand {
      @Override
      public int execute(MapleClient c, String[] splitted) {
      try {
-     c.getPlayer().dropMessage(6, "Destroying playerNPC...");
+     c.getPlayer().print(6, "Destroying playerNPC...");
      final MapleNPC npc = c.getPlayer().getMap().getNPCByOid(Integer.parseInt(splitted[1]));
      if (npc instanceof PlayerNPC) {
      ((PlayerNPC) npc).destroy(true);
-     c.getPlayer().dropMessage(6, "Done");
+     c.getPlayer().print(6, "Done");
      } else {
-     c.getPlayer().dropMessage(6, "!destroypnpc [objectid]");
+     c.getPlayer().print(6, "!destroypnpc [objectid]");
      }
      } catch (Exception e) {
-     c.getPlayer().dropMessage(6, "NPC failed... : " + e.getMessage());
+     c.getPlayer().print(6, "NPC failed... : " + e.getMessage());
      e.printStackTrace();
      }
      return 1;
@@ -1171,11 +1171,11 @@ public class SuperGMCommand {
      try {
      onemob = MapleLifeFactory.getMonster(mid);
      } catch (RuntimeException e) {
-     c.getPlayer().dropMessage(5, "Error: " + e.getMessage());
+     c.getPlayer().print(5, "Error: " + e.getMessage());
      return 0;
      }
      if (onemob == null) {
-     c.getPlayer().dropMessage(5, "Mob does not exist");
+     c.getPlayer().print(5, "Mob does not exist");
      return 0;
      }
      long newhp = 0;
@@ -1222,7 +1222,7 @@ public class SuperGMCommand {
                 c.getSession().write(CField.getPacketFromHexString(builder.toString()));
                 builder = new StringBuilder();
             } else {
-                c.getPlayer().dropMessage(6, "Please enter packet data!");
+                c.getPlayer().print(6, "Please enter packet data!");
             }
             return 1;
         }
@@ -1234,9 +1234,9 @@ public class SuperGMCommand {
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length > 1) {
                 builder.append(StringUtil.joinStringFrom(splitted, 1));
-                c.getPlayer().dropMessage(6, "String is now: " + builder.toString());
+                c.getPlayer().print(6, "String is now: " + builder.toString());
             } else {
-                c.getPlayer().dropMessage(6, "Please enter packet data!");
+                c.getPlayer().print(6, "Please enter packet data!");
             }
             return 1;
         }
@@ -1258,7 +1258,7 @@ public class SuperGMCommand {
             if (splitted.length > 1) {
                 c.getSession().write(CField.getPacketFromHexString(StringUtil.joinStringFrom(splitted, 1)));
             } else {
-                c.getPlayer().dropMessage(6, "Please enter packet data!");
+                c.getPlayer().print(6, "Please enter packet data!");
             }
             return 1;
         }
@@ -1275,10 +1275,10 @@ public class SuperGMCommand {
                 try {
                     c.getSession().getHandler().messageReceived(c.getSession(), CField.getPacketFromHexString(StringUtil.joinStringFrom(splitted, 1)));
                 } catch (Exception e) {
-                    c.getPlayer().dropMessage(6, "Error: " + e);
+                    c.getPlayer().print(6, "Error: " + e);
                 }
             } else {
-                c.getPlayer().dropMessage(6, "Please enter packet data!");
+                c.getPlayer().print(6, "Please enter packet data!");
             }
             return 1;
         }
@@ -1315,7 +1315,7 @@ public class SuperGMCommand {
      final int mapId = Integer.parseInt(splitted[1]);
      for (ChannelServer cserv : ChannelServer.getAllInstances()) {
      if (cserv.getMapFactory().isMapLoaded(mapId) && cserv.getMapFactory().getMap(mapId).getCharactersSize() > 0) {
-     c.getPlayer().dropMessage(5, "There exists characters on channel " + cserv.getChannel());
+     c.getPlayer().print(5, "There exists characters on channel " + cserv.getChannel());
      return 0;
      }
      }
@@ -1344,13 +1344,13 @@ public class SuperGMCommand {
         @Override
         public int execute(final MapleClient c, String[] splitted) {
             final int sec = Integer.parseInt(splitted[1]);
-            c.getPlayer().dropMessage(5, "Message will pop up in " + sec + " seconds.");
-            c.getPlayer().dropMessage(5, "Active: " + toTest.getSES().getActiveCount() + " Core: " + toTest.getSES().getCorePoolSize() + " Largest: " + toTest.getSES().getLargestPoolSize() + " Maximum: " + toTest.getSES().getMaximumPoolSize() + " Current: " + toTest.getSES().getPoolSize() + " Status: " + toTest.getSES().isShutdown() + toTest.getSES().isTerminated() + toTest.getSES().isTerminating());
+            c.getPlayer().print(5, "Message will pop up in " + sec + " seconds.");
+            c.getPlayer().print(5, "Active: " + toTest.getSES().getActiveCount() + " Core: " + toTest.getSES().getCorePoolSize() + " Largest: " + toTest.getSES().getLargestPoolSize() + " Maximum: " + toTest.getSES().getMaximumPoolSize() + " Current: " + toTest.getSES().getPoolSize() + " Status: " + toTest.getSES().isShutdown() + toTest.getSES().isTerminated() + toTest.getSES().isTerminating());
             final long oldMillis = System.currentTimeMillis();
             toTest.schedule(new Runnable() {
                 public void run() {
-                    c.getPlayer().dropMessage(5, "Message has popped up in " + ((System.currentTimeMillis() - oldMillis) / 1000) + " seconds, expected was " + sec + " seconds");
-                    c.getPlayer().dropMessage(5, "Active: " + toTest.getSES().getActiveCount() + " Core: " + toTest.getSES().getCorePoolSize() + " Largest: " + toTest.getSES().getLargestPoolSize() + " Maximum: " + toTest.getSES().getMaximumPoolSize() + " Current: " + toTest.getSES().getPoolSize() + " Status: " + toTest.getSES().isShutdown() + toTest.getSES().isTerminated() + toTest.getSES().isTerminating());
+                    c.getPlayer().print(5, "Message has popped up in " + ((System.currentTimeMillis() - oldMillis) / 1000) + " seconds, expected was " + sec + " seconds");
+                    c.getPlayer().print(5, "Active: " + toTest.getSES().getActiveCount() + " Core: " + toTest.getSES().getCorePoolSize() + " Largest: " + toTest.getSES().getLargestPoolSize() + " Maximum: " + toTest.getSES().getMaximumPoolSize() + " Current: " + toTest.getSES().getPoolSize() + " Status: " + toTest.getSES().isShutdown() + toTest.getSES().isTerminated() + toTest.getSES().isTerminating());
                 }
             }, sec * 1000);
             return 1;
@@ -1408,7 +1408,7 @@ public class SuperGMCommand {
                 victim.getClient().getSession().write(HexTool.getByteArrayFromHexString("1A 00")); // give_buff with no data :D
                 return 1;
             } else {
-                c.getPlayer().dropMessage(6, "The victim does not exist.");
+                c.getPlayer().print(6, "The victim does not exist.");
                 return 0;
             }
         }
@@ -1440,7 +1440,7 @@ public class SuperGMCommand {
                 c.getPlayer().getMonsterBook().getCards().put(e, 2);
             }
             c.getPlayer().getMonsterBook().changed();
-            c.getPlayer().dropMessage(5, "Done.");
+            c.getPlayer().print(5, "Done.");
             return 1;
         }
     }
@@ -1453,7 +1453,7 @@ public class SuperGMCommand {
             Collections.sort(mbList, new BookComparator());
             final int page = Integer.parseInt(splitted[1]);
             for (int e = (page * 8); e < Math.min(mbList.size(), (page + 1) * 8); e++) {
-                c.getPlayer().dropMessage(6, e + ": " + mbList.get(e).getKey() + " - " + mbList.get(e).getValue());
+                c.getPlayer().print(6, e + ": " + mbList.get(e).getKey() + " - " + mbList.get(e).getValue());
             }
 
             return 0;
@@ -1518,13 +1518,13 @@ public class SuperGMCommand {
         public int execute(MapleClient c, String[] splitted) {
             MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
             if (splitted.length < 3) {
-                c.getPlayer().dropMessage(5, "[Syntax] !giftnx [player] [amount]");
+                c.getPlayer().print(5, "[Syntax] !giftnx [player] [amount]");
                 return 0;
             }
             victim.modifyCSPoints(1, Integer.parseInt(splitted[2]), true);
             int NXamount = Integer.parseInt(splitted[2].toString());
-            victim.dropMessage(5, "[NX Notice] " + c.getPlayer().getName().toString() + " has gifted you with " + NXamount + " NX");
-            c.getPlayer().dropMessage(6, "[NX Notice] You have gifted " + victim.getName().toString() + " " + NXamount + " NX");
+            victim.print(5, "[NX Notice] " + c.getPlayer().getName().toString() + " has gifted you with " + NXamount + " NX");
+            c.getPlayer().print(6, "[NX Notice] You have gifted " + victim.getName().toString() + " " + NXamount + " NX");
             return 1;
         }
     }
@@ -1534,7 +1534,7 @@ public class SuperGMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 2) {
-                c.getPlayer().dropMessage(5, "[Syntax] !giftmaplepoint [name] [amount]");
+                c.getPlayer().print(5, "[Syntax] !giftmaplepoint [name] [amount]");
                 return 0;
             }
             c.getPlayer().modifyCSPoints(2, Integer.parseInt(splitted[1]), true);
@@ -1547,15 +1547,15 @@ public class SuperGMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 3) {
-                c.getPlayer().dropMessage(6, "[Syntax] !giftvotepoint [name] [amount]");
+                c.getPlayer().print(6, "[Syntax] !giftvotepoint [name] [amount]");
                 return 0;
             }
             MapleCharacter chrs = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
             if (chrs == null) {
-                c.getPlayer().dropMessage(6, "Make sure they are in the correct channel");
+                c.getPlayer().print(6, "Make sure they are in the correct channel");
             } else {
                 chrs.setVPoints(chrs.getVPoints() + Integer.parseInt(splitted[2]));
-                c.getPlayer().dropMessage(6, splitted[1] + " have " + chrs.getVPoints() + " vote points, after giving " + splitted[2] + ".");
+                c.getPlayer().print(6, splitted[1] + " have " + chrs.getVPoints() + " vote points, after giving " + splitted[2] + ".");
             }
             return 1;
         }
@@ -1566,15 +1566,15 @@ public class SuperGMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 3) {
-                c.getPlayer().dropMessage(6, "[Syntax] !giftjumpingpoint [name] [amount]");
+                c.getPlayer().print(6, "[Syntax] !giftjumpingpoint [name] [amount]");
                 return 0;
             }
             MapleCharacter chrs = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
             if (chrs == null) {
-                c.getPlayer().dropMessage(6, "Make sure they are in the correct channel");
+                c.getPlayer().print(6, "Make sure they are in the correct channel");
             } else {
                 chrs.addJQPoints(Integer.parseInt(splitted[2]));
-                c.getPlayer().dropMessage(6, splitted[1] + " have " + chrs.getJQPoints() + " jumping quest points, after giving " + splitted[2] + ".");
+                c.getPlayer().print(6, splitted[1] + " have " + chrs.getJQPoints() + " jumping quest points, after giving " + splitted[2] + ".");
             }
             return 1;
         }
@@ -1585,15 +1585,15 @@ public class SuperGMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 3) {
-                c.getPlayer().dropMessage(6, "[Syntax] !giftdonorpoint [name] [amount]");
+                c.getPlayer().print(6, "[Syntax] !giftdonorpoint [name] [amount]");
                 return 0;
             }
             MapleCharacter chrs = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
             if (chrs == null) {
-                c.getPlayer().dropMessage(6, "Make sure they are in the correct channel");
+                c.getPlayer().print(6, "Make sure they are in the correct channel");
             } else {
                 chrs.setPoints(chrs.getPoints() + Integer.parseInt(splitted[2]));
-                c.getPlayer().dropMessage(6, splitted[1] + " have " + chrs.getPoints() + " donor points, after giving " + splitted[2] + ".");
+                c.getPlayer().print(6, splitted[1] + " have " + chrs.getPoints() + " donor points, after giving " + splitted[2] + ".");
             }
             return 1;
         }
@@ -1604,15 +1604,15 @@ public class SuperGMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 3) {
-                c.getPlayer().dropMessage(6, "[Syntax] !giftrarepoint [name] [amount]");
+                c.getPlayer().print(6, "[Syntax] !giftrarepoint [name] [amount]");
                 return 0;
             }
             MapleCharacter chrs = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
             if (chrs == null) {
-                c.getPlayer().dropMessage(6, "Make sure they are in the correct channel");
+                c.getPlayer().print(6, "Make sure they are in the correct channel");
             } else {
                 chrs.gainRareNX(Integer.parseInt(splitted[2]));
-                c.getPlayer().dropMessage(6, splitted[1] + " have " + chrs.getRareNX() + " rare points, after giving " + splitted[2] + ".");
+                c.getPlayer().print(6, splitted[1] + " have " + chrs.getRareNX() + " rare points, after giving " + splitted[2] + ".");
             }
             return 1;
         }
@@ -1623,11 +1623,11 @@ public class SuperGMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 2) {
-                c.getPlayer().dropMessage(5, "[Syntax] !gaindonorpoint [amount]");
+                c.getPlayer().print(5, "[Syntax] !gaindonorpoint [amount]");
                 return 0;
             }
             c.getPlayer().setPoints(c.getPlayer().getPoints() + Integer.parseInt(splitted[1]));
-            c.getPlayer().dropMessage(5, "Donor point has been added to your account successfully.");
+            c.getPlayer().print(5, "Donor point has been added to your account successfully.");
             return 1;
         }
     }
@@ -1637,7 +1637,7 @@ public class SuperGMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 2) {
-                c.getPlayer().dropMessage(5, "[Syntax] !gainrarepoint [amount]");
+                c.getPlayer().print(5, "[Syntax] !gainrarepoint [amount]");
                 return 0;
             }
             c.getPlayer().gainRareNX(Integer.parseInt(splitted[1]));
@@ -1650,7 +1650,7 @@ public class SuperGMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 2) {
-                c.getPlayer().dropMessage(5, "[Syntax] !gainvotepoint [amount]");
+                c.getPlayer().print(5, "[Syntax] !gainvotepoint [amount]");
                 return 0;
             }
             c.getPlayer().setVPoints(c.getPlayer().getVPoints() + Integer.parseInt(splitted[1]));
@@ -1824,7 +1824,7 @@ public class SuperGMCommand {
                 String text = StringUtil.joinStringFrom(splitted, 1);
                 c.getPlayer().sendNote(victim.getName(), text);
             } else {
-                c.getPlayer().dropMessage(6, "[Syntax] !sendnote [name] [message]");
+                c.getPlayer().print(6, "[Syntax] !sendnote [name] [message]");
                 return 0;
             }
             return 1;
@@ -1842,7 +1842,7 @@ public class SuperGMCommand {
                     c.getPlayer().sendNote(mch.getName(), text);
                 }
             } else {
-                c.getPlayer().dropMessage(6, "[Syntax] !sendallnote [message]");
+                c.getPlayer().print(6, "[Syntax] !sendallnote [message]");
                 return 0;
             }
             return 1;
@@ -1922,7 +1922,7 @@ public class SuperGMCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(6, "Number Of Items: " + MapleItemInformationProvider.getInstance().getAllItems().size());
+            c.getPlayer().print(6, "Number Of Items: " + MapleItemInformationProvider.getInstance().getAllItems().size());
             return 0;
         }
     }
@@ -1938,7 +1938,7 @@ public class SuperGMCommand {
                 c.getChannelServer().broadcastMessage(CWvsContext.serverNotice(6, "The Race event will begin soon! Please head to Henesys!"));
                 c.getChannelServer().broadcastMessage(CWvsContext.serverNotice(6, "Use @race to join and @eventrules to see the rules and regulations of this event."));
             } else {
-                c.getPlayer().dropMessage(0, "A race is still in progress.");
+                c.getPlayer().print(0, "A race is still in progress.");
                 return 0;
             }
             return 1;

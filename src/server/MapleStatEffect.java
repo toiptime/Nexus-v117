@@ -1322,7 +1322,7 @@ public class MapleStatEffect implements Serializable {
             applyfrom.getClient().getSession().write(CWvsContext.enableActions());
             return false;
         } else if (sourceid == 33101004 && applyfrom.getMap().isTown()) {
-            applyfrom.dropMessage(5, "You may not use this skill in towns.");
+            applyfrom.print(5, "You may not use this skill in towns.");
             applyfrom.getClient().getSession().write(CWvsContext.enableActions());
             return false;
         }
@@ -1691,7 +1691,7 @@ public class MapleStatEffect implements Serializable {
                     applyto.silentPartyUpdate();
                 }
             } else {
-                applyto.dropMessage(5, "You may not spawn a door because all doors in the town are taken.");
+                applyto.print(5, "You may not spawn a door because all doors in the town are taken.");
             }
         } else if (isMist()) {
             final Rectangle bounds = calculateBoundingBox(pos != null ? pos : applyfrom.getPosition(), applyfrom.isFacingLeft());
@@ -2055,9 +2055,9 @@ public class MapleStatEffect implements Serializable {
                 }
                 final int buffid = zz == zz2 ? (zz * 100) : (zz <= 1 ? zz2 : (zz2 <= 1 ? zz : (zz * 10 + zz2)));
                 if (buffid >= 100) { // Just because of animation lol
-                    applyto.dropMessage(-6, "[Double Lucky Dice] You have rolled a Double Down! (" + (buffid / 100) + ")");
+                    applyto.print(-6, "[Double Lucky Dice] You have rolled a Double Down! (" + (buffid / 100) + ")");
                 } else if (buffid >= 10) {
-                    applyto.dropMessage(-6, "[Double Lucky Dice] You have rolled Two Dice. (" + (buffid / 10) + " and " + (buffid % 10) + ")");
+                    applyto.print(-6, "[Double Lucky Dice] You have rolled Two Dice. (" + (buffid / 10) + " and " + (buffid % 10) + ")");
                 }
                 localstatups = new EnumMap<>(MapleBuffStat.class);
                 localstatups.put(MapleBuffStat.DICE_ROLL, buffid);
@@ -2201,7 +2201,7 @@ public class MapleStatEffect implements Serializable {
             }
             case 24121004:
                 applyto.getClient().getSession().write(BuffPacket.giveAriaBuff(level, sourceid, localDuration));
-                //System.out.println("Applying aria buff");
+                //Logger.println("Applying aria buff");
                 break;
             case 5211006: // Homing Beacon
             case 22151002: // Killer wings

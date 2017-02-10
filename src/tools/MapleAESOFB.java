@@ -1,22 +1,3 @@
-/*
- Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
- Matthias Butz <matze@odinms.de>
- Jan Christian Meyer <vimes@odinms.de>
-
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU Affero General Public License version 3
- as published by the Free Software Foundation. You may not use, modify
- or distribute this program under any other version of the
- GNU Affero General Public License.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Affero General Public License for more details.
-
- You should have received a copy of the GNU Affero General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package tools;
 
 import constants.ServerConstants;
@@ -125,7 +106,7 @@ public class MapleAESOFB {
                 skey = encryptkey.getEncryptionKey();
                 break;
             } else {
-                //System.out.println("System could not locate encryption for the current version, so it is using " + EncryptionKey.values()[EncryptionKey.values().length].name() + " Encryption.");
+                //Logger.println("System could not locate encryption for the current version, so it is using " + EncryptionKey.values()[EncryptionKey.values().length].name() + " Encryption.");
                 skey = EncryptionKey.values()[EncryptionKey.values().length].getEncryptionKey();
                 // Always lastest encryption.
             }
@@ -169,7 +150,7 @@ public class MapleAESOFB {
         // ;)
         for (int x = 0; x < 4; x++) {
             funnyShit(oldIv[x], in);
-            // System.out.println(HexTool.toString(in));
+            // Logger.println(HexTool.toString(in));
         }
         return in;
     }

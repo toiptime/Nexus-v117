@@ -22,7 +22,7 @@ public class MTSOperation {
 
     public static void MTSOperation(final LittleEndianAccessor slea, final MapleClient c) {
         final MTSCart cart = MTSStorage.getInstance().getCart(c.getPlayer().getId());
-        //System.out.println(slea.toString());
+        //Logger.println(slea.toString());
         if (slea.available() <= 0) {
             doMTSPackets(cart, c);
             return;
@@ -111,12 +111,12 @@ public class MTSOperation {
         } else if (op == 8) { // Transfer item
             final int id = Integer.MAX_VALUE - slea.readInt(); // Fake id
             if (id >= cart.getInventory().size()) {
-                c.getPlayer().dropMessage(1, "Please try it again later.");
+                c.getPlayer().print(1, "Please try it again later.");
                 sendMTSPackets(cart, c, true);
                 return;
             }
             final Item item = cart.getInventory().get(id); //by index
-            //System.out.println("NumItems: " + cart.getInventory().size() + ", ID: " + id + ", ItemExists?: " + (item != null));
+            //Logger.println("NumItems: " + cart.getInventory().size() + ", ID: " + id + ", ItemExists?: " + (item != null));
             if (item != null && item.getQuantity() > 0 && MapleInventoryManipulator.checkSpace(c, item.getItemId(), item.getQuantity(), item.getOwner())) {
                 Item item_ = item.copy();
                 short pos = MapleInventoryManipulator.addbyItem(c, item_, true);
@@ -130,11 +130,11 @@ public class MTSOperation {
                     sendMTSPackets(cart, c, true);
                     return;
                 } else {
-                    //System.out.println("addByItem is less than 0");
+                    //Logger.println("addByItem is less than 0");
                     c.getSession().write(MTSCSPacket.getMTSFailBuy());
                 }
             } else {
-                //System.out.println("CheckSpace return false");
+                //Logger.println("CheckSpace return false");
                 c.getSession().write(MTSCSPacket.getMTSFailBuy());
             }
         } else if (op == 9) { // Add to cart
@@ -172,7 +172,7 @@ public class MTSOperation {
                 c.getSession().write(MTSCSPacket.getMTSFailBuy());
             }
         } else if (c.getPlayer().isAdmin()) {
-            //System.out.println("New MTS Op " + op + ", \n" + slea.toString());
+            //Logger.println("New MTS Op " + op + ", \n" + slea.toString());
         }
         doMTSPackets(cart, c);
     }

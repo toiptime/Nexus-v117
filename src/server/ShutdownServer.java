@@ -1,26 +1,20 @@
 package server;
 
-import com.sun.corba.se.spi.activation.Server;
 import constants.ServerConstants;
 import database.DatabaseConnection;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.login.LoginServer;
 import handling.world.World;
+import server.Timer.*;
+import tools.Logger;
+import tools.packet.CWvsContext;
 
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.sql.SQLException;
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
-import server.Timer.BuffTimer;
-import server.Timer.CloneTimer;
-import server.Timer.EtcTimer;
-import server.Timer.EventTimer;
-import server.Timer.MapTimer;
-import server.Timer.PingTimer;
-import server.Timer.WorldTimer;
-import tools.packet.CWvsContext;
 
 public class ShutdownServer implements ShutdownServerMBean {
 
@@ -32,7 +26,7 @@ public class ShutdownServer implements ShutdownServerMBean {
             instance = new ShutdownServer();
             mBeanServer.registerMBean(instance, new ObjectName("server:type=ShutdownServer"));
         } catch (Exception e) {
-            System.out.println("Error registering Shutdown MBean");
+            Logger.println("Error registering Shutdown MBean");
             e.printStackTrace();
         }
     }
@@ -78,11 +72,11 @@ public class ShutdownServer implements ShutdownServerMBean {
             World.Guild.save();
             World.Alliance.save();
             World.Family.save();
-            System.out.println("Shutdown phase one complete. Hired Merchants saved: " + ret);
+            Logger.println("Shutdown phase one complete. Hired Merchants saved: " + ret);
             mode++;
         } else if (mode == 1) {
             mode++;
-            System.out.println("Second Shutdown commencing...");
+            Logger.println("Second Shutdown commencing...");
             try {
                 World.Broadcast.broadcastMessage(CWvsContext.serverNotice(0, "Project Nexus World is going to Shutdown now. Please kindly log off now for the meantime."));
                 Integer[] chs =  ChannelServer.getAllInstance().toArray(new Integer[0]);
@@ -111,7 +105,7 @@ public class ShutdownServer implements ShutdownServerMBean {
             EtcTimer.getInstance().stop();
             PingTimer.getInstance().stop();
 
-            System.out.println("Shutdown phase two complete");
+            Logger.println("Shutdown phase two complete");
             try{
                 Thread.sleep(5000);
             }catch(Exception e) {

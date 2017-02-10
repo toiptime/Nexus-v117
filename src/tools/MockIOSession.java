@@ -14,109 +14,68 @@ import java.net.SocketAddress;
  * this class is mostly undocumented, due to the fact that each and every
  * function does squat.
  *
- * @author Frz
  * @version 1.0
  * @since Revision 518
  */
 public class MockIOSession extends BaseIoSession {
-
-    /**
-     * Does nothing.
-     */
     @Override
     protected void updateTrafficMask() {
     }
 
-    /**
-     * Does nothing.
-     */
     @Override
     public IoSessionConfig getConfig() {
         return null;
     }
 
-    /**
-     * Does nothing.
-     */
     @Override
     public IoFilterChain getFilterChain() {
         return null;
     }
 
-    /**
-     * Does nothing.
-     */
     @Override
     public IoHandler getHandler() {
         return null;
     }
 
-    /**
-     * Does nothing.
-     */
     @Override
     public SocketAddress getLocalAddress() {
         return null;
     }
 
-    /**
-     * Does nothing.
-     */
     @Override
     public SocketAddress getRemoteAddress() {
         return null;
     }
 
-    /**
-     * Does nothing.
-     */
     @Override
     public IoService getService() {
         return null;
     }
 
-    /**
-     * Does nothing.
-     */
     @Override
     public SocketAddress getServiceAddress() {
         return null;
     }
 
-    /**
-     * Does nothing.
-     */
     @Override
     public IoServiceConfig getServiceConfig() {
         return null;
     }
 
-    /**
-     * Does nothing.
-     */
     @Override
     public TransportType getTransportType() {
         return null;
     }
 
-    /**
-     * Does nothing.
-     */
     @Override
     public CloseFuture close() {
         return null;
     }
 
-    /**
-     * Does nothing.
-     */
     @Override
     protected void close0() {
     }
 
-    /**
-     * Does nothing.
-     */
     @Override
     public WriteFuture write(Object message, SocketAddress remoteAddress) {
         return null;
@@ -131,9 +90,6 @@ public class MockIOSession extends BaseIoSession {
         return null;
     }
 
-    /**
-     * Does nothing.
-     */
     @Override
     protected void write0(WriteRequest writeRequest) {
     }

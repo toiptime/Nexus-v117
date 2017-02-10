@@ -20,6 +20,7 @@ import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.quest.MapleQuest;
 import tools.FileoutputUtil;
+import tools.Logger;
 import tools.Triple;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CField;
@@ -184,7 +185,7 @@ public class CashShopOperation {
                 }
                 for (int i : GameConstants.cashBlock) {
                     if (item.getId() == i) {
-                        c.getPlayer().dropMessage(1, GameConstants.BlockedCash(item.getId()));
+                        c.getPlayer().print(1, GameConstants.BlockedCash(item.getId()));
                         doCSPackets(c);
                         return;
                     }
@@ -252,7 +253,7 @@ public class CashShopOperation {
                 if (chr.getCSPoints(toCharge) >= 6000 && chr.getInventory(type).getSlotLimit() < 89) {
                     chr.modifyCSPoints(toCharge, -6000, false);
                     chr.getInventory(type).addSlot((byte) 8);
-                    chr.dropMessage(1, "Slots has been increased to " + chr.getInventory(type).getSlotLimit());
+                    chr.print(1, "Slots has been increased to " + chr.getInventory(type).getSlotLimit());
                 } else {
                     c.getSession().write(MTSCSPacket.sendCSFail(0xA4));
                 }
@@ -261,7 +262,7 @@ public class CashShopOperation {
                 if (chr.getCSPoints(toCharge) >= 4000 && chr.getInventory(type).getSlotLimit() < 93) {
                     chr.modifyCSPoints(toCharge, -4000, false);
                     chr.getInventory(type).addSlot((byte) 4);
-                    chr.dropMessage(1, "Slots has been increased to " + chr.getInventory(type).getSlotLimit());
+                    chr.print(1, "Slots has been increased to " + chr.getInventory(type).getSlotLimit());
                 } else {
                     c.getSession().write(MTSCSPacket.sendCSFail(0xA4));
                 }
@@ -275,7 +276,7 @@ public class CashShopOperation {
                 chr.modifyCSPoints(toCharge, -4000 * coupon, false);
                 chr.getStorage().increaseSlots((byte) (4 * coupon));
                 chr.getStorage().saveToDB();
-                chr.dropMessage(1, "Storage slots increased to: " + chr.getStorage().getSlots());
+                chr.print(1, "Storage slots increased to: " + chr.getStorage().getSlots());
             } else {
                 c.getSession().write(MTSCSPacket.sendCSFail(0xA4));
             }
@@ -291,7 +292,7 @@ public class CashShopOperation {
             }
             if (c.gainCharacterSlot()) {
                 c.getPlayer().modifyCSPoints(toCharge, -item.getPrice(), false);
-                chr.dropMessage(1, "Character slots increased to: " + (slots + 1));
+                chr.print(1, "Character slots increased to: " + (slots + 1));
             } else {
                 c.getSession().write(MTSCSPacket.sendCSFail(0));
             }
@@ -312,7 +313,7 @@ public class CashShopOperation {
             } else {
                 c.getPlayer().getQuestNAdd(MapleQuest.getInstance(GameConstants.PENDANT_SLOT)).setCustomData(String.valueOf(System.currentTimeMillis() + ((long) item.getPeriod() * 24 * 60 * 60000)));
                 c.getPlayer().modifyCSPoints(1, -item.getPrice(), false);
-                chr.dropMessage(1, "Additional pendant slot gained.");
+                chr.print(1, "Additional pendant slot gained.");
             }
         } else if (action == 14) { // Get item from csinventory
             // uniqueid, 00 01 01 00, type->position(short)
@@ -345,7 +346,7 @@ public class CashShopOperation {
                 }
                 item_.setPosition((byte) 0);
                 c.getPlayer().getCashInventory().addToInventory(item_);
-                // Warning: this d/cs
+                // WARNING: this d/cs
                 //c.getSession().write(MTSCSPacket.confirmToCSInventory(item, c.getAccID(), c.getPlayer().getCashInventory().getSNForItem(item)));
             } else {
                 c.getSession().write(MTSCSPacket.sendCSFail(0xB1));
@@ -420,7 +421,7 @@ public class CashShopOperation {
 
             for (int block : GameConstants.cashBlock) {
                 if (item.getSN() == block) {
-                    c.getPlayer().dropMessage(1, GameConstants.BlockedCash(item.getSN()));
+                    c.getPlayer().print(1, GameConstants.BlockedCash(item.getSN()));
                     doCSPackets(c);
                     return;
                 }
@@ -478,7 +479,7 @@ public class CashShopOperation {
 
             //c.getSession().write(MTSCSPacket.sendRandomBox(uniqueid, new Item(1302000, (short) 1, (short) 1, (short) 0, 10), (short) 0));
         } else {
-            System.out.println("New Action: " + action + " Remaining: " + slea.toString());
+            Logger.println("New Action: " + action + " Remaining: " + slea.toString());
             c.getSession().write(MTSCSPacket.sendCSFail(0));
         }
         doCSPackets(c);

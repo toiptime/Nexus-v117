@@ -72,7 +72,7 @@ public class PetHandler {
         }
         final long time = System.currentTimeMillis();
         if (chr.getNextConsume() > time) {
-            chr.dropMessage(5, "You may not use this item yet.");
+            chr.print(5, "You may not use this item yet.");
             c.getSession().write(CWvsContext.enableActions());
             return;
         }

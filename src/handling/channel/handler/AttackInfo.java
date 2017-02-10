@@ -51,7 +51,7 @@ public class AttackInfo {
             if (dd > SkillFactory.Delay.magic6.i && dd != SkillFactory.Delay.shot.i && dd != SkillFactory.Delay.fist.i) {
                 if (skillLink.getAnimation() == -1 || Math.abs(skillLink.getAnimation() - dd) > 0x10) {
                     if (skillLink.getAnimation() == -1) {
-                        chr.dropMessage(5, "[Please Report] Animation for skill " + skillLink.getId() + " doesn't exist");
+                        chr.print(5, "[Please Report] Animation for skill " + skillLink.getId() + " doesn't exist");
                     } else {
                         //AutobanManager.getInstance().autoban(chr.getClient(), "No delay hack, SkillID : " + skillLink.getId() + ", animation: " + dd + ", expected: " + skillLink.getAnimation());
                     }
@@ -68,7 +68,7 @@ public class AttackInfo {
          * if (dd > SkillFactory.Delay.magic6.i && dd !=
          * SkillFactory.Delay.shot.i && dd != SkillFactory.Delay.fist.i) { if
          * (skill_.getAnimation() == -1 || Math.abs(skill_.getAnimation() - dd)
-         * > 0x10) { if (skill_.getAnimation() == -1) { chr.dropMessage(5,
+         * > 0x10) { if (skill_.getAnimation() == -1) { chr.print(5,
          * "Please report this: animation for skill " + skill_.getId() + "
          * doesn't exist"); } else {
          * AutobanManager.getInstance().autoban(chr.getClient(), "No delay hack,

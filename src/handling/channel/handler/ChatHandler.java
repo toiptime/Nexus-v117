@@ -320,7 +320,7 @@ public class ChatHandler {
                     if (ch == -10) {
                         c.getSession().write(CField.getFindReplyWithCS(recipient, mode == 68));
                     } else if (ch == -20) {
-                        c.getPlayer().dropMessage(5, "'" + recipient + "' is at the Maple Trading System."); // Idfc
+                        c.getPlayer().print(5, "'" + recipient + "' is at the Maple Trading System."); // Idfc
                     } else {
                         c.getSession().write(CField.getWhisperReply(recipient, (byte) 0));
                     }

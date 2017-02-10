@@ -67,10 +67,10 @@ public class MaplePlayerShop extends AbstractPlayerStore {
                         }
                     }
                 } else {
-                    c.getPlayer().dropMessage(1, "Your inventory is currently full.");
+                    c.getPlayer().print(1, "Your inventory is currently full.");
                 }
             } else {
-                c.getPlayer().dropMessage(1, "You do not have enough mesos.");
+                c.getPlayer().print(1, "You do not have enough mesos.");
                 //}
             }
             getMCOwner().getClient().getSession().write(PlayerShopPacket.shopItemUpdate(this));

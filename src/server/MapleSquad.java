@@ -72,7 +72,7 @@ public class MapleSquad {
                     break;
                 } else {
                     if (lead != null) {
-                        lead.dropMessage(6, "Your Squad has been skipped due to you not being in the right channel and map.");
+                        lead.print(6, "Your Squad has been skipped due to you not being in the right channel and map.");
                     }
                     getBeginMap().broadcastMessage(CWvsContext.serverNotice(6, nextPlayerId + "'s Squad has been skipped due to the player not being in the right channel and map."));
                     type.queuedPlayers.get(ch).add(new Pair<String, String>(nextPlayerId, "Not in map"));
@@ -213,7 +213,7 @@ public class MapleSquad {
             if (!containsMember(member) && !getAllNextPlayer().contains(member.getName())) {
                 if (members.size() <= 30) {
                     members.put(member.getName(), job);
-                    getLeader().dropMessage(5, member.getName() + " (" + job + ") has joined the fight!");
+                    getLeader().print(5, member.getName() + " (" + job + ") has joined the fight!");
                     return 1;
                 }
                 return 2;
@@ -222,7 +222,7 @@ public class MapleSquad {
         } else {
             if (containsMember(member)) {
                 members.remove(member.getName());
-                getLeader().dropMessage(5, member.getName() + " (" + job + ") have withdrawed from the fight.");
+                getLeader().print(5, member.getName() + " (" + job + ") have withdrawed from the fight.");
                 return 1;
             }
             return -1;
@@ -239,7 +239,7 @@ public class MapleSquad {
             members.put(toadd, bannedMembers.get(toadd));
             bannedMembers.remove(toadd);
 
-            getChar(toadd).dropMessage(5, getLeaderName() + " has decided to add you back to the Squad.");
+            getChar(toadd).print(5, getLeaderName() + " has decided to add you back to the Squad.");
         }
     }
 
@@ -270,7 +270,7 @@ public class MapleSquad {
             bannedMembers.put(toban, members.get(toban));
             members.remove(toban);
 
-            getChar(toban).dropMessage(5, getLeaderName() + " has removed you from the Squad.");
+            getChar(toban).print(5, getLeaderName() + " has removed you from the Squad.");
         }
     }
 

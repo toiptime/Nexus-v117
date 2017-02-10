@@ -1803,7 +1803,7 @@ public class GameConstants {
             case 53:
                 return MapleWeaponType.CANNON;
         }
-        //System.out.println("Found new Weapon: " + cat + ", ItemId: " + itemId);
+        //Logger.println("Found new Weapon: " + cat + ", ItemId: " + itemId);
         return MapleWeaponType.NOT_A_WEAPON;
     }
 
@@ -3633,7 +3633,7 @@ public class GameConstants {
     }
 
     public static int getSpecialMapTarget(int mapId) {
-        if (ServerConstants.Old_Maps) {
+        if (ServerConstants.OLD_MAPS) {
             switch (mapId) {
                 case 690000029:
                     return 100010000;
@@ -3645,7 +3645,7 @@ public class GameConstants {
     }
 
     public static String getSpecialPortalTarget(int mapId, String portalId) {
-        if (ServerConstants.Old_Maps) {
+        if (ServerConstants.OLD_MAPS) {
             if (mapId == 100010000 && "old_lith".equals(portalId)) {
                 return "east00";
             } else if (mapId == 100000000 && "west00".equals(portalId)) {

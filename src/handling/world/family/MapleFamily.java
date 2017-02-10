@@ -23,6 +23,7 @@ package handling.world.family;
 import client.MapleCharacter;
 import database.DatabaseConnection;
 import handling.world.World;
+import tools.Logger;
 import tools.packet.CWvsContext;
 import tools.packet.CWvsContext.FamilyPacket;
 
@@ -200,7 +201,7 @@ public class MapleFamily implements java.io.Serializable {
             ps.execute();
             ps.close();
         } catch (SQLException se) {
-            System.out.println("SQLException: " + se.getLocalizedMessage());
+            Logger.println("SQLException: " + se.getLocalizedMessage());
             se.printStackTrace();
         }
     }

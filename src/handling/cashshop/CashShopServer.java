@@ -31,6 +31,7 @@ import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.SocketAcceptor;
 import org.apache.mina.transport.socket.nio.SocketAcceptorConfig;
 import server.MTSStorage;
+import tools.Logger;
 
 import java.net.InetSocketAddress;
 
@@ -58,7 +59,7 @@ public class CashShopServer {
         try {
             InetSocketadd = new InetSocketAddress(PORT);
             acceptor.bind(InetSocketadd, new MapleServerHandler(), cfg);
-            //System.out.println("Cash Shop Server is listening on port " + PORT + ".");
+            //Logger.println("Cash Shop Server is listening on port " + PORT + ".");
         } catch (final Exception e) {
             System.err.println("Cash shop binding to port " + PORT + " failed");
             e.printStackTrace();
@@ -82,11 +83,11 @@ public class CashShopServer {
         if (finishedShutdown) {
             return;
         }
-        System.out.println("Saving all connected clients in Cash Shop...");
+        Logger.println("Saving all connected clients in Cash Shop...");
         players.disconnectAll();
         playersMTS.disconnectAll();
         MTSStorage.getInstance().saveBuyNow(true);
-        System.out.println("Shutting down Cash Shop...");
+        Logger.println("Shutting down Cash Shop...");
         //acceptor.unbindAll();
         finishedShutdown = true;
     }

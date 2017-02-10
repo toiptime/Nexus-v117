@@ -27,6 +27,7 @@ import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
+import tools.Logger;
 
 import java.awt.*;
 import java.io.File;
@@ -63,14 +64,14 @@ public class DumpMobSkills {
         int currentQuest = 0;
         try {
             final DumpMobSkills dq = new DumpMobSkills(update);
-            System.out.println("Dumping mobskills");
+            Logger.println("Dumping mobskills");
             dq.dumpMobSkills();
             hadError |= dq.isHadError();
             currentQuest = dq.currentId();
         } catch (Exception e) {
             hadError = true;
             e.printStackTrace();
-            System.out.println(currentQuest + " skill.");
+            Logger.println(currentQuest + " skill.");
         }
         long endTime = System.currentTimeMillis();
         double elapsedSeconds = (endTime - startTime) / 1000.0;
@@ -81,7 +82,7 @@ public class DumpMobSkills {
         if (hadError) {
             withErrors = " with errors";
         }
-        System.out.println("Finished" + withErrors + " in " + elapsedMinutes + " minutes " + elapsedSecs + " seconds");
+        Logger.println("Finished" + withErrors + " in " + elapsedMinutes + " minutes " + elapsedSecs + " seconds");
     }
 
     public boolean isHadError() {
@@ -94,7 +95,7 @@ public class DumpMobSkills {
             try {
                 dumpMobSkills(ps);
             } catch (Exception e) {
-                System.out.println(id + " skill.");
+                Logger.println(id + " skill.");
                 e.printStackTrace();
                 hadError = true;
             } finally {
@@ -123,10 +124,10 @@ public class DumpMobSkills {
     public void dumpMobSkills(PreparedStatement ps) throws Exception {
         if (!update) {
             delete("DELETE FROM wz_mobskilldata");
-            System.out.println("Deleted wz_mobskilldata successfully.");
+            Logger.println("Deleted wz_mobskilldata successfully.");
         }
         final MapleData skillz = skill.getData("MobSkill.img");
-        System.out.println("Adding into wz_mobskilldata.....");
+        Logger.println("Adding into wz_mobskilldata.....");
 
         for (MapleData ids : skillz.getChildren()) {
             for (MapleData lvlz : ids.getChildByPath("level").getChildren()) {
@@ -179,11 +180,11 @@ public class DumpMobSkills {
                     ps.setInt(16, 0);
                 }
                 ps.setByte(17, (byte) (MapleDataTool.getInt("summonOnce", lvlz, 0) > 0 ? 1 : 0));
-                System.out.println("Added skill: " + id + " level " + lvl);
+                Logger.println("Added skill: " + id + " level " + lvl);
                 ps.addBatch();
             }
         }
-        System.out.println("Done wz_mobskilldata...");
+        Logger.println("Done wz_mobskilldata...");
     }
 
     public int currentId() {

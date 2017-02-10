@@ -309,7 +309,7 @@ public class MonsterBook implements Serializable {
     public final boolean monsterCaught(final MapleClient c, final int cardid, final String cardname) {
         if (!cards.containsKey(cardid) || cards.get(cardid) < 2) {
             changed = true;
-            c.getPlayer().dropMessage(-6, "Book entry updated - " + cardname);
+            c.getPlayer().print(-6, "Book entry updated - " + cardname);
             c.getSession().write(EffectPacket.showForeignEffect(16));
             cards.put(cardid, 2);
             if (c.getPlayer().getQuestStatus(50195) != 1) {
@@ -344,7 +344,7 @@ public class MonsterBook implements Serializable {
         }
         changed = true;
         // New card
-        c.getPlayer().dropMessage(-6, "New book entry - " + cardname);
+        c.getPlayer().print(-6, "New book entry - " + cardname);
         cards.put(cardid, 1);
         c.getSession().write(EffectPacket.showForeignEffect(16));
     }

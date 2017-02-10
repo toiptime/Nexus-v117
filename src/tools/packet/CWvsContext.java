@@ -3357,7 +3357,7 @@ public class CWvsContext {
             mplew.writeZeroBytes(3);
             mplew.writeShort(0); // not sure..
             mplew.write(0);
-            //System.out.println("ARIA_BUFF PACKET: " + mplew.toString());
+            //Logger.println("ARIA_BUFF PACKET: " + mplew.toString());
             return mplew.getPacket();
         }
 
@@ -3430,7 +3430,7 @@ public class CWvsContext {
             mplew.write(1);
             mplew.write(0);
             mplew.write(1);
-            //System.out.println(HexTool.toString(mplew.getPacket()));
+            //Logger.println(HexTool.toString(mplew.getPacket()));
             return mplew.getPacket();
         }
 

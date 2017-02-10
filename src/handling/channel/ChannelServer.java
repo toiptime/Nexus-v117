@@ -24,6 +24,7 @@ import server.maps.MapleMapFactory;
 import server.maps.MapleMapObject;
 import server.shops.HiredMerchant;
 import tools.ConcurrentEnumMap;
+import tools.Logger;
 import tools.packet.CWvsContext;
 
 import java.io.IOException;
@@ -138,11 +139,11 @@ public class ChannelServer {
 
         try {
             acceptor.bind(new InetSocketAddress(port), new MapleServerHandler(), acceptor_config);
-            System.out.println("Channel " + channel + " is listening on port " + port);
+            Logger.println("Channel " + channel + " is listening on port " + port);
             eventSM = new EventScriptManager(this, ServerConstants.EVENTS.split(","));
             eventSM.init();
         } catch (IOException e) {
-            System.out.println("Binding to port " + port + " failed (ch: " + getChannel() + ")" + e);
+            Logger.println("Binding to port " + port + " failed (ch: " + getChannel() + ")" + e);
         }
     }
 
@@ -154,11 +155,11 @@ public class ChannelServer {
         // Disconnect all clients by hand so we get sessionClosed...
         shutdown = true;
 
-        System.out.println("Channel " + channel + ", Saving characters...");
+        Logger.println("Channel " + channel + ", Saving characters...");
 
         getPlayerStorage().disconnectAll();
 
-        System.out.println("Channel " + channel + ", Unbinding...");
+        Logger.println("Channel " + channel + ", Unbinding...");
 
         // Temporary while we dont have !addchannel
         instances.remove(channel);
@@ -439,12 +440,12 @@ public class ChannelServer {
 
     public final void setShutdown() {
         this.shutdown = true;
-        System.out.println("Channel " + channel + " has set to shutdown and is closing Hired Merchants...");
+        Logger.println("Channel " + channel + " has set to shutdown and is closing Hired Merchants...");
     }
 
     public final void setFinishShutdown() {
         this.finishedShutdown = true;
-        System.out.println("Channel " + channel + " has finished shutdown.");
+        Logger.println("Channel " + channel + " has finished shutdown.");
     }
 
     public final boolean isAdminOnly() {

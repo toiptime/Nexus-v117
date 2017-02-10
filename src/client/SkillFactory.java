@@ -198,7 +198,6 @@ public class SkillFactory {
     }
 
     public enum Delay {
-
         walk1(0x00),
         walk2(0x01),
         stand1(0x02),

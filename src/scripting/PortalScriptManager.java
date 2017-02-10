@@ -23,6 +23,7 @@ package scripting;
 import client.MapleClient;
 import server.MaplePortal;
 import tools.FileoutputUtil;
+import tools.Logger;
 
 import javax.script.*;
 import java.io.File;
@@ -84,7 +85,7 @@ public class PortalScriptManager {
                 System.err.println("Error entering Portalscript: " + portal.getScriptName() + " : " + e);
             }
         } else {
-            System.out.println("Unhandled portal script " + portal.getScriptName() + " on map " + c.getPlayer().getMapId());
+            Logger.println("Unhandled portal script " + portal.getScriptName() + " on map " + c.getPlayer().getMapId());
             FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Unhandled portal script " + portal.getScriptName() + " on map " + c.getPlayer().getMapId());
         }
     }

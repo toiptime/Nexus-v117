@@ -20,6 +20,7 @@ import server.maps.MapleMap;
 import server.movement.LifeMovementFragment;
 import server.quest.MapleQuest;
 import tools.FileoutputUtil;
+import tools.Logger;
 import tools.Pair;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CField;
@@ -318,7 +319,7 @@ public class PlayerHandler {
                 if (!FieldLimitType.VipRock.check(chr.getMap().getFieldLimit())) {
                     chr.addRegRockMap();
                 } else {
-                    chr.dropMessage(1, "This map is not available to enter for the list.");
+                    chr.print(1, "This map is not available to enter for the list.");
                 }
             }
         } else if (vip == 2) {
@@ -328,7 +329,7 @@ public class PlayerHandler {
                 if (!FieldLimitType.VipRock.check(chr.getMap().getFieldLimit())) {
                     chr.addRockMap();
                 } else {
-                    chr.dropMessage(1, "This map is not available to enter for the list.");
+                    chr.print(1, "This map is not available to enter for the list.");
                 }
             }
         } else if (vip == 3 || vip == 5) {
@@ -338,7 +339,7 @@ public class PlayerHandler {
                 if (!FieldLimitType.VipRock.check(chr.getMap().getFieldLimit())) {
                     chr.addHyperRockMap();
                 } else {
-                    chr.dropMessage(1, "This map is not available to enter for the list.");
+                    chr.print(1, "This map is not available to enter for the list.");
                 }
             }
         }
@@ -504,7 +505,7 @@ public class PlayerHandler {
                 /*
                  * 281
                  */
-                chr.dropMessage(5, "You've been found out! Retreat!");
+                chr.print(5, "You've been found out! Retreat!");
                 /*
                  * 282
                  */
@@ -533,7 +534,7 @@ public class PlayerHandler {
                         /*
                          * 289
                          */
-                        System.out.println(new StringBuilder().append("Avoided ER from Mob ID: ").append(monsteridfrom).toString());
+                        Logger.println(new StringBuilder().append("Avoided ER from Mob ID: ").append(monsteridfrom).toString());
                         /*
                          * 290
                          */
@@ -1334,7 +1335,7 @@ public class PlayerHandler {
                             /*
                              * 637
                              */
-                            chr.dropMessage(5, "You may not use that here.");
+                            chr.print(5, "You may not use that here.");
                             /*
                              * 638
                              */
@@ -1359,7 +1360,7 @@ public class PlayerHandler {
             /*
              * 647
              */
-            c.getPlayer().dropMessage(5, "You do not have the HP to use this skill.");
+            c.getPlayer().print(5, "You do not have the HP to use this skill.");
             /*
              * 648
              */
@@ -1512,7 +1513,7 @@ public class PlayerHandler {
                         /*
                          * 696
                          */
-                        chr.dropMessage(5, "The monster has too much physical strength, so you cannot catch it.");
+                        chr.print(5, "The monster has too much physical strength, so you cannot catch it.");
                     }
                 }
                 /*
@@ -1527,7 +1528,7 @@ public class PlayerHandler {
                 /*
                  * 702
                  */
-                chr.dropMessage(5, "No monsters can be summoned. Capture a monster first.");
+                chr.print(5, "No monsters can be summoned. Capture a monster first.");
                 /*
                  * 703
                  */
@@ -1577,13 +1578,13 @@ public class PlayerHandler {
                         /*
                          * 716
                          */
-                        chr.dropMessage(5, "The monster has too much physical strength, so you cannot catch it.");
+                        chr.print(5, "The monster has too much physical strength, so you cannot catch it.");
                     }
                 } else {
                     /*
                      * 719
                      */
-                    chr.dropMessage(5, "No monster was sucked. The skill failed.");
+                    chr.print(5, "No monster was sucked. The skill failed.");
                 }
                 /*
                  * 721
@@ -1697,7 +1698,7 @@ public class PlayerHandler {
                     if ((e.isRunning()) && (!chr.isGM())) {
                         for (int i : e.getType().mapids) {
                             if (chr.getMapId() == i) {
-                                chr.dropMessage(5, "You may not use that here.");
+                                chr.print(5, "You may not use that here.");
                                 return;
                             }
                         }
@@ -1802,7 +1803,7 @@ public class PlayerHandler {
                     if ((e.isRunning()) && (!chr.isGM())) {
                         for (int i : e.getType().mapids) {
                             if (chr.getMapId() == i) {
-                                chr.dropMessage(5, "You may not use that here.");
+                                chr.print(5, "You may not use that here.");
                                 return;
                             }
                         }
@@ -1925,7 +1926,7 @@ public class PlayerHandler {
                     }
                 }
                 if ((bulletConsume > 0) && (!MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, projectile, bulletConsume, false, true))) {
-                    chr.dropMessage(5, "You do not have enough Arrows / Bullets / Stars.");
+                    chr.print(5, "You do not have enough Arrows / Bullets / Stars.");
                     return;
                 }
             }
@@ -2044,7 +2045,7 @@ public class PlayerHandler {
                 if ((e.isRunning()) && (!chr.isGM())) {
                     for (int i : e.getType().mapids) {
                         if (chr.getMapId() == i) {
-                            chr.dropMessage(5, "You may not use that here.");
+                            chr.print(5, "You may not use that here.");
                             return;
                         }
                     }
@@ -2267,7 +2268,7 @@ public class PlayerHandler {
         try {
             res = MovementParse.parseMovement(slea, 1);
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println(new StringBuilder().append("AIOBE Type1:\n").append(slea.toString(true)).toString());
+            Logger.println(new StringBuilder().append("AIOBE Type1:\n").append(slea.toString(true)).toString());
             return;
         }
 
@@ -2366,7 +2367,7 @@ public class PlayerHandler {
          */    // if (chr.getGMLevel() > ServerConstants.PlayerGMRank.GM.getLevel()) {
 /*
          * 1359
-         */     //  chr.dropMessage(6, new StringBuilder().append(portal.getScriptName()).append(" accessed").toString());
+         */     //  chr.print(6, new StringBuilder().append(portal.getScriptName()).append(" accessed").toString());
         //  }
 /*
          * 1361
@@ -2517,7 +2518,7 @@ public class PlayerHandler {
                 } else /*
                  * 1415
                  */ {
-                    chr.dropMessage(5, "Map is NULL. Use !warp [mapid] instead.");
+                    chr.print(5, "Map is NULL. Use !warp [mapid] instead.");
                 }
             } /*
              * 1417

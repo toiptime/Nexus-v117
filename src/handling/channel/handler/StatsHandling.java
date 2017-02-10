@@ -169,7 +169,7 @@ public class StatsHandling {
         for (int i : GameConstants.blockedSkills) {
             if (skill.getId() == i) {
                 c.getSession().write(CWvsContext.enableActions());
-                chr.dropMessage(1, "This skill has been blocked and may not be added.");
+                chr.print(1, "This skill has been blocked and may not be added.");
                 return;
             }
         }

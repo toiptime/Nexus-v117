@@ -41,6 +41,7 @@ import server.life.*;
 import server.maps.*;
 import server.quest.MapleQuest;
 import tools.FileoutputUtil;
+import tools.Logger;
 import tools.StringUtil;
 import tools.Triple;
 import tools.packet.CField;
@@ -656,7 +657,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             gainItemSilent(5220094, (short) -1);
             return item.getItemId();
         } catch (Exception e) {
-            System.out.println("[Error] Failed to use Nebulite Gachapon. " + e);
+            Logger.println("[Error] Failed to use Nebulite Gachapon. " + e);
         }
         return -1;
     }
@@ -1676,7 +1677,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                 for (MapleCharacter chr : cserv.getPlayerStorage().getAllCharacters()) {
                     if (chr.getGuildId() == getPlayer().getGuildId()) {
                         mse.applyTo(chr, chr, true, null, duration);
-                        chr.dropMessage(5, "Your guild has gotten a " + msg + " Buff.");
+                        chr.print(5, "Your guild has gotten a " + msg + " Buff.");
                     }
                 }
             }
@@ -1773,7 +1774,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
         if (onemob == null) {
 
-            c.getPlayer().dropMessage(5, "Mob does not exist");
+            c.getPlayer().print(5, "Mob does not exist");
         } else {
 
             for (int i = 0; i <= amt; i++) {
@@ -1862,7 +1863,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         left += 16;
         player.setRemainingAp(left);
         getPlayer().updateSingleStat(MapleStat.AVAILABLEAP, left);
-        System.out.println("Player : " + player.getName().toString() + " All : " + all + " Remain : " + remain + " Left Over : " + left);
+        Logger.println("Player : " + player.getName().toString() + " All : " + all + " Remain : " + remain + " Left Over : " + left);
     }
 
     public void MakeHItem(int slot, MapleCharacter player, short stats, short watt, short matt) {
@@ -2122,7 +2123,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
         MapleCharacter cPlayer = ChannelServer.getInstance(chz).getPlayerStorage().getCharacterById(getPlayer().getMarriageId());
         if (cPlayer != null) {
-            cPlayer.dropMessage(1, "Your partner has divorced you.");
+            cPlayer.print(1, "Your partner has divorced you.");
             cPlayer.setMarriageId(0);
             setQuestRecord(cPlayer, 160001, "0");
             setQuestRecord(getPlayer(), 160001, "0");
@@ -2426,6 +2427,6 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public void dropMessage(String message) {
-        getPlayer().dropMessage(5, message);
+        getPlayer().print(5, message);
     }
 }

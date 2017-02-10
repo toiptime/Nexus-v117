@@ -107,14 +107,14 @@ public class HiredMerchant extends AbstractPlayerStore {
                 saveItems();
                 MapleCharacter chr = getMCOwnerWorld();
                 if (chr != null) {
-                    chr.dropMessage(-5, "Item " + MapleItemInformationProvider.getInstance().getName(newItem.getItemId()) + " (" + perbundle + ") x " + quantity + " has sold in the Hired Merchant. Quantity left: " + pItem.bundles);
+                    chr.print(-5, "Item " + MapleItemInformationProvider.getInstance().getName(newItem.getItemId()) + " (" + perbundle + ") x " + quantity + " has sold in the Hired Merchant. Quantity left: " + pItem.bundles);
                 }
             } else {
-                c.getPlayer().dropMessage(1, "The seller currently have too many mesos.");
+                c.getPlayer().print(1, "The seller currently have too many mesos.");
                 c.getSession().write(CWvsContext.enableActions());
             }
         } else {
-            c.getPlayer().dropMessage(1, "Your inventory is currently full.");
+            c.getPlayer().print(1, "Your inventory is currently full.");
             c.getSession().write(CWvsContext.enableActions());
         }
     }

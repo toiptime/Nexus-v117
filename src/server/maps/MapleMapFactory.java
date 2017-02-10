@@ -36,6 +36,7 @@ import server.life.MapleNPC;
 import server.maps.MapleNodes.DirectionInfo;
 import server.maps.MapleNodes.MapleNodeInfo;
 import server.maps.MapleNodes.MaplePlatform;
+import tools.Logger;
 import tools.Pair;
 import tools.StringUtil;
 
@@ -87,9 +88,9 @@ public class MapleMapFactory {
             rs.close();
             ps.close();
             return customLife.size();
-            //System.out.println("Successfully loaded " + customLife.size() + " maps with custom life.");
+            //Logger.println("Successfully loaded " + customLife.size() + " maps with custom life.");
         } catch (SQLException e) {
-            System.out.println("Error loading custom life..." + e);
+            Logger.println("Error loading custom life..." + e);
         }
         return -1;
     }
@@ -97,7 +98,7 @@ public class MapleMapFactory {
     private static AbstractLoadedMapleLife loadLife(int id, int f, boolean hide, int fh, int cy, int rx0, int rx1, int x, int y, String type, int mtime) {
         final AbstractLoadedMapleLife myLife = MapleLifeFactory.getLife(id, type);
         if (myLife == null) {
-            System.out.println("Custom NPC " + id + " is Null...");
+            Logger.println("Custom NPC " + id + " is Null...");
             return null;
         }
         myLife.setCy(cy);

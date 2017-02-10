@@ -22,11 +22,11 @@ public class getShopItemData {
         Scanner input = new Scanner(System.in);
         byte[] data;
         // Loading Data
-        System.out.println("Print in the packet data");
+        Logger.println("Print in the packet data");
         data = HexTool.getByteArrayFromHexString(input.next());
 
         FileOutputStream out = new FileOutputStream("logs/getShopItemData.txt", false);
-        System.out.println("\r\n\r\n");
+        Logger.println("\r\n\r\n");
 
         //Parsing Data
         final LittleEndianAccessor slea = new LittleEndianAccessor(new ByteArrayByteStream(data));

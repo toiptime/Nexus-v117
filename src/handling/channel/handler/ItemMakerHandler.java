@@ -63,7 +63,7 @@ public class ItemMakerHandler {
     }
 
     public static final void ItemMaker(final LittleEndianAccessor slea, final MapleClient c) {
-        //System.out.println(slea.toString()); // Change?
+        //Logger.println(slea.toString()); // Change?
         final int makerType = slea.readInt();
 
         switch (makerType) {
@@ -172,7 +172,7 @@ public class ItemMakerHandler {
                         MapleInventoryManipulator.addbyItem(c, toGive);
                         c.getPlayer().getMap().broadcastMessage(c.getPlayer(), EffectPacket.ItemMaker_Success_3rdParty(c.getPlayer().getId()), false);
                     } else {
-                        c.getPlayer().dropMessage(5, "The item was overwhelmed by the stimulator.");
+                        c.getPlayer().print(5, "The item was overwhelmed by the stimulator.");
                     }
                     c.getSession().write(EffectPacket.ItemMaker_Success());
 
@@ -464,7 +464,7 @@ public class ItemMakerHandler {
         }
         long lastTime = Long.parseLong(marr.getCustomData());
         if (lastTime + (5000) > System.currentTimeMillis()) {
-            c.getPlayer().dropMessage(5, "You may not harvest yet.");
+            c.getPlayer().print(5, "You may not harvest yet.");
         } else {
             marr.setCustomData(String.valueOf(System.currentTimeMillis()));
             c.getSession().write(CField.harvestMessage(reactor.getObjectId(), 13)); // Ok to harvest, gogo
@@ -736,9 +736,9 @@ public class ItemMakerHandler {
                     s = "Accessory Crafting";
                     break;
             }
-            chr.dropMessage(-5, s + "'s mastery increased. (+" + expGain + ")");
+            chr.print(-5, s + "'s mastery increased. (+" + expGain + ")");
             if (chr.addProfessionExp((craftID / 10000) * 10000, expGain)) {
-                chr.dropMessage(1, "Your " + s + " mastery has leveled up.");
+                chr.print(1, "Your " + s + " mastery has leveled up.");
             }
         } else {
             expGain = 0;
@@ -786,7 +786,7 @@ public class ItemMakerHandler {
         }
         final int level = GameConstants.getInventoryType(itemid) == MapleInventoryType.ETC ? MapleItemInformationProvider.getInstance().getItemMakeLevel(itemid) : MapleItemInformationProvider.getInstance().getReqLevel(itemid);
         if (level <= 0 || level < (Math.min(120, c.getPlayer().getLevel()) - 50) || (GameConstants.getInventoryType(itemid) != MapleInventoryType.ETC && GameConstants.getInventoryType(itemid) != MapleInventoryType.EQUIP)) {
-            c.getPlayer().dropMessage(1, "The item must be within 50 levels of you.");
+            c.getPlayer().print(1, "The item must be within 50 levels of you.");
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
@@ -846,7 +846,7 @@ public class ItemMakerHandler {
         }
         final int itemid = GameConstants.getRewardPot(c.getPlayer().getImps()[index].getItemId(), c.getPlayer().getImps()[index].getCloseness());
         if (itemid <= 0 || !MapleInventoryManipulator.checkSpace(c, itemid, (short) 1, "")) {
-            c.getPlayer().dropMessage(1, "Please make some space.");
+            c.getPlayer().print(1, "Please make some space.");
             c.getSession().write(CWvsContext.enableActions());
             return;
         }

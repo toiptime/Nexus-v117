@@ -10,6 +10,8 @@ import constants.GameConstants;
 import database.DatabaseConnection;
 import provider.*;
 import server.StructSetItem.SetItem;
+import tools.Error;
+import tools.Logger;
 import tools.Pair;
 import tools.Triple;
 
@@ -388,7 +390,7 @@ public class MapleItemInformationProvider {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        //System.out.println(dataCache.size() + " items loaded.");
+        //Logger.println(dataCache.size() + " items loaded.");
     }
 
     public final List<StructItemOption> getPotentialInfo(final int potId) {
@@ -1347,7 +1349,7 @@ public class MapleItemInformationProvider {
         final int itemID = sqlRewardData.getInt("itemid");
         if (tmpInfo == null || tmpInfo.itemId != itemID) {
             if (!dataCache.containsKey(itemID)) {
-                System.out.println("[initItemRewardData] Tried to load an item while this is not in the cache: " + itemID);
+                Logger.println(Error.WARNING, "[initItemRewardData] Tried to load an item while this is not in the cache: " + itemID);
                 return;
             }
             tmpInfo = dataCache.get(itemID);
@@ -1372,7 +1374,7 @@ public class MapleItemInformationProvider {
         final int itemID = sqlAddData.getInt("itemid");
         if (tmpInfo == null || tmpInfo.itemId != itemID) {
             if (!dataCache.containsKey(itemID)) {
-                System.out.println("[initItemAddData] Tried to load an item while this is not in the cache: " + itemID);
+                Logger.println("[initItemAddData] Tried to load an item while this is not in the cache: " + itemID);
                 return;
             }
             tmpInfo = dataCache.get(itemID);
@@ -1391,7 +1393,7 @@ public class MapleItemInformationProvider {
         final int itemID = sqlEquipData.getInt("itemid");
         if (tmpInfo == null || tmpInfo.itemId != itemID) {
             if (!dataCache.containsKey(itemID)) {
-                System.out.println("[initItemEquipData] Tried to load an item while this is not in the cache: " + itemID);
+                Logger.println("[initItemEquipData] Tried to load an item while this is not in the cache: " + itemID);
                 return;
             }
             tmpInfo = dataCache.get(itemID);

@@ -32,6 +32,7 @@ import org.apache.mina.common.SimpleByteBufferAllocator;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.SocketAcceptor;
 import org.apache.mina.transport.socket.nio.SocketAcceptorConfig;
+import tools.Logger;
 import tools.Triple;
 
 import java.io.IOException;
@@ -39,6 +40,8 @@ import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+
+import static tools.Logger.println;
 
 public class LoginServer {
 
@@ -103,7 +106,7 @@ public class LoginServer {
         try {
             InetSocketadd = new InetSocketAddress(PORT);
             acceptor.bind(InetSocketadd, new MapleServerHandler(), cfg);
-            System.out.println("Login Server is listening on port " + PORT);
+            println("Login Server is listening on port " + PORT);
         } catch (IOException e) {
             System.err.println("Binding to port " + PORT + " failed." + e);
         }
@@ -113,7 +116,7 @@ public class LoginServer {
         if (finishedShutdown) {
             return;
         }
-        System.out.println("Shutting down login...");
+        println("Shutting down login...");
         acceptor.unbindAll();
         finishedShutdown = true; // Nothing. lol
     }

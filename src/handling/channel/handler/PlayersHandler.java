@@ -44,10 +44,7 @@ import server.life.MonsterDropEntry;
 import server.life.MonsterGlobalDropEntry;
 import server.maps.*;
 import server.quest.MapleQuest;
-import tools.AttackPair;
-import tools.FileoutputUtil;
-import tools.Pair;
-import tools.Triple;
+import tools.*;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
@@ -94,7 +91,7 @@ public class PlayersHandler {
                 }
                 break;
             default:
-                System.out.println("Unhandled note action, " + type + "");
+                Logger.println("Unhandled note action, " + type + "");
         }
     }
 
@@ -182,7 +179,7 @@ public class PlayersHandler {
                 final MapleCharacter search_chr = chr.getMap().getCharacterByName(target);
                 if (search_chr != null) {
                     MapleItemInformationProvider.getInstance().getItemEffect(2210023).applyTo(search_chr);
-                    search_chr.dropMessage(6, chr.getName() + " has played a prank on you!");
+                    search_chr.print(6, chr.getName() + " has played a prank on you!");
                     MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
                 }
                 break;
@@ -218,10 +215,10 @@ public class PlayersHandler {
                         MapleInventoryManipulator.removeById(c, GameConstants.getInventoryType(itemid), itemid, reactor.getReactItem().getRight(), true, false);
                         reactor.hitReactor(c);
                     } else {
-                        c.getPlayer().dropMessage(5, "You are too far away.");
+                        c.getPlayer().print(5, "You are too far away.");
                     }
                 } else {
-                    c.getPlayer().dropMessage(5, "You don't have the item required.");
+                    c.getPlayer().print(5, "You don't have the item required.");
                 }
             } else {
                 // Just hit it
@@ -245,7 +242,7 @@ public class PlayersHandler {
                 return;
             }
         }
-        //System.out.println("Coconut1");
+        //Logger.println("Coconut1");
         MapleCoconuts nut = map.getCoconut(id);
         if (nut == null || !nut.isHittable()) {
             return;
@@ -253,9 +250,9 @@ public class PlayersHandler {
         if (System.currentTimeMillis() < nut.getHitTime()) {
             return;
         }
-        //System.out.println("Coconut2");
+        //Logger.println("Coconut2");
         if (nut.getHits() > 2 && Math.random() < 0.4 && !nut.isStopped()) {
-            //System.out.println("Coconut3-1");
+            //Logger.println("Coconut3-1");
             nut.setHittable(false);
             if (Math.random() < 0.01 && map.getStopped() > 0) {
                 nut.setStopped(true);
@@ -264,13 +261,13 @@ public class PlayersHandler {
                 return;
             }
             nut.resetHits(); // For next event (without restarts)
-            //System.out.println("Coconut4");
+            //Logger.println("Coconut4");
             if (Math.random() < 0.05 && map.getBombings() > 0) {
-                //System.out.println("Coconut5-1");
+                //Logger.println("Coconut5-1");
                 c.getPlayer().getMap().broadcastMessage(CField.hitCoconut(false, id, 2));
                 map.bombCoconut();
             } else if (map.getFalling() > 0) {
-                //System.out.println("Coconut5-2");
+                //Logger.println("Coconut5-2");
                 c.getPlayer().getMap().broadcastMessage(CField.hitCoconut(false, id, 3));
                 map.fallCoconut();
                 if (c.getPlayer().getTeam() == 0) {
@@ -283,7 +280,7 @@ public class PlayersHandler {
                 c.getPlayer().getMap().broadcastMessage(CField.coconutScore(map.getCoconutScore()));
             }
         } else {
-            //System.out.println("Coconut3-2");
+            //Logger.println("Coconut3-2");
             nut.hit();
             c.getPlayer().getMap().broadcastMessage(CField.hitCoconut(false, id, 1));
         }
@@ -488,7 +485,7 @@ public class PlayersHandler {
         final long theTime = Long.parseLong(stat.getCustomData());
         if (theTime + 7200000 > currentTime && !c.getPlayer().isIntern()) {
             c.getSession().write(CWvsContext.enableActions());
-            c.getPlayer().dropMessage(5, "You may only report every 2 hours.");
+            c.getPlayer().print(5, "You may only report every 2 hours.");
         } else {
             stat.setCustomData(String.valueOf(currentTime));
             other.addReport(type);
@@ -531,22 +528,22 @@ public class PlayersHandler {
                 break;
         }
         if (price == Integer.MAX_VALUE) {
-            System.out.println("[Silent Crusade] Void: buySilentCrusade(byte[], class) Error: {price is not declared.} Info: {Slot: " + slot + ", Item: " + itemid + ", Quantity:" + amount + "}");
-            c.getPlayer().dropMessage(1, "The item's price is not declared.");
+            Logger.println("[Silent Crusade] Void: buySilentCrusade(byte[], class) Error: {price is not declared.} INFO: {Slot: " + slot + ", Item: " + itemid + ", Quantity:" + amount + "}");
+            c.getPlayer().print(1, "The item's price is not declared.");
             c.getSession().write(CWvsContext.enableActions());
         }
         if (c.getPlayer().getInventory(GameConstants.getInventoryType(itemid)).getNumFreeSlot() >= amount) {
             if (MapleInventoryManipulator.checkSpace(c, itemid, amount, "")) {
                 MapleInventoryManipulator.removeById(c, MapleInventoryType.ETC, 4310029, price, false, false);
                 MapleInventoryManipulator.addById(c, itemid, amount, "BUY_SILENT_CRUSADE");
-                c.getPlayer().dropMessage(1, "The requested item purchase has been completed.");
+                c.getPlayer().print(1, "The requested item purchase has been completed.");
                 c.getSession().write(CWvsContext.enableActions());
             } else {
-                c.getPlayer().dropMessage(1, "You do not have enough space in your inventory.");
+                c.getPlayer().print(1, "You do not have enough space in your inventory.");
                 c.getSession().write(CWvsContext.enableActions());
             }
         } else {
-            c.getPlayer().dropMessage(1, "You do not have enough space in your inventory.");
+            c.getPlayer().print(1, "You do not have enough space in your inventory.");
             c.getSession().write(CWvsContext.enableActions());
         }
     }
@@ -771,7 +768,7 @@ public class PlayersHandler {
         if (party == 1 && c.getPlayer().getParty() != null) {
             for (MaplePartyCharacter partymembers : c.getPlayer().getParty().getMembers()) {
                 if (c.getChannelServer().getPlayerStorage().getCharacterById(partymembers.getId()).getMapId() != 262000300) {
-                    c.getPlayer().dropMessage(1, "Please make sure all of your party members are in the same map.");
+                    c.getPlayer().print(1, "Please make sure all of your party members are in the same map.");
                     c.getSession().write(CWvsContext.enableActions());
                 }
             }
@@ -878,7 +875,7 @@ public class PlayersHandler {
         if (!c.getChannelServer().getPlayerStorage().getCharacterById(victim).getSkills().isEmpty() && GameConstants.isAdventurer(jobid)) {
             c.getSession().write(CField.viewSkills(c.getChannelServer().getPlayerStorage().getCharacterById(victim)));
         } else {
-            c.getPlayer().dropMessage(6, "You cannot take skills off non-adventurer's");
+            c.getPlayer().print(6, "You cannot take skills off non-adventurer's");
         }
     }
 

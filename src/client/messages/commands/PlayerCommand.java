@@ -22,7 +22,7 @@ import server.life.MapleMonster;
 import server.maps.MapleMap;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
-import tools.FileoutputUtil;
+import tools.Logger;
 import tools.StringUtil;
 import tools.packet.CWvsContext;
 
@@ -47,10 +47,10 @@ public class PlayerCommand {
             if (input <= ap) {
                 c.getPlayer().addaptobank(input);
                 c.getPlayer().setRemainingAp(ap - input);
-                c.getPlayer().dropMessage(5, "You now have " + c.getPlayer().getapinbank() + " ability points in your bank and " + c.getPlayer().getRemainingAp() + " ability points left. (Your ability points will show correctly when you relog)");
+                c.getPlayer().print(5, "You now have " + c.getPlayer().getapinbank() + " ability points in your bank and " + c.getPlayer().getRemainingAp() + " ability points left. (Your ability points will show correctly when you relog)");
                 return 1;
             }
-            c.getPlayer().dropMessage(5, "Please make sure that you have enough ability points to add into the bank.");
+            c.getPlayer().print(5, "Please make sure that you have enough ability points to add into the bank.");
             return 0;
 
         }
@@ -66,10 +66,10 @@ public class PlayerCommand {
             if (input <= inbank && input <= 32767 && final_ <= 32767) {
                 c.getPlayer().setapbank(inbank - input);
                 c.getPlayer().setRemainingAp(ap + input);
-                c.getPlayer().dropMessage(5, "You now have " + c.getPlayer().getapinbank() + " ability points in your bank and " + c.getPlayer().getRemainingAp() + " ability points left. (Your ability points will show correctly when you relog)");
+                c.getPlayer().print(5, "You now have " + c.getPlayer().getapinbank() + " ability points in your bank and " + c.getPlayer().getRemainingAp() + " ability points left. (Your ability points will show correctly when you relog)");
                 return 1;
             }
-            c.getPlayer().dropMessage(5, "Please make sure that you have enough ability points and not greater than 32767 to add into the bank.");
+            c.getPlayer().print(5, "Please make sure that you have enough ability points and not greater than 32767 to add into the bank.");
             return 0;
 
         }
@@ -80,11 +80,11 @@ public class PlayerCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (c.getPlayer().isInBlockedMap()) {
-                c.getPlayer().dropMessage(5, "You may not use this command in the current map.");
+                c.getPlayer().print(5, "You may not use this command in the current map.");
                 return 0;
             }
             if (c.getPlayer().getMapId() == GameConstants.JAIL) {
-                c.getPlayer().dropMessage(5, "You may not use this command while you are in jail.");
+                c.getPlayer().print(5, "You may not use this command while you are in jail.");
                 return 0;
             }
 
@@ -97,7 +97,7 @@ public class PlayerCommand {
                 if (c.getPlayer().getLeetness() == true) {
                     c.getPlayer().toggleLeetness();
                 } else {
-                    c.getPlayer().dropMessage(6, "You don't have enough mesos to use the leet tool.");
+                    c.getPlayer().print(6, "You don't have enough mesos to use the leet tool.");
                 }
                 return 0;
             }
@@ -114,7 +114,7 @@ public class PlayerCommand {
                 if (c.getPlayer().canHold(cards[i])) {
                     MapleInventoryManipulator.addById(c, cards[i], (short) 1, null);
                 } else {
-                    c.getPlayer().dropMessage(5, "Please leave more space for your inventory.");
+                    c.getPlayer().print(5, "Please leave more space for your inventory.");
                     return 0;
                 }
             }
@@ -130,7 +130,7 @@ public class PlayerCommand {
                 c.getPlayer().setChalkboard(StringUtil.joinStringFrom(splitted, 1));
                 return 1;
             }
-            c.getPlayer().dropMessage(6, "Your chalkboard must be less than or equal to 40 characters.");
+            c.getPlayer().print(6, "Your chalkboard must be less than or equal to 40 characters.");
             return 0;
         }
     }
@@ -140,8 +140,8 @@ public class PlayerCommand {
     //    @Override
     //    public int execute(MapleClient c, String[] splitted) {
     //        for (int i = 1; i <= ChannelServer.getChannelCount(); i++) {
-    //            c.getPlayer().dropMessage(6, "Channel" + i + ": " + ChannelServer.getInstance(i).getPlayerStorage().getAllCharacters().size());
-    //            c.getPlayer().dropMessage(6, ChannelServer.getInstance(i).getPlayerStorage().getOnlinePlayers(true));
+    //            c.getPlayer().print(6, "Channel" + i + ": " + ChannelServer.getInstance(i).getPlayerStorage().getAllCharacters().size());
+    //            c.getPlayer().print(6, ChannelServer.getInstance(i).getPlayerStorage().getOnlinePlayers(true));
     //        }
     //        return 1;
     //     }
@@ -154,7 +154,7 @@ public class PlayerCommand {
             c.removeClickedNPC();
             NPCScriptManager.getInstance().dispose(c);
             c.getSession().write(CWvsContext.enableActions());
-            c.getPlayer().dropMessage(6, "[Notice] You have been disposed.");
+            c.getPlayer().print(6, "[Notice] You have been disposed.");
             return 1;
         }
     }
@@ -260,23 +260,23 @@ public class PlayerCommand {
         public int execute(MapleClient c, String[] splitted) {
             for (int i : GameConstants.blockedMaps) {
                 if (c.getPlayer().getMapId() == i) {
-                    c.getPlayer().dropMessage(5, "You may not use this command in the current map.");
+                    c.getPlayer().print(5, "You may not use this command in the current map.");
                     return 0;
                 }
             }
             if (splitted.length < 2) {
-                c.getPlayer().dropMessage(6, "[Syntax] @go [map]. To view a list of locations that are available, use @town / @mob / @pq / @mob / @boss / @misc");
+                c.getPlayer().print(6, "[Syntax] @go [map]. To view a list of locations that are available, use @town / @mob / @pq / @mob / @boss / @misc");
             } else {
                 if (gotomaps.containsKey(splitted[1])) {
                     MapleMap target = c.getChannelServer().getMapFactory().getMap(gotomaps.get(splitted[1]));
                     if (target == null) {
-                        c.getPlayer().dropMessage(6, "Map does not exist.");
+                        c.getPlayer().print(6, "Map does not exist.");
                         return 0;
                     }
                     MaplePortal targetPortal = target.getPortal(0);
                     c.getPlayer().changeMap(target, targetPortal);
                 } else {
-                    c.getPlayer().dropMessage(6, "To view a list of locations that are available, use @town / @mob / @pq / @boss / @misc");
+                    c.getPlayer().print(6, "To view a list of locations that are available, use @town / @mob / @pq / @boss / @misc");
                 }
             }
             return 1;
@@ -286,15 +286,15 @@ public class PlayerCommand {
     public static class town extends CommandExecute {
 
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(5, ".::::::::::: Project Nexus Town Maps :::::::::::.");
-            c.getPlayer().dropMessage(5, "| ellin | edel | nlc | fm | home | showa |");
-            c.getPlayer().dropMessage(5, "| golden | amherst | south | orbis | el |");
-            c.getPlayer().dropMessage(5, "| ludi | omega | korean | aqua | leafre |");
-            c.getPlayer().dropMessage(5, "| mu | herb | pirate | ariant | magatia |");
-            c.getPlayer().dropMessage(5, "| singapore | malaysia | henesys | ellinia |");
-            c.getPlayer().dropMessage(5, "| elluel | perion | kerning | lith | sleepy |");
-            c.getPlayer().dropMessage(5, "| pirate | florina | ereve | rien | square |");
-            c.getPlayer().dropMessage(5, "| amoria | kampung | boat |");
+            c.getPlayer().print(5, ".::::::::::: Project Nexus Town Maps :::::::::::.");
+            c.getPlayer().print(5, "| ellin | edel | nlc | fm | home | showa |");
+            c.getPlayer().print(5, "| golden | amherst | south | orbis | el |");
+            c.getPlayer().print(5, "| ludi | omega | korean | aqua | leafre |");
+            c.getPlayer().print(5, "| mu | herb | pirate | ariant | magatia |");
+            c.getPlayer().print(5, "| singapore | malaysia | henesys | ellinia |");
+            c.getPlayer().print(5, "| elluel | perion | kerning | lith | sleepy |");
+            c.getPlayer().print(5, "| pirate | florina | ereve | rien | square |");
+            c.getPlayer().print(5, "| amoria | kampung | boat |");
             return 1;
         }
     }
@@ -302,9 +302,9 @@ public class PlayerCommand {
     public static class pq extends CommandExecute {
 
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(5, ".:::::::::::::::: Project Nexus Party Quest Maps ::::::::::::::::.");
-            c.getPlayer().dropMessage(5, "| dojo | monster | crimson | romeo | juliet | boss |");
-            c.getPlayer().dropMessage(5, "| haze | lord | kenta |");
+            c.getPlayer().print(5, ".:::::::::::::::: Project Nexus Party Quest Maps ::::::::::::::::.");
+            c.getPlayer().print(5, "| dojo | monster | crimson | romeo | juliet | boss |");
+            c.getPlayer().print(5, "| haze | lord | kenta |");
             return 1;
         }
     }
@@ -312,9 +312,9 @@ public class PlayerCommand {
     public static class mob extends CommandExecute {
 
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(5, ".:::::::::: Project Nexus Monster Maps ::::::::::.");
-            c.getPlayer().dropMessage(5, "| skeleton | scarecrow | clown | alien |");
-            c.getPlayer().dropMessage(5, "| lion1 | lion2 | lion3 | lion4 | lion5 |");
+            c.getPlayer().print(5, ".:::::::::: Project Nexus Monster Maps ::::::::::.");
+            c.getPlayer().print(5, "| skeleton | scarecrow | clown | alien |");
+            c.getPlayer().print(5, "| lion1 | lion2 | lion3 | lion4 | lion5 |");
             return 1;
         }
     }
@@ -322,9 +322,9 @@ public class PlayerCommand {
     public static class boss extends CommandExecute {
 
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(5, ".::::::::::::::::::::::: Project Nexus Boss Maps :::::::::::::::::::::::.");
-            c.getPlayer().dropMessage(5, "| pianus | pap | female | man | spooky | zakum | chaoszakum | vonleon |");
-            c.getPlayer().dropMessage(5, "| hilla | horntail | chaoshorntail | arkarium | cygnus | hillas | pinkbean |");
+            c.getPlayer().print(5, ".::::::::::::::::::::::: Project Nexus Boss Maps :::::::::::::::::::::::.");
+            c.getPlayer().print(5, "| pianus | pap | female | man | spooky | zakum | chaoszakum | vonleon |");
+            c.getPlayer().print(5, "| hilla | horntail | chaoshorntail | arkarium | cygnus | hillas | pinkbean |");
             return 1;
         }
     }
@@ -332,9 +332,9 @@ public class PlayerCommand {
     public static class misc extends CommandExecute {
 
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(5, ".:::: Project Nexus Miscellaneous Maps ::::.");
-            c.getPlayer().dropMessage(5, "| chryse | mushroom | haunted | ardent |");
-            c.getPlayer().dropMessage(5, "| six | guild | three | tera | jaguar |");
+            c.getPlayer().print(5, ".:::: Project Nexus Miscellaneous Maps ::::.");
+            c.getPlayer().print(5, "| chryse | mushroom | haunted | ardent |");
+            c.getPlayer().print(5, "| six | guild | three | tera | jaguar |");
             return 1;
         }
     }
@@ -342,25 +342,25 @@ public class PlayerCommand {
     public static class npc extends CommandExecute {
 
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(5, ".::::::::::::::::::::: Project Nexus NPC :::::::::::::::::::::.");
-            c.getPlayer().dropMessage(6, "@nx - Opens the NX Item NPC. [Aramia]");
-            c.getPlayer().dropMessage(6, "@trophy - Opens the event trophy exchanger NPC. [Agent W]");
-            c.getPlayer().dropMessage(6, "@chair - Opens the Chair Gachapon NPC. [Chair Gachapon]");
-            c.getPlayer().dropMessage(6, "@jq - Opens the Jumping Quest NPC. [Duey]");
-            c.getPlayer().dropMessage(6, "@daily - Opens the Daily Reward NPC. [Santa]");
-            c.getPlayer().dropMessage(6, "@craft - Opens the item NPC Crafter. [Cody]");
-            c.getPlayer().dropMessage(6, "@exchanger - Opens the item Exchanger NPC. [Papulatus]");
-            c.getPlayer().dropMessage(6, "@donor - Opens the Donor NPC. [Agent P]");
-            c.getPlayer().dropMessage(6, "@msi - Opens the MSI Maker NPC. [Agent Meow]");
-            c.getPlayer().dropMessage(6, "@jqp - Opens the Jumping Point Exchanger NPC. [Mr. Sandman]");
-            c.getPlayer().dropMessage(6, "@buynx - Opens the NX Seller NPC. [Ardin]");
-            c.getPlayer().dropMessage(6, "@bank - Opens the Bank NPC. [Eunice]");
-            c.getPlayer().dropMessage(6, "@stylist - Opens the all-in-one styler NPC. [KIN]");
-            c.getPlayer().dropMessage(6, "@job - Opens the job advancer NPC. [CreditUnion]");
-            c.getPlayer().dropMessage(6, "@shop - Opens the all-in-one common equip seller NPC. [Conor]");
-            c.getPlayer().dropMessage(6, "@skills - Opens the skills NPC. [Agatha]");
-            c.getPlayer().dropMessage(6, "@reward - Opens the Reborn Reward NPC. [Lime Balloon]");
-            c.getPlayer().dropMessage(6, "@vote - Opens the Vote Point Exchanger NPC. [Aqua Balloon]");
+            c.getPlayer().print(5, ".::::::::::::::::::::: Project Nexus NPC :::::::::::::::::::::.");
+            c.getPlayer().print(6, "@nx - Opens the NX Item NPC. [Aramia]");
+            c.getPlayer().print(6, "@trophy - Opens the event trophy exchanger NPC. [Agent W]");
+            c.getPlayer().print(6, "@chair - Opens the Chair Gachapon NPC. [Chair Gachapon]");
+            c.getPlayer().print(6, "@jq - Opens the Jumping Quest NPC. [Duey]");
+            c.getPlayer().print(6, "@daily - Opens the Daily Reward NPC. [Santa]");
+            c.getPlayer().print(6, "@craft - Opens the item NPC Crafter. [Cody]");
+            c.getPlayer().print(6, "@exchanger - Opens the item Exchanger NPC. [Papulatus]");
+            c.getPlayer().print(6, "@donor - Opens the Donor NPC. [Agent P]");
+            c.getPlayer().print(6, "@msi - Opens the MSI Maker NPC. [Agent Meow]");
+            c.getPlayer().print(6, "@jqp - Opens the Jumping Point Exchanger NPC. [Mr. Sandman]");
+            c.getPlayer().print(6, "@buynx - Opens the NX Seller NPC. [Ardin]");
+            c.getPlayer().print(6, "@bank - Opens the Bank NPC. [Eunice]");
+            c.getPlayer().print(6, "@stylist - Opens the all-in-one styler NPC. [KIN]");
+            c.getPlayer().print(6, "@job - Opens the job advancer NPC. [CreditUnion]");
+            c.getPlayer().print(6, "@shop - Opens the all-in-one common equip seller NPC. [Conor]");
+            c.getPlayer().print(6, "@skills - Opens the skills NPC. [Agatha]");
+            c.getPlayer().print(6, "@reward - Opens the Reborn Reward NPC. [Lime Balloon]");
+            c.getPlayer().print(6, "@vote - Opens the Vote Point Exchanger NPC. [Aqua Balloon]");
             return 1;
         }
     }
@@ -455,32 +455,32 @@ public class PlayerCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 2) {
-                c.getPlayer().dropMessage(5, "The integer you entered is invalid.");
+                c.getPlayer().print(5, "The integer you entered is invalid.");
                 return 0;
             }
             int change = 0;
             try {
                 change = Integer.parseInt(splitted[1]);
             } catch (NumberFormatException nfe) {
-                c.getPlayer().dropMessage(5, "The integer you entered is invalid.");
+                c.getPlayer().print(5, "The integer you entered is invalid.");
                 return 0;
             }
             if (change <= 0) {
-                c.getPlayer().dropMessage(5, "You must enter an integer that is greater than 0.");
+                c.getPlayer().print(5, "You must enter an integer that is greater than 0.");
                 return 0;
             }
             if (c.getPlayer().getRemainingAp() < change) {
-                c.getPlayer().dropMessage(5, "You don't have enough ability points to do this action.");
+                c.getPlayer().print(5, "You don't have enough ability points to do this action.");
                 return 0;
             }
             if (getStat(c.getPlayer()) + change > statLim) {
-                c.getPlayer().dropMessage(5, "The stat limititation is " + statLim + ".");
+                c.getPlayer().print(5, "The stat limititation is " + statLim + ".");
                 return 0;
             }
             setStat(c.getPlayer(), getStat(c.getPlayer()) + change);
             c.getPlayer().setRemainingAp((short) (c.getPlayer().getRemainingAp() - change));
             c.getPlayer().updateSingleStat(MapleStat.AVAILABLEAP, c.getPlayer().getRemainingAp());
-            c.getPlayer().dropMessage(5, StringUtil.makeEnumHumanReadable(stat.name()) + " has been raised by " + change + ".");
+            c.getPlayer().print(5, StringUtil.makeEnumHumanReadable(stat.name()) + " has been raised by " + change + ".");
             return 1;
         }
     }
@@ -493,12 +493,12 @@ public class PlayerCommand {
             for (final MapleMapObject monstermo : c.getPlayer().getMap().getMapObjectsInRange(c.getPlayer().getPosition(), 100000, Arrays.asList(MapleMapObjectType.MONSTER))) {
                 mob = (MapleMonster) monstermo;
                 if (mob.isAlive()) {
-                    c.getPlayer().dropMessage(6, "Monster " + mob.toString());
+                    c.getPlayer().print(6, "Monster " + mob.toString());
                     break; //only one
                 }
             }
             if (mob == null) {
-                c.getPlayer().dropMessage(6, "No monster was found.");
+                c.getPlayer().print(6, "No monster was found.");
             }
             return 1;
         }
@@ -700,7 +700,7 @@ public class PlayerCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (c.getPlayer().getMapId() != 800020400) {
-                c.getPlayer().dropMessage(5, "You may not use command outside of the Tag Battle Map");
+                c.getPlayer().print(5, "You may not use command outside of the Tag Battle Map");
                 return 0;
             }
             MapleMap map = c.getPlayer().getMap();
@@ -710,7 +710,7 @@ public class PlayerCommand {
                 if (playernear.isAlive() && playernear != c.getPlayer() && !playernear.isGM()) {
                     if (playernear.isAlive() && playernear != c.getPlayer() && !playernear.isGM()) {
                         playernear.updateSingleStat(MapleStat.HP, 0);
-                        playernear.dropMessage(5, "You have been tagged by " + c.getPlayer().getName());
+                        playernear.print(5, "You have been tagged by " + c.getPlayer().getName());
                         MapleMap target = c.getChannelServer().getMapFactory().getMap(910000000);
                         playernear.changeMap(target);
                     }
@@ -725,7 +725,7 @@ public class PlayerCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             c.getPlayer().saveToDB(false, false);
-            c.getPlayer().dropMessage(6, "[Notice] Your progress has been saved.");
+            c.getPlayer().print(6, "[Notice] Your progress has been saved.");
             return 1;
         }
     }
@@ -744,45 +744,45 @@ public class PlayerCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 4) { // Job start end
-                c.getPlayer().dropMessage(5, "[Syntax] @ranking [job] [start number] [end number]");
+                c.getPlayer().print(5, "[Syntax] @ranking [job] [start number] [end number]");
                 final StringBuilder builder = new StringBuilder("Job: ");
                 for (String b : RankingWorker.getJobCommands().keySet()) {
                     builder.append(b);
                     builder.append(" ");
                 }
-                c.getPlayer().dropMessage(5, builder.toString());
+                c.getPlayer().print(5, builder.toString());
             } else {
                 int start = 1, end = 10;
                 try {
                     start = Integer.parseInt(splitted[2]);
                     end = Integer.parseInt(splitted[3]);
                 } catch (NumberFormatException e) {
-                    c.getPlayer().dropMessage(5, "You didn't specify the start and end number correctly, the default values of 1 and 10 will be used.");
+                    c.getPlayer().print(5, "You didn't specify the start and end number correctly, the default values of 1 and 10 will be used.");
                 }
                 if (end < start || end - start > 10) {
-                    c.getPlayer().dropMessage(5, "End number must be greater, and end number must be within a range of 10 from the start number.");
+                    c.getPlayer().print(5, "End number must be greater, and end number must be within a range of 10 from the start number.");
                 } else {
                     final Integer job = RankingWorker.getJobCommand(splitted[1]);
                     if (job == null) {
-                        c.getPlayer().dropMessage(5, "Please use @ranking to check the job name lists.");
+                        c.getPlayer().print(5, "Please use @ranking to check the job name lists.");
                     } else {
                         final List<RankingInformation> ranks = RankingWorker.getRankingInfo(job.intValue());
                         if (ranks == null || ranks.size() <= 0) {
-                            c.getPlayer().dropMessage(5, "Please try again later.");
+                            c.getPlayer().print(5, "Please try again later.");
                         } else {
                             int num = 0;
                             for (RankingInformation rank : ranks) {
                                 if (rank.rank >= start && rank.rank <= end) {
                                     if (num == 0) {
-                                        c.getPlayer().dropMessage(6, "Rankings For " + splitted[1] + " - From " + start + " To " + end);
-                                        c.getPlayer().dropMessage(6, "--------------------------------------");
+                                        c.getPlayer().print(6, "Rankings For " + splitted[1] + " - From " + start + " To " + end);
+                                        c.getPlayer().print(6, "--------------------------------------");
                                     }
-                                    c.getPlayer().dropMessage(6, rank.toString());
+                                    c.getPlayer().print(6, rank.toString());
                                     num++;
                                 }
                             }
                             if (num == 0) {
-                                c.getPlayer().dropMessage(5, "No ranking was returned.");
+                                c.getPlayer().print(5, "No ranking was returned.");
                             }
                         }
                     }
@@ -807,16 +807,16 @@ public class PlayerCommand {
 
             MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(type);
             if (victim != null) {
-                c.getPlayer().dropMessage(5, victim.getName().toString() + " Stats Are :");
-                c.getPlayer().dropMessage(5, "Level: " + victim.getLevel());
-                c.getPlayer().dropMessage(6, "Reborns: " + c.getPlayer().getReborns() + "");
-                c.getPlayer().dropMessage(5, "Fames: " + victim.getFame() + " || Jumping Quest Points: " + victim.getJQPoints());
-                c.getPlayer().dropMessage(5, "STR: " + victim.getStat().getStr() + " || DEX: " + victim.getStat().getDex() + " || INT: " + victim.getStat().getInt() + " || LUK: " + victim.getStat().getLuk());
-                c.getPlayer().dropMessage(5, "Mesos: " + victim.getMeso() + " || Mesos In Bank: " + victim.getMesosInBank());
-                c.getPlayer().dropMessage(5, "Donor Points: " + victim.getPoints());
+                c.getPlayer().print(5, victim.getName().toString() + " Stats Are :");
+                c.getPlayer().print(5, "Level: " + victim.getLevel());
+                c.getPlayer().print(6, "Reborns: " + c.getPlayer().getReborns() + "");
+                c.getPlayer().print(5, "Fames: " + victim.getFame() + " || Jumping Quest Points: " + victim.getJQPoints());
+                c.getPlayer().print(5, "STR: " + victim.getStat().getStr() + " || DEX: " + victim.getStat().getDex() + " || INT: " + victim.getStat().getInt() + " || LUK: " + victim.getStat().getLuk());
+                c.getPlayer().print(5, "Mesos: " + victim.getMeso() + " || Mesos In Bank: " + victim.getMesosInBank());
+                c.getPlayer().print(5, "Donor Points: " + victim.getPoints());
                 return 1;
             } else {
-                c.getPlayer().dropMessage(5, type + " does not exist, please make sure that the character is in the same channel as you.");
+                c.getPlayer().print(5, type + " does not exist, please make sure that the character is in the same channel as you.");
                 return 0;
             }
         }
@@ -829,8 +829,8 @@ public class PlayerCommand {
             for (MapleCharacter mch : c.getChannelServer().getPlayerStorage().getAllCharacters()) {
                 mch.saveToDB(false, false);
             }
-            c.getPlayer().dropMessage(6, "All characters data has been saved!");
-            System.out.println(c.getPlayer().getName().toString() + " used @saveall to save all characters.");
+            c.getPlayer().print(6, "All characters data has been saved!");
+            Logger.println(c.getPlayer().getName().toString() + " used @saveall to save all characters.");
             return 1;
         }
     }
@@ -838,37 +838,37 @@ public class PlayerCommand {
     public static class help extends CommandExecute {
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(6, ".::::::::::::::::::::::::::::::: Project Nexus Player Commands ::::::::::::::::::::::::::::::::.");
-            c.getPlayer().dropMessage(6, "@str / dex / int / luk [amount] - Adds the amount of stats to STR / DEX / INT / LUK.");
-            c.getPlayer().dropMessage(6, "@check - Checks your information.");
-            c.getPlayer().dropMessage(6, "@check [name] - Checks the character information that you requested.");
-            c.getPlayer().dropMessage(6, "@monster - Displays the information on the closest monster for you.");
-            c.getPlayer().dropMessage(6, "@monsterdrops - Checks the monster drop information that is closest to you that you requested.");
-            c.getPlayer().dropMessage(6, "@cleardrops - Clears the drops on your current map.");
-            c.getPlayer().dropMessage(6, "@apbank - Shows more information about the ability points bank.");
-            c.getPlayer().dropMessage(6, "@online - Shows the online amount and connected characters.");
-            c.getPlayer().dropMessage(6, "@uptime - Checks Project Nexus Uptime.");
-            c.getPlayer().dropMessage(6, "@dispose - This helps to unstuck your character.");
-            c.getPlayer().dropMessage(6, "@codex - Fixes the annoying codex in new tab. [Use the cards]");
-            c.getPlayer().dropMessage(6, "@resetexp - Reset your exp to 0. [Use it only when necessary]");
-            c.getPlayer().dropMessage(6, "@expfix - Fix your exp when it is stucked. [Use it only when necessary]");
-            c.getPlayer().dropMessage(6, "@cancelbuff - Cancels your current active skills.");
-            c.getPlayer().dropMessage(6, "@leet - Toggles leet chat to on / off mode for 500 mesos each time.");
-            c.getPlayer().dropMessage(6, "@message [message] - Messages a Project Nexus staff with your enquires.");
-            c.getPlayer().dropMessage(6, "@chalk [message] - Displays text on a chalkboard that you input. [40 Characters Maximum]");
-            c.getPlayer().dropMessage(6, "@smega - Toggles super megaphone to on / off mode.");
-            c.getPlayer().dropMessage(6, "@event - Join an event if there's one.");
-            c.getPlayer().dropMessage(6, "@race - Join an race event if there's one.");
-            c.getPlayer().dropMessage(6, "@eventrules - Check the rules of the event.");
-            c.getPlayer().dropMessage(6, "@rebornhelp - View the reborn commands.");
-            c.getPlayer().dropMessage(6, "@go [map] - Go to the map that you requested.");
-            c.getPlayer().dropMessage(6, "@npc - Shows the lists of NPC that are available while using command.");
-            c.getPlayer().dropMessage(6, "@town - Shows the list of Town maps that are available.");
-            c.getPlayer().dropMessage(6, "@mob - Shows the list of Monster maps that are available.");
-            c.getPlayer().dropMessage(6, "@pq - Shows the list of Party Quest maps that are available.");
-            c.getPlayer().dropMessage(6, "@boss - Shows the list of Boss maps that are available.");
-            c.getPlayer().dropMessage(6, "@misc - Shows the list of miscellaneous maps that are available.");
-            // c.getPlayer().dropMessage(6, "@hardcore - You get 2x exp in exchange for your character being deleted when you die.");
+            c.getPlayer().print(6, ".::::::::::::::::::::::::::::::: Project Nexus Player Commands ::::::::::::::::::::::::::::::::.");
+            c.getPlayer().print(6, "@str / dex / int / luk [amount] - Adds the amount of stats to STR / DEX / INT / LUK.");
+            c.getPlayer().print(6, "@check - Checks your information.");
+            c.getPlayer().print(6, "@check [name] - Checks the character information that you requested.");
+            c.getPlayer().print(6, "@monster - Displays the information on the closest monster for you.");
+            c.getPlayer().print(6, "@monsterdrops - Checks the monster drop information that is closest to you that you requested.");
+            c.getPlayer().print(6, "@cleardrops - Clears the drops on your current map.");
+            c.getPlayer().print(6, "@apbank - Shows more information about the ability points bank.");
+            c.getPlayer().print(6, "@online - Shows the online amount and connected characters.");
+            c.getPlayer().print(6, "@uptime - Checks Project Nexus Uptime.");
+            c.getPlayer().print(6, "@dispose - This helps to unstuck your character.");
+            c.getPlayer().print(6, "@codex - Fixes the annoying codex in new tab. [Use the cards]");
+            c.getPlayer().print(6, "@resetexp - Reset your exp to 0. [Use it only when necessary]");
+            c.getPlayer().print(6, "@expfix - Fix your exp when it is stucked. [Use it only when necessary]");
+            c.getPlayer().print(6, "@cancelbuff - Cancels your current active skills.");
+            c.getPlayer().print(6, "@leet - Toggles leet chat to on / off mode for 500 mesos each time.");
+            c.getPlayer().print(6, "@message [message] - Messages a Project Nexus staff with your enquires.");
+            c.getPlayer().print(6, "@chalk [message] - Displays text on a chalkboard that you input. [40 Characters Maximum]");
+            c.getPlayer().print(6, "@smega - Toggles super megaphone to on / off mode.");
+            c.getPlayer().print(6, "@event - Join an event if there's one.");
+            c.getPlayer().print(6, "@race - Join an race event if there's one.");
+            c.getPlayer().print(6, "@eventrules - Check the rules of the event.");
+            c.getPlayer().print(6, "@rebornhelp - View the reborn commands.");
+            c.getPlayer().print(6, "@go [map] - Go to the map that you requested.");
+            c.getPlayer().print(6, "@npc - Shows the lists of NPC that are available while using command.");
+            c.getPlayer().print(6, "@town - Shows the list of Town maps that are available.");
+            c.getPlayer().print(6, "@mob - Shows the list of Monster maps that are available.");
+            c.getPlayer().print(6, "@pq - Shows the list of Party Quest maps that are available.");
+            c.getPlayer().print(6, "@boss - Shows the list of Boss maps that are available.");
+            c.getPlayer().print(6, "@misc - Shows the list of miscellaneous maps that are available.");
+            // c.getPlayer().print(6, "@hardcore - You get 2x exp in exchange for your character being deleted when you die.");
 
             return 1;
         }
@@ -884,13 +884,13 @@ public class PlayerCommand {
     public static class apbank extends CommandExecute {
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(5, "Ability Point Bank System");
-            c.getPlayer().dropMessage(5, "The ability point bank system acts as a bank for your ability points. You are able to deposit and withdraw ability points from your remaining ability points into the ability points bank and vice versa.");
-            c.getPlayer().dropMessage(5, "Once you reached the ability points capacity of 32767, you can simply deposit into your ability points bank and continue with your training.");
-            c.getPlayer().dropMessage(5, "If you would like to use the ability points, you can withdraw the ability points from your ability points bank.");
-            c.getPlayer().dropMessage(5, "Note: The ability points bank can hold up to " + Integer.MAX_VALUE + " ability points.");
-            c.getPlayer().dropMessage(5, "@depositapbank - Deposits the desired value from your remaining ability points into your ability points bank.");
-            c.getPlayer().dropMessage(5, "@withdrawapbank - Withdraws the desired value from your ability points bank into your remaining ability points.");
+            c.getPlayer().print(5, "Ability Point Bank System");
+            c.getPlayer().print(5, "The ability point bank system acts as a bank for your ability points. You are able to deposit and withdraw ability points from your remaining ability points into the ability points bank and vice versa.");
+            c.getPlayer().print(5, "Once you reached the ability points capacity of 32767, you can simply deposit into your ability points bank and continue with your training.");
+            c.getPlayer().print(5, "If you would like to use the ability points, you can withdraw the ability points from your ability points bank.");
+            c.getPlayer().print(5, "Note: The ability points bank can hold up to " + Integer.MAX_VALUE + " ability points.");
+            c.getPlayer().print(5, "@depositapbank - Deposits the desired value from your remaining ability points into your ability points bank.");
+            c.getPlayer().print(5, "@withdrawapbank - Withdraws the desired value from your ability points bank into your remaining ability points.");
             return 1;
         }
     }
@@ -906,7 +906,7 @@ public class PlayerCommand {
                 c.getPlayer().gainMeso(-price, true);
                 return 1;
             }
-                c.getPlayer().dropMessage(5, "Please make sure you are above level 10 and have 1,000,000 mesos to join the light side!");
+                c.getPlayer().print(5, "Please make sure you are above level 10 and have 1,000,000 mesos to join the light side!");
                 return 0;
             }
         }
@@ -921,7 +921,7 @@ public class PlayerCommand {
                 c.getPlayer().gainMeso(-price, true);
                 return 1;
             } 
-                c.getPlayer().dropMessage(5, "Please make sure you are above level 10 and have 1,000,000 mesos to join the dark side!");
+                c.getPlayer().print(5, "Please make sure you are above level 10 and have 1,000,000 mesos to join the dark side!");
                 return 0;
             }
         }*/
@@ -938,14 +938,14 @@ public class PlayerCommand {
      * String vv = "It will cost you 2,000,000 mesos per change and you must be above level 10.";
      * String ii = "Use @light to pick the light side.";
      * String jj = "Use @dark to pick the dark side.";
-     * c.getPlayer().dropMessage(5, dd);
-     * c.getPlayer().dropMessage(5, ee);
-     * c.getPlayer().dropMessage(5, ff);
-     * c.getPlayer().dropMessage(5, gg);
-     * c.getPlayer().dropMessage(5, hh);
-     * c.getPlayer().dropMessage(5, vv);
-     * c.getPlayer().dropMessage(5, ii);
-     * c.getPlayer().dropMessage(5, jj);
+     * c.getPlayer().print(5, dd);
+     * c.getPlayer().print(5, ee);
+     * c.getPlayer().print(5, ff);
+     * c.getPlayer().print(5, gg);
+     * c.getPlayer().print(5, hh);
+     * c.getPlayer().print(5, vv);
+     * c.getPlayer().print(5, ii);
+     * c.getPlayer().print(5, jj);
      * return 1;
      * }
      * }
@@ -953,7 +953,7 @@ public class PlayerCommand {
     public static class TradeHelp extends TradeExecute {
 
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(-2, "[System] @offerequip / @offeruse / @offersetup / @offeretc / @offercash [quantity] [name of the item]");
+            c.getPlayer().print(-2, "[System] @offerequip / @offeruse / @offersetup / @offeretc / @offercash [quantity] [name of the item]");
             return 1;
         }
     }
@@ -964,9 +964,9 @@ public class PlayerCommand {
 
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 3) {
-                c.getPlayer().dropMessage(-2, "[Syntax] [quantity] [name of item]");
+                c.getPlayer().print(-2, "[Syntax] [quantity] [name of item]");
             } else if (c.getPlayer().getLevel() < 30) {
-                c.getPlayer().dropMessage(-2, "[Error] : Only players that are greater than level 30 may use this command.");
+                c.getPlayer().print(-2, "[Error] : Only players that are greater than level 30 may use this command.");
             } else {
                 int quantity = 1;
                 try {
@@ -983,19 +983,19 @@ public class PlayerCommand {
                     }
                 }
                 if (found == null) {
-                    c.getPlayer().dropMessage(-2, "[Error] No such item was found (" + search + ")");
+                    c.getPlayer().print(-2, "[Error] No such item was found (" + search + ")");
                     return 0;
                 }
                 if (GameConstants.isPet(found.getItemId()) || GameConstants.isRechargable(found.getItemId())) {
-                    c.getPlayer().dropMessage(-2, "[Error] You may not trade this item while using this command.");
+                    c.getPlayer().print(-2, "[Error] You may not trade this item while using this command.");
                     return 0;
                 }
                 if (quantity > found.getQuantity() || quantity <= 0 || quantity > ii.getSlotMax(found.getItemId())) {
-                    c.getPlayer().dropMessage(-2, "[Error] Invalid quantity.");
+                    c.getPlayer().print(-2, "[Error] Invalid quantity.");
                     return 0;
                 }
                 if (!c.getPlayer().getTrade().setItems(c, found, (byte) -1, quantity)) {
-                    c.getPlayer().dropMessage(-2, "[Error] This item could not be placed.");
+                    c.getPlayer().print(-2, "[Error] This item could not be placed.");
                     return 0;
                 } else {
                     c.getPlayer().getTrade().chatAuto("[System] : " + c.getPlayer().getName() + " offered " + ii.getName(found.getItemId()) + " x " + quantity);
@@ -1045,16 +1045,16 @@ public class PlayerCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (c.getPlayer().getMapId() == GameConstants.JAIL) {
-                c.getPlayer().dropMessage(5, "You may not use this command while in the jail.");
+                c.getPlayer().print(5, "You may not use this command while in the jail.");
                 return 0;
             }
             if (c.getPlayer().getClient().getChannelServer().eventOn == false) {
-                c.getPlayer().dropMessage(6, "There is no event available currently.");
+                c.getPlayer().print(6, "There is no event available currently.");
             } else {
                 MapleMap EventMap = c.getChannelServer().getMapFactory().getMap(c.getPlayer().getClient().getChannelServer().eventMap);
                 MaplePortal EventPortal = EventMap.getPortal(0);
                 c.getPlayer().changeMap(EventMap, EventPortal);
-                c.getPlayer().dropMessage(6, "Welcome to the event! Please wait for further instruction from a Staff.");
+                c.getPlayer().print(6, "Welcome to the event! Please wait for further instruction from a Staff.");
             }
             return 1;
         }
@@ -1065,17 +1065,17 @@ public class PlayerCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (c.getPlayer().getMapId() == GameConstants.JAIL) {
-                c.getPlayer().dropMessage(5, "You may not use this command while in the jail.");
+                c.getPlayer().print(5, "You may not use this command while in the jail.");
                 return 0;
             }
             if (splitted[1].length() == 0) {
-                c.getPlayer().dropMessage(6, "Use words, silly.");
+                c.getPlayer().print(6, "Use words, silly.");
             }
             if (!c.getPlayer().getCheatTracker().GMSpam(60000, 3)) { // 1 Minute.
                 World.Broadcast.broadcastGMMessage(CWvsContext.serverNotice(6, "Channel " + c.getPlayer().getClient().getChannel() + " //Player " + c.getPlayer().getName() + ": " + StringUtil.joinStringFrom(splitted, 1)));
-                c.getPlayer().dropMessage(5, "Message has been sent");
+                c.getPlayer().print(5, "Message has been sent");
             } else {
-                c.getPlayer().dropMessage(6, "Please wait for another minute to use the @message command again.");
+                c.getPlayer().print(6, "Please wait for another minute to use the @message command again.");
             }
             return 1;
         }
@@ -1091,18 +1091,18 @@ public class PlayerCommand {
                         c.getPlayer().setEntryNumber(c.getChannelServer().getCompetitors() + 1);
                         c.getChannelServer().setCompetitors(c.getChannelServer().getCompetitors() + 1);
                         SkillFactory.getSkill(c.getPlayer().getGender() == 1 ? 80001006 : 80001005).getEffect(1).applyTo(c.getPlayer());
-                        c.getPlayer().dropMessage(0, "You have successfully joined the race! Your entry number is " + c.getPlayer().getEntryNumber() + ".");
-                        c.getPlayer().dropMessage(1, "If you cancel the mount buff, you will automatically leave the race.");
+                        c.getPlayer().print(0, "You have successfully joined the race! Your entry number is " + c.getPlayer().getEntryNumber() + ".");
+                        c.getPlayer().print(1, "If you cancel the mount buff, you will automatically leave the race.");
                     } else {
-                        c.getPlayer().dropMessage(0, "There is no event currently taking place.");
+                        c.getPlayer().print(0, "There is no event currently taking place.");
                         return 0;
                     }
                 } else {
-                    c.getPlayer().dropMessage(0, "You are not at Henesys.");
+                    c.getPlayer().print(0, "You are not at Henesys.");
                     return 0;
                 }
             } else {
-                c.getPlayer().dropMessage(0, "You have already joined this race.");
+                c.getPlayer().print(0, "You have already joined this race.");
                 return 0;
             }
             return 1;
@@ -1114,15 +1114,15 @@ public class PlayerCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (c.getChannelServer().getWaiting() || c.getChannelServer().getRace()) {
-                c.getPlayer().dropMessage(0, "The Official Rules And Regulations Of The Great Victoria Island Race :");
-                c.getPlayer().dropMessage(0, "-------------------------------------------------------------------------------------------");
-                c.getPlayer().dropMessage(0, "To win, you must race from Henesys all the way to Henesys going Eastward.");
-                c.getPlayer().dropMessage(0, "Rule #1: No cheating. You can't use any warping commands, or you'll be disqualified.");
-                c.getPlayer().dropMessage(0, "Rule #2: You may use any form of transportation. This includes Teleport, Flash Jump and Mounts.");
-                c.getPlayer().dropMessage(0, "Rule #3: You are not allowed to kill any monsters in your way. They are obstacles.");
-                c.getPlayer().dropMessage(0, "Rule #4: You may start from anywhere in Henesys, but moving on to the next map before the start won't work.");
+                c.getPlayer().print(0, "The Official Rules And Regulations Of The Great Victoria Island Race :");
+                c.getPlayer().print(0, "-------------------------------------------------------------------------------------------");
+                c.getPlayer().print(0, "To win, you must race from Henesys all the way to Henesys going Eastward.");
+                c.getPlayer().print(0, "Rule #1: No cheating. You can't use any warping commands, or you'll be disqualified.");
+                c.getPlayer().print(0, "Rule #2: You may use any form of transportation. This includes Teleport, Flash Jump and Mounts.");
+                c.getPlayer().print(0, "Rule #3: You are not allowed to kill any monsters in your way. They are obstacles.");
+                c.getPlayer().print(0, "Rule #4: You may start from anywhere in Henesys, but moving on to the next map before the start won't work.");
             } else {
-                c.getPlayer().dropMessage(0, "There is no event currently taking place.");
+                c.getPlayer().print(0, "There is no event currently taking place.");
                 return 0;
             }
             return 1;
@@ -1152,7 +1152,7 @@ public class PlayerCommand {
                     conStr.append(connected.get(i));
                 }
             }
-            c.getPlayer().dropMessage(6, conStr.toString());
+            c.getPlayer().print(6, conStr.toString());
             return 1;
         }
     }
@@ -1169,9 +1169,9 @@ public class PlayerCommand {
                 player.setExp(0);
                 player.updateSingleStat(MapleStat.LEVEL, 1);
                 player.updateSingleStat(MapleStat.EXP, 0);
-                player.dropMessage(5, "You now have " + player.getReborns() + " reborns!");
+                player.print(5, "You now have " + player.getReborns() + " reborns!");
             } else {
-                player.dropMessage(5, "You need to be at least level 200 to reborn.");
+                player.print(5, "You need to be at least level 200 to reborn.");
             }
             return 0;
         }
@@ -1262,7 +1262,7 @@ public class PlayerCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(6, "Project Nexus has been up for " + StringUtil.getReadableMillis(ChannelServer.serverStartTime, System.currentTimeMillis()));
+            c.getPlayer().print(6, "Project Nexus has been up for " + StringUtil.getReadableMillis(ChannelServer.serverStartTime, System.currentTimeMillis()));
             return 1;
         }
     }
@@ -1273,7 +1273,7 @@ public class PlayerCommand {
         public int execute(MapleClient c, String[] splitted) {
             MapleCharacter player = c.getPlayer();
             if (splitted.length < 3 || player.hasBlockedInventory()) {
-                c.getPlayer().dropMessage(5, "@sell [equip / use / setup / etc] [starting slot] [ending slot]");
+                c.getPlayer().print(5, "@sell [equip / use / setup / etc] [starting slot] [ending slot]");
                 return 0;
             } else {
                 MapleInventoryType type;
@@ -1286,7 +1286,7 @@ public class PlayerCommand {
                 } else if (splitted[1].equalsIgnoreCase("etc")) {
                     type = MapleInventoryType.ETC;
                 } else {
-                    c.getPlayer().dropMessage(5, "Invalid Format. Use @sell [equip / use / setup / etc> <starting slot] [ending slot]");
+                    c.getPlayer().print(5, "Invalid Format. Use @sell [equip / use / setup / etc> <starting slot] [ending slot]");
                     return 0;
                 }
                 MapleInventory inv = c.getPlayer().getInventory(type);
@@ -1302,7 +1302,7 @@ public class PlayerCommand {
                         MapleInventoryManipulator.removeFromSlot(c, type, i, inv.getItem(i).getQuantity(), true);
                     }
                 }
-                c.getPlayer().dropMessage(5, "You have sold your inventory item from slots " + start + " to " + end + ", and gained " + totalMesosGained + " mesos.");
+                c.getPlayer().print(5, "You have sold your inventory item from slots " + start + " to " + end + ", and gained " + totalMesosGained + " mesos.");
             }
             return 1;
         }

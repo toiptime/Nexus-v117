@@ -1070,7 +1070,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             }
         } catch (SQLException ess) {
             ess.printStackTrace();
-            System.out.println("Failed to load character.");
+            Logger.println("Failed to load character.");
             FileoutputUtil.outputFileError(FileoutputUtil.PacketEx_Log, ess);
         } finally {
             try {
@@ -2366,7 +2366,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         if (!silent) {
             stats.recalcLocalStats(this);
         }
-        //System.out.println("Effect registered. Effect: " + effect.getSourceId());
+        //Logger.println("Effect registered. Effect: " + effect.getSourceId());
     }
 
     public List<MapleBuffStat> getBuffStats(final MapleStatEffect effect, final long startTime) {
@@ -2530,7 +2530,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                 }
             }
         }
-        //System.out.println("Effect deregistered. Effect: " + effect.getSourceId());
+        //Logger.println("Effect deregistered. Effect: " + effect.getSourceId());
     }
 
     public void cancelBuffStats(MapleBuffStat... stat) {
@@ -3103,7 +3103,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     }
 
     public void changeMapBanish(final int mapid, final String portal, final String msg) {
-        dropMessage(5, msg);
+        print(5, msg);
         final MapleMap map = client.getChannelServer().getMapFactory().getMap(mapid);
         changeMap(map, map.getPortal(portal));
     }
@@ -3128,7 +3128,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             }
         } else if (client.getChannelServer().getRace() == true && client.getChannelServer().getWaiting() == false) {
             changeMapInternal(to, pto.getPosition(), CField.getWarpToMap(to, pto.getId(), this), null);
-            dropMessage(0, "[Notice] You are either cheating, or going the wrong direction. Your progress is not being counted.");
+            print(0, "[Notice] You are either cheating, or going the wrong direction. Your progress is not being counted.");
         } else {
             //End of Custom Race
             changeMapInternal(to, pto.getPosition(), CField.getWarpToMap(to, pto.getId(), this), null);
@@ -3150,7 +3150,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             d1 = map.getInstanceId();
         }
         //if (getAntiMacro().inProgress()) {
-        //    dropMessage(5, "You cannot use it in the middle of the Lie Detector Test.");
+        //    print(5, "You cannot use it in the middle of the Lie Detector Test.");
         //    return;
         //}
         final int nowmapid = map.getId();
@@ -3188,10 +3188,10 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         if (challenge != 0 && client.getChannelServer() != null) {
             final MapleCharacter chr = client.getChannelServer().getPlayerStorage().getCharacterById(challenge);
             if (chr != null) {
-                chr.dropMessage(6, getName() + " has denied your request.");
+                chr.print(6, getName() + " has denied your request.");
                 chr.setChallenge(0);
             }
-            dropMessage(6, "Denied the challenge.");
+            print(6, "Denied the challenge.");
             challenge = 0;
         }
     }
@@ -3273,7 +3273,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                         expandInventory((byte) 3, 4);
                         expandInventory((byte) 4, 4);
                         client.getSession().write(NPCPacket.getTutorialUI("UI/tutorial/evan/14/0"));
-                        dropMessage(5, "The Baby Dragon hatched and appears to have something to tell you. Click the Baby Dragon to start a conversation.");
+                        print(5, "The Baby Dragon hatched and appears to have something to tell you. Click the Baby Dragon to start a conversation.");
                     }
                 }
                 updateSingleStat(MapleStat.AVAILABLESP, 0); // we don't care the value here
@@ -3795,7 +3795,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             client.getSession().close();
         }
         if (statss != null) {
-            dropMessage(5, "You have been revived by Soul Stone.");
+            print(5, "You have been revived by Soul Stone.");
             getStat().setHp(((getStat().getMaxHp() / 100) * statss.getX()), this);
             setStance(0);
             changeMap(getMap(), getMap().getPortal(0));
@@ -3849,7 +3849,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             this.updateSingleStat(MapleStat.EXP, this.exp);
         }
         if (!stats.checkEquipDurabilitys(this, -100)) { // I guess this is how it works?
-            dropMessage(5, "An item has run out of durability but has no inventory room to go to.");
+            print(5, "An item has run out of durability but has no inventory room to go to.");
         } //lol
         if (pyramidSubway != null) {
             stats.setHp((short) 50, this);
@@ -4184,7 +4184,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                     if (!firstLoad) {
                         final Pair<Integer, String> replace = ii.replaceItemInfo(z.intValue());
                         if (replace != null && replace.left > 0 && replace.right.length() > 0) {
-                            dropMessage(5, replace.right);
+                            print(5, replace.right);
                         }
                     }
                 }
@@ -4834,7 +4834,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
         //if (map.getForceMove() > 0 && map.getForceMove() <= getLevel()) {
         //    changeMap(map.getReturnMap(), map.getReturnMap().getPortal(0));
-        //    dropMessage(-1, "You have been expelled from the map.");
+        //    print(-1, "You have been expelled from the map.");
         //}
     }
 
@@ -5436,10 +5436,10 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public void setSmega() {
         if (smega) {
             smega = false;
-            dropMessage(5, "You have set megaphone to disabled mode");
+            print(5, "You have set megaphone to disabled mode");
         } else {
             smega = true;
-            dropMessage(5, "You have set megaphone to enabled mode");
+            print(5, "You have set megaphone to enabled mode");
         }
     }
 
@@ -5668,7 +5668,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             ps.executeUpdate();
             ps.close();
         } catch (SQLException se) {
-            System.out.println("SQLException: " + se.getLocalizedMessage());
+            Logger.println("SQLException: " + se.getLocalizedMessage());
             se.printStackTrace();
         }
         //MapleFamily.setOfflineFamilyStatus(familyid, seniorid, junior1, junior2, currentrep, totalrep, id);
@@ -5684,7 +5684,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             case 1:
                 if (nxcredit + quantity < 0) {
                     if (show) {
-                        dropMessage(-1, "You have gained the maximum Cash. Cash will not be awarded until you spend them.");
+                        print(-1, "You have gained the maximum Cash. Cash will not be awarded until you spend them.");
                     }
                     return;
                 }
@@ -5696,7 +5696,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             case 4:
                 if (acash + quantity < 0) {
                     if (show) {
-                        dropMessage(-1, "You have gained the maximum Cash. Cash will not be awarded until you spend them.");
+                        print(-1, "You have gained the maximum Cash. Cash will not be awarded until you spend them.");
                     }
                     return;
                 }
@@ -5708,7 +5708,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             case 2:
                 if (maplepoints + quantity < 0) {
                     if (show) {
-                        dropMessage(-1, "You have gained the maximum Maple Points. Maple Point will not be awarded until you spend them.");
+                        print(-1, "You have gained the maximum Maple Points. Maple Point will not be awarded until you spend them.");
                     }
                     return;
                 }
@@ -5718,7 +5718,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                 break;
         }
         if (show && quantity != 0) {
-            dropMessage(-1, "You have " + (quantity > 0 ? "gained " : "lost ") + quantity + (type == 1 ? " cash." : " Maple Points."));
+            print(-1, "You have " + (quantity > 0 ? "gained " : "lost ") + quantity + (type == 1 ? " cash." : " Maple Points."));
             client.getSession().write(EffectPacket.showForeignEffect(20));
         }
     }
@@ -6354,33 +6354,33 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         this.lastres = lastres;
     }
 
-    public void dropMessage(int type, String message) {
+    public void print(int type, String m) {
         switch (type) {
             case -1:
-                client.getSession().write(CWvsContext.getTopMsg(message));
+                client.getSession().write(CWvsContext.getTopMsg(m));
                 break;
             case -2:
-                client.getSession().write(PlayerShopPacket.shopChat(message, 0)); //0 or what
+                client.getSession().write(PlayerShopPacket.shopChat(m, 0)); //0 or what
                 break;
             case -3:
-                client.getSession().write(CField.getChatText(getId(), message, isSuperGM(), 0)); //1 = hide
+                client.getSession().write(CField.getChatText(getId(), m, isSuperGM(), 0)); //1 = hide
                 break;
             case -4:
-                client.getSession().write(CField.getChatText(getId(), message, isSuperGM(), 1)); //1 = hide
+                client.getSession().write(CField.getChatText(getId(), m, isSuperGM(), 1)); //1 = hide
                 break;
             case -5:
-                client.getSession().write(CField.getGameMessage(message, false)); //pink
+                client.getSession().write(CField.getGameMessage(m, false)); //pink
                 break;
             case -6:
-                client.getSession().write(CField.getGameMessage(message, true)); //white bg
+                client.getSession().write(CField.getGameMessage(m, true)); //white bg
                 break;
             case -7:
-                client.getSession().write(CWvsContext.getMidMsg(message, false, 0));
+                client.getSession().write(CWvsContext.getMidMsg(m, false, 0));
                 break;
             case -8:
-                client.getSession().write(CWvsContext.getMidMsg(message, true, 0));
+                client.getSession().write(CWvsContext.getMidMsg(m, true, 0));
             default:
-                client.getSession().write(CWvsContext.serverNotice(type, message));
+                client.getSession().write(CWvsContext.serverNotice(type, m));
         }
     }
 
@@ -6542,10 +6542,10 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public void toggleLeetness() {
         if (Leetness) {
             this.Leetness = false;
-            dropMessage(6, "You have toggled off your leetness.");
+            print(6, "You have toggled off your leetness.");
         } else {
             this.Leetness = true;
-            dropMessage(6, "j00 w177 n40 sp34k 1337.");
+            print(6, "j00 w177 n40 sp34k 1337.");
         }
     }
 
@@ -6642,14 +6642,14 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             if (getMesosInBank() >= 9000000000000L) {
                 long difference = getMesosInBank() - 9000000000000L;
                 this.mesosInBank = 9000000000000L;
-                dropMessage(5, "You currently have 9 trillion mesos in the bank, so you cannot deposit anymore mesos.");
+                print(5, "You currently have 9 trillion mesos in the bank, so you cannot deposit anymore mesos.");
                 gainMeso((int) -(mesos - difference), true);
             } else {
                 gainMeso((int) -mesos, true);
-                dropMessage(5, "You have successfully deposited " + mesos + " mesos to your bank. You now have " + getMesosInBank() + " mesos saved.");
+                print(5, "You have successfully deposited " + mesos + " mesos to your bank. You now have " + getMesosInBank() + " mesos saved.");
             }
         } else {
-            dropMessage(5, "You do not have enough mesos to deposit to your bank.");
+            print(5, "You do not have enough mesos to deposit to your bank.");
         }
     }
 
@@ -6658,12 +6658,12 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             if (getMeso() + mesos <= Integer.MAX_VALUE) {
                 this.mesosInBank -= mesos;
                 gainMeso((int) mesos, true);
-                dropMessage(5, "You have successfully withdrawn " + mesos + " mesos from your bank. You now have " + getMesosInBank() + " mesos in your bank.");
+                print(5, "You have successfully withdrawn " + mesos + " mesos from your bank. You now have " + getMesosInBank() + " mesos in your bank.");
             } else {
-                dropMessage(5, "You cannot withdraw " + mesos + " mesos or else you will go over the limit for the maximum Mesos you can hold.");
+                print(5, "You cannot withdraw " + mesos + " mesos or else you will go over the limit for the maximum Mesos you can hold.");
             }
         } else {
-            dropMessage(5, "The bank requires you to deposit 1 meso to your bank as a one-time deposit fee. If you have 2 mesos saved in your bank, you can only withdraw 1 meso.");
+            print(5, "The bank requires you to deposit 1 meso to your bank as a one-time deposit fee. If you have 2 mesos saved in your bank, you can only withdraw 1 meso.");
         }
     }
 
@@ -6781,7 +6781,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             fairyExp = (byte) stats.equippedFairy;
         }
         if (equipped && fairyExp < stats.equippedFairy * 3 && stats.equippedFairy > 0) {
-            dropMessage(5, "The Fairy Pendant's experience points will increase to " + (fairyExp + stats.equippedFairy) + "% after another hour.");
+            print(5, "The Fairy Pendant's experience points will increase to " + (fairyExp + stats.equippedFairy) + "% after another hour.");
         }
         lastFairyTime = System.currentTimeMillis();
     }
@@ -6832,7 +6832,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public void doFairy() {
         if (fairyExp < stats.equippedFairy * 3 && stats.equippedFairy > 0) {
             fairyExp += stats.equippedFairy;
-            dropMessage(5, "The Fairy Pendant's EXP was boosted to " + fairyExp + "%.");
+            print(5, "The Fairy Pendant's EXP was boosted to " + fairyExp + "%.");
         }
         if (getGuildId() > 0) {
             World.Guild.gainGP(getGuildId(), 20, id);
@@ -7480,7 +7480,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             updateOneInfo(questid, "try", String.valueOf(Integer.parseInt(getOneInfo(questid, "try")) + 1));
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("tryPartyQuest error");
+            Logger.println("tryPartyQuest error");
         }
     }
 
@@ -7507,9 +7507,8 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("endPartyQuest error");
+            Logger.println("endPartyQuest error");
         }
-
     }
 
     public void havePartyQuest(final int itemId) {
@@ -8775,7 +8774,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             updateSingleStat(MapleStat.LUK, 4);
             updateSingleStat(MapleStat.AVAILABLEAP, this.remainingAp);
         } else {
-            dropMessage(6, "You have reached the maximum possible reborns (5).");
+            print(6, "You have reached the maximum possible reborns (5).");
         }
     }
 
@@ -8882,7 +8881,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
     public void unchooseStolenSkill(int skillID) { //base skill
         if (skillisCooling(20031208) || stolenSkills == null) {
-            dropMessage(-6, "[Loadout] The skill is under cooldown. Please wait.");
+            print(-6, "[Loadout] The skill is under cooldown. Please wait.");
             return;
         }
         final int job = GameConstants.getJobNumber(skillID / 10000);
@@ -8923,7 +8922,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
     public void chooseStolenSkill(int skillID) {
         if (skillisCooling(20031208) || stolenSkills == null) {
-            dropMessage(-6, "[Loadout] The skill is under cooldown. Please wait.");
+            print(-6, "[Loadout] The skill is under cooldown. Please wait.");
             return;
         }
         final Pair<Integer, Boolean> dummy = new Pair<Integer, Boolean>(skillID, false);
@@ -8941,7 +8940,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
     public void addStolenSkill(int skillID, int skillLevel) {
         if (skillisCooling(20031208) || stolenSkills == null) {
-            dropMessage(-6, "[Loadout] The skill is under cooldown. Please wait.");
+            print(-6, "[Loadout] The skill is under cooldown. Please wait.");
             return;
         }
         final Pair<Integer, Boolean> dummy = new Pair<Integer, Boolean>(skillID, true);
@@ -8971,7 +8970,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
     public void removeStolenSkill(int skillID) {
         if (skillisCooling(20031208) || stolenSkills == null) {
-            dropMessage(-6, "[Loadout] The skill is under cooldown. Please wait.");
+            print(-6, "[Loadout] The skill is under cooldown. Please wait.");
             return;
         }
         final int jobid = GameConstants.getJobNumber(skillID / 10000);
@@ -9052,31 +9051,31 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public void raceStatus() {
         switch (getProgress()) {
             case 4:
-                dropMessage(0, "[Notice]: You're off to a nice start!");
+                print(0, "[Notice]: You're off to a nice start!");
                 break;
             case 7:
-                dropMessage(0, "[Notice]: Nice, you made it to the Magician Town, Ellinia!");
+                print(0, "[Notice]: Nice, you made it to the Magician Town, Ellinia!");
                 break;
             case 8:
-                dropMessage(0, "[Notice]: You're making good progress.");
+                print(0, "[Notice]: You're making good progress.");
                 break;
             case 15:
-                dropMessage(0, "[Notice]: You are halfway there! Don't give up now!");
+                print(0, "[Notice]: You are halfway there! Don't give up now!");
                 break;
             case 16:
-                dropMessage(0, "[Notice]: You made it to the Desert Town of Perion!");
+                print(0, "[Notice]: You made it to the Desert Town of Perion!");
                 break;
             case 22:
-                dropMessage(0, "[Notice]: You made it to the hood, Kerning City.");
+                print(0, "[Notice]: You made it to the hood, Kerning City.");
                 break;
             case 24:
-                dropMessage(0, "[Notice]: You're almost there.");
+                print(0, "[Notice]: You're almost there.");
                 break;
             case 31:
-                dropMessage(0, "[Notice]: Just one more map!");
+                print(0, "[Notice]: Just one more map!");
                 break;
             case 32:
-                dropMessage(0, "[Notice]: You did it! You have won the race!");
+                print(0, "[Notice]: You did it! You have won the race!");
                 endRace();
                 break;
         }
@@ -9121,7 +9120,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         client.getSession().write(CWvsContext.updateAzwanFame(getHonourLevel(), getHonourExp(), true));
         client.getSession().write(CWvsContext.professionInfo("honorLeveling", 0, getHonourLevel(), getHonourNextExp()));
         if (show) {
-            dropMessage(5, "You outbained " + amount + " Honor EXP.");
+            print(5, "You outbained " + amount + " Honor EXP.");
         }
     }
 

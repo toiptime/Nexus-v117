@@ -22,6 +22,7 @@ import constants.GameConstants;
 import database.DatabaseConnection;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
+import tools.Logger;
 import tools.Pair;
 import tools.Triple;
 
@@ -69,7 +70,7 @@ public class CharacterCardFactory {
                 }
             }
         }*/
-        //System.out.println("Loaded " + (cardEffects.size() + uniqueEffects.size()) + " card effects");
+        //Logger.println("Loaded " + (cardEffects.size() + uniqueEffects.size()) + " card effects");
     }
 
     public final Triple<Integer, Integer, Integer> getCardSkill(final int job, final int level) { // cardid, skillid, skilllevel
@@ -129,7 +130,7 @@ public class CharacterCardFactory {
             ps.close();
 
         } catch (SQLException sqlE) {
-            System.out.println("Failed to load Character Cards. Reason: " + sqlE.toString());
+            Logger.println("Failed to load Character Cards. Reason: " + sqlE.toString());
         }
         for (int i = 1; i <= 6; i++) {
             if (cards.get(i) == null) {

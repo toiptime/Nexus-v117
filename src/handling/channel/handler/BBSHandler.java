@@ -46,7 +46,7 @@ public class BBSHandler {
         switch (action) {
             case 0: // start a new post
                 if (!c.getPlayer().getCheatTracker().canBBS()) {
-                    c.getPlayer().dropMessage(1, "You may only start a new thread every 60 seconds.");
+                    c.getPlayer().print(1, "You may only start a new thread every 60 seconds.");
                     return;
                 }
                 final boolean bEdit = slea.readByte() > 0;
@@ -84,7 +84,7 @@ public class BBSHandler {
                 break;
             case 4: // Reply
                 if (!c.getPlayer().getCheatTracker().canBBS()) {
-                    c.getPlayer().dropMessage(1, "You may only start a new reply every 60 seconds.");
+                    c.getPlayer().print(1, "You may only start a new reply every 60 seconds.");
                     return;
                 }
                 localthreadid = slea.readInt();

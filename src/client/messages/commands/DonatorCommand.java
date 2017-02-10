@@ -38,7 +38,7 @@ public class DonatorCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (c.getPlayer().getMapId() == 109020001 || c.getPlayer().getMapId() == 800020400) {
-                c.getPlayer().dropMessage(5, "You may not use this command in the current map.");
+                c.getPlayer().print(5, "You may not use this command in the current map.");
                 return 0;
             }
             c.getPlayer().getStat().heal(c.getPlayer());
@@ -51,7 +51,7 @@ public class DonatorCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(5, "You are on map " + c.getPlayer().getMap().getId());
+            c.getPlayer().print(5, "You are on map " + c.getPlayer().getMap().getId());
             return 1;
         }
     }
@@ -92,7 +92,7 @@ public class DonatorCommand {
                     eqs.put(new Pair<Short, Short>(item.getPosition(), item.getQuantity()), MapleInventoryType.CASH);
                 }
             } else {
-                c.getPlayer().dropMessage(6, "[Syntax] !clear [all / equipped / equip / use / setup / etc / cash]");
+                c.getPlayer().print(6, "[Syntax] !clear [all / equipped / equip / use / setup / etc / cash]");
             }
             for (Entry<Pair<Short, Short>, MapleInventoryType> eq : eqs.entrySet()) {
                 MapleInventoryManipulator.removeFromSlot(c, eq.getValue(), eq.getKey().left, eq.getKey().right, false, false);
@@ -108,15 +108,15 @@ public class DonatorCommand {
             if (c.getPlayer().getMap().getPermanentWeather() > 0) {
                 c.getPlayer().getMap().setPermanentWeather(0);
                 c.getPlayer().getMap().broadcastMessage(CField.removeMapEffect());
-                c.getPlayer().dropMessage(5, "Map weather has been disabled.");
+                c.getPlayer().print(5, "Map weather has been disabled.");
             } else {
                 final int weather = CommandProcessorUtil.getOptionalIntArg(splitted, 1, 5120000);
                 if (!MapleItemInformationProvider.getInstance().itemExists(weather) || weather / 10000 != 512) {
-                    c.getPlayer().dropMessage(5, "Invalid ID.");
+                    c.getPlayer().print(5, "Invalid ID.");
                 } else {
                     c.getPlayer().getMap().setPermanentWeather(weather);
                     c.getPlayer().getMap().broadcastMessage(CField.startMapEffect("", weather, false));
-                    c.getPlayer().dropMessage(5, "Map weather has been enabled.");
+                    c.getPlayer().print(5, "Map weather has been enabled.");
                 }
             }
             return 1;
@@ -134,11 +134,11 @@ public class DonatorCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (c.getPlayer().getMapId() == GameConstants.JAIL) {
-                c.getPlayer().dropMessage(6, "Even if you are a donator, You cannot warp out of jail.");
+                c.getPlayer().print(6, "Even if you are a donator, You cannot warp out of jail.");
                 return 0;
             }
             if (splitted.length < 2) {
-                c.getPlayer().dropMessage(6, "[Syntax] #go [map]. To view a list of locations that are available, use #locations");
+                c.getPlayer().print(6, "[Syntax] #go [map]. To view a list of locations that are available, use #locations");
             }
             return 1;
         }
@@ -147,8 +147,8 @@ public class DonatorCommand {
     public static class locations extends CommandExecute {
 
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(5, ".:::::::::::: Donor Locations ::::::::::::.");
-            c.getPlayer().dropMessage(5, "| donor |");
+            c.getPlayer().print(5, ".:::::::::::: Donor Locations ::::::::::::.");
+            c.getPlayer().print(5, "| donor |");
             return 1;
         }
     }
@@ -167,7 +167,7 @@ public class DonatorCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (c.getPlayer().getMapId() == GameConstants.JAIL) {
-                c.getPlayer().dropMessage(6, "Even if you are a donator, You cannot use the command #say in jail.");
+                c.getPlayer().print(6, "Even if you are a donator, You cannot use the command #say in jail.");
                 return 0;
             }
             if (splitted.length > 1) {
@@ -181,7 +181,7 @@ public class DonatorCommand {
                 sb.append(StringUtil.joinStringFrom(splitted, 1));
                 World.Broadcast.broadcastMessage(CWvsContext.serverNotice(c.getPlayer().isGM() ? 6 : 5, sb.toString()));
             } else {
-                c.getPlayer().dropMessage(6, "[Syntax] #say [message]");
+                c.getPlayer().print(6, "[Syntax] #say [message]");
                 return 0;
             }
             return 1;
@@ -193,7 +193,7 @@ public class DonatorCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 3) {
-                c.getPlayer().dropMessage(6, "[Syntax] #letter [green / red] [word]");
+                c.getPlayer().print(6, "[Syntax] #letter [green / red] [word]");
                 return 0;
             }
             int start, nstart;
@@ -204,13 +204,13 @@ public class DonatorCommand {
                 start = 3991000;
                 nstart = 3990009;
             } else {
-                c.getPlayer().dropMessage(6, "Unknown Color!");
+                c.getPlayer().print(6, "Unknown Color!");
                 return 0;
             }
             String splitString = StringUtil.joinStringFrom(splitted, 2);
             List<Integer> chars = new ArrayList<Integer>();
             splitString = splitString.toUpperCase();
-            // System.out.println(splitString);
+            // Logger.println(splitString);
             for (int i = 0; i < splitString.length(); i++) {
                 char chr = splitString.charAt(i);
                 if (chr == ' ') {
@@ -267,16 +267,16 @@ public class DonatorCommand {
     public static class help extends CommandExecute {
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(6, ".::::::::::::::::::::::::::::::: Project Nexus Donor Commands ::::::::::::::::::::::::::::::::.");
-            c.getPlayer().dropMessage(6, "#heal - Heals yourself.");
-            c.getPlayer().dropMessage(6, "#clear [equipped / equip / use / setup / etc / cash / all] - Cleans the trash in your inventory that you requested.");
-            c.getPlayer().dropMessage(6, "#weather - Toggle on / off the snow effect in your current map.");
-            c.getPlayer().dropMessage(6, "#go [map] - Go to the map that you requested.");
-            c.getPlayer().dropMessage(6, "#locations - Shows the list of locations that are available.");
-            c.getPlayer().dropMessage(6, "#clock [second] - Make the time effect in your current map.");
-            c.getPlayer().dropMessage(6, "#say [message] - Say message to the world of Project Nexus with a [Donor] tag.");
-            c.getPlayer().dropMessage(6, "#letter [red / green] [word] - Drops the letters that you have requested.");
-            c.getPlayer().dropMessage(6, "#loot - Loot all the items in your current map.");
+            c.getPlayer().print(6, ".::::::::::::::::::::::::::::::: Project Nexus Donor Commands ::::::::::::::::::::::::::::::::.");
+            c.getPlayer().print(6, "#heal - Heals yourself.");
+            c.getPlayer().print(6, "#clear [equipped / equip / use / setup / etc / cash / all] - Cleans the trash in your inventory that you requested.");
+            c.getPlayer().print(6, "#weather - Toggle on / off the snow effect in your current map.");
+            c.getPlayer().print(6, "#go [map] - Go to the map that you requested.");
+            c.getPlayer().print(6, "#locations - Shows the list of locations that are available.");
+            c.getPlayer().print(6, "#clock [second] - Make the time effect in your current map.");
+            c.getPlayer().print(6, "#say [message] - Say message to the world of Project Nexus with a [Donor] tag.");
+            c.getPlayer().print(6, "#letter [red / green] [word] - Drops the letters that you have requested.");
+            c.getPlayer().print(6, "#loot - Loot all the items in your current map.");
 
             return 1;
         }
