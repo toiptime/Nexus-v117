@@ -1,5 +1,7 @@
 package database;
 
+import tools.Logger;
+
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -37,6 +39,7 @@ public class DatabaseConnection {
                 System.err.println("Could not find the mysql driver" + e);
             }
 
+            //Get from properties file
             try {
                 Properties props = new Properties();
                 FileInputStream fileInputStream = new FileInputStream("database.properties");
@@ -45,14 +48,14 @@ public class DatabaseConnection {
 
                 host = props.getProperty("host");
                 user = props.getProperty("user");
-                password = props.getProperty("pass");
+                password = props.getProperty("password");
                 schema = props.getProperty("schema");
             } catch (Exception e){
                 System.err.println("Could not find database.properties");
             }
 
             try {
-                System.out.println("Attempting to connect to " + host + ":3306 as " + user + " to schema " + schema);
+                Logger.println("Attempting to connect to " + host + ":3306 as " + user + " to schema " + schema);
                 Connection con = DriverManager.getConnection("jdbc:mysql://" + host + ":3306/" + schema + "?autoReconnect=true", user, password);
                 allConnections.add(con);
                 return con;

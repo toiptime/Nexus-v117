@@ -34,7 +34,7 @@ public class ControllerCommand {
             if (splitted.length > 1) {
                 c.getSession().write(HexTool.getByteArrayFromHexString(StringUtil.joinStringFrom(splitted, 1)));
             } else {
-                c.getPlayer().dropMessage(0, "Please enter packet data");
+                c.getPlayer().print(0, "Please enter packet data");
             }
             return 1;
         }
@@ -49,7 +49,7 @@ public class ControllerCommand {
                 PreparedStatement ps = (PreparedStatement) con.prepareStatement(StringUtil.joinStringFrom(splitted, 1));
                 ps.executeUpdate();
             } catch (SQLException e) {
-                c.getPlayer().dropMessage(0, "Failed to execute SQL command.");
+                c.getPlayer().print(0, "Failed to execute SQL command.");
                 return 0;
             }
             return 1;
@@ -62,13 +62,13 @@ public class ControllerCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(6, "Shutting down...");
+            c.getPlayer().print(6, "Shutting down...");
             if (t == null || !t.isAlive()) {
                 t = new Thread(server.ShutdownServer.getInstance());
                 server.ShutdownServer.getInstance().shutdown();
                 t.start();
             } else {
-                c.getPlayer().dropMessage(6, "A shutdown thread is already in progress or shutdown has not been done. Please wait.");
+                c.getPlayer().print(6, "A shutdown thread is already in progress or shutdown has not been done. Please wait.");
             }
             return 1;
         }
@@ -82,7 +82,7 @@ public class ControllerCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             minutesLeft = Integer.parseInt(splitted[1]);
-            c.getPlayer().dropMessage(6, "Shutting down... in " + minutesLeft + " minutes");
+            c.getPlayer().print(6, "Shutting down... in " + minutesLeft + " minutes");
             if (ts == null && (t == null || !t.isAlive())) {
                 t = new Thread(server.ShutdownServer.getInstance());
                 ts = Timer.EventTimer.getInstance().register(new Runnable() {
@@ -99,7 +99,7 @@ public class ControllerCommand {
                     }
                 }, 60000);
             } else {
-                c.getPlayer().dropMessage(6, "A shutdown thread is already in progress or shutdown has not been done. Please wait.");
+                c.getPlayer().print(6, "A shutdown thread is already in progress or shutdown has not been done. Please wait.");
             }
             return 1;
         }
@@ -135,7 +135,7 @@ public class ControllerCommand {
                 }
                 File file = new File(filename);
                 if (file.exists()) {
-                    c.getPlayer().dropMessage(6, "The entered filename already exists, choose a different one");
+                    c.getPlayer().print(6, "The entered filename already exists, choose a different one");
                     return 0;
                 }
                 sampler.stop();

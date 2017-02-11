@@ -110,7 +110,7 @@ public class MapleNodes {
         for (int i : mni.edge) {
         b.append(i + ", ");
         }
-        System.out.println(b.toString());
+        Logger.println(b.toString());
         FileoutputUtil.log(FileoutputUtil.PacketEx_Log, b.toString());*/
         // output part end
 

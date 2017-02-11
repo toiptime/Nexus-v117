@@ -295,7 +295,7 @@ public abstract class AbstractPlayerStore extends MapleMapObject implements IMap
 
     @Override
     public void addItem(MaplePlayerShopItem item) {
-        //System.out.println("Adding item ... 2");
+        //Logger.println("Adding item ... 2");
         items.add(item);
     }
 

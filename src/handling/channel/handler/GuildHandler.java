@@ -87,21 +87,21 @@ public class GuildHandler {
         switch (slea.readByte()) { // AFTERSHOCK: most are +1
             case 0x02: // Create guild
                 if (c.getPlayer().getGuildId() > 0 || c.getPlayer().getMapId() != 200000301) {
-                    c.getPlayer().dropMessage(1, "You cannot create a new Guild while in one.");
+                    c.getPlayer().print(1, "You cannot create a new Guild while in one.");
                     return;
                 } else if (c.getPlayer().getMeso() < 500000) {
-                    c.getPlayer().dropMessage(1, "You do not have enough Mesos to create a Guild.");
+                    c.getPlayer().print(1, "You do not have enough Mesos to create a Guild.");
                     return;
                 }
                 final String guildName = slea.readMapleAsciiString();
 
                 if (!isGuildNameAcceptable(guildName)) {
-                    c.getPlayer().dropMessage(1, "The Guild name you have chosen is not accepted.");
+                    c.getPlayer().print(1, "The Guild name you have chosen is not accepted.");
                     return;
                 }
                 int guildId = World.Guild.createGuild(c.getPlayer().getId(), guildName);
                 if (guildId == 0) {
-                    c.getPlayer().dropMessage(1, "Please try again.");
+                    c.getPlayer().print(1, "Please try again.");
                     return;
                 }
                 c.getPlayer().gainMeso(-500000, true, true);
@@ -113,7 +113,7 @@ public class GuildHandler {
                 //c.getSession().write(GuildPacket.showGuildInfo(c.getPlayer()));
                 c.getSession().write(GuildPacket.newGuildInfo(c.getPlayer()));
                 World.Guild.gainGP(c.getPlayer().getGuildId(), 500, c.getPlayer().getId());
-                //c.getPlayer().dropMessage(1, "You have successfully created a Guild.");
+                //c.getPlayer().print(1, "You have successfully created a Guild.");
                 //respawnPlayer(c.getPlayer());
                 break;
             case 0x05: // invitation
@@ -122,7 +122,7 @@ public class GuildHandler {
                 }
                 String name = slea.readMapleAsciiString().toLowerCase();
                 if (invited.containsKey(name)) {
-                    c.getPlayer().dropMessage(5, "The player is currently handling an invitation.");
+                    c.getPlayer().print(5, "The player is currently handling an invitation.");
                     return;
                 }
                 final MapleGuildResponse mgr = MapleGuild.sendInvite(c, name);
@@ -150,7 +150,7 @@ public class GuildHandler {
                     c.getPlayer().setGuildRank((byte) 5);
                     int s = World.Guild.addGuildMember(c.getPlayer().getMGC());
                     if (s == 0) {
-                        c.getPlayer().dropMessage(1, "The Guild you are trying to join is already full.");
+                        c.getPlayer().print(1, "The Guild you are trying to join is already full.");
                         c.getPlayer().setGuildId(0);
                         return;
                     }
@@ -211,7 +211,7 @@ public class GuildHandler {
                 }
 
                 if (c.getPlayer().getMeso() < 1500000) {
-                    c.getPlayer().dropMessage(1, "You do not have enough Mesos to create an emblem.");
+                    c.getPlayer().print(1, "You do not have enough Mesos to create an emblem.");
                     return;
                 }
                 final short bg = slea.readShort();

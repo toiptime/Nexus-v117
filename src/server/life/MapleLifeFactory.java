@@ -23,6 +23,7 @@ package server.life;
 import constants.GameConstants;
 import provider.*;
 import server.Randomizer;
+import tools.Logger;
 import tools.Pair;
 import tools.StringUtil;
 
@@ -81,7 +82,7 @@ public class MapleLifeFactory {
                         }
                         questCount.put(id, z);
                     } else {
-                        System.out.println("Null questcountgroup");
+                        Logger.println("Null questcountgroup");
                     }
                 }
             }

@@ -9,6 +9,7 @@ import database.DatabaseConnection;
 import handling.world.World;
 import handling.world.guild.MapleBBSThread.MapleBBSReply;
 import server.MapleStatEffect;
+import tools.Logger;
 import tools.data.MaplePacketLittleEndianWriter;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
@@ -342,7 +343,7 @@ public class MapleGuild implements java.io.Serializable {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException se) {
-            System.out.println("SQLException: " + se.getLocalizedMessage());
+            Logger.println("SQLException: " + se.getLocalizedMessage());
             se.printStackTrace();
         }
     }

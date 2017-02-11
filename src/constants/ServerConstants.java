@@ -7,7 +7,7 @@ public class ServerConstants {
     public static final String MAPLE_PATCH = "2";
 
     public static final boolean BLOCK_CS = false;
-    public static final boolean Old_Maps = false; // Example: It will use old maple event's henesys instead of current one
+    public static final boolean OLD_MAPS = false; // Example: It will use old maple event's henesys instead of current one
     public static final boolean LOG_PACKETS = false;
     public static final boolean ADMIN_ONLY = false;
 
@@ -18,14 +18,14 @@ public class ServerConstants {
     public static final String SERVER_NAME = "Project Nexus";
     public static final String HOST = "127.0.0.1";
     public static final int CHANNELS = 4;
-
-    public static final String EVENTS = "ServerMessage,PinkZakumEntrance,PVP,CygnusBattle,ScarTarBattle,VonLeonBattle,Ghost,OrbisPQ,Romeo,Juliet,Pirate,Amoria,Ellin,CWKPQ,DollHouse,BossBalrog_EASY,BossBalrog_NORMAL,HorntailBattle,Nibergen,PinkBeanBattle,ZakumBattle,NamelessMagicMonster,Dunas,Dunas2,2095_tokyo,ZakumPQ,LudiPQ,KerningPQ,ProtectTylus,WitchTower_EASY,WitchTower_Med,WitchTower_Hard,Vergamot,ChaosHorntail,ChaosZakum,CoreBlaze,BossQuestEASY,BossQuestMed,BossQuestHARD,BossQuestHELL,Ravana_EASY,Ravana_HARD,Ravana_MED,GuildQuest,Aufhaven,Dragonica,Rex,MonsterPark,Kenta,ArkariumBattle,AswanOffSeason,HillaBattle,SpawnRoom";
+    //PVP, GuildQuest, AswanOffSeason
+    public static final String EVENTS = "ServerMessage,PinkZakumEntrance,CygnusBattle,ScarTarBattle,VonLeonBattle,Ghost,OrbisPQ,Romeo,Juliet,Pirate,Amoria,Ellin,CWKPQ,DollHouse,BossBalrog_EASY,BossBalrog_NORMAL,HorntailBattle,Nibergen,PinkBeanBattle,ZakumBattle,NamelessMagicMonster,Dunas,Dunas2,2095_tokyo,ZakumPQ,LudiPQ,KerningPQ,ProtectTylus,WitchTower_EASY,WitchTower_Med,WitchTower_Hard,Vergamot,ChaosHorntail,ChaosZakum,CoreBlaze,BossQuestEASY,BossQuestMed,BossQuestHARD,BossQuestHELL,Ravana_EASY,Ravana_HARD,Ravana_MED,Aufhaven,Dragonica,Rex,MonsterPark,Kenta,ArkariumBattle,HillaBattle,SpawnRoom";
 
     //Rates
     public static final int MESO_RATE = 4;
     public static final int DROP_RATE = 4;
     public static boolean TESPIA = false; // Used for activating GMST, or KMST.
-    public static boolean Use_Localhost = false; // true = Packets are logged, false = Others can connect to server
+    public static boolean USE_LOCALHOST = false; // true = Packets are logged, false = Others can connect to server
 
     public static final byte Class_Bonus_EXP(final int job) {
         switch (job) {
@@ -87,7 +87,6 @@ public class ServerConstants {
 
 
     public enum PlayerGMRank {
-
         NORMAL('@', 0),
         DONATOR('#', 1),
         INTERN('!', 2),

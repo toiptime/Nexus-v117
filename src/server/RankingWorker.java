@@ -26,7 +26,7 @@ public class RankingWorker {
     }
 
     public final static void run() {
-        //System.out.println("Loading Rankings::");
+        //Logger.println("Loading Rankings::");
         long startTime = System.currentTimeMillis();
         loadJobCommands();
         try {
@@ -37,7 +37,7 @@ public class RankingWorker {
             FileoutputUtil.outputFileError(FileoutputUtil.ScriptEx_Log, ex);
             System.err.println("Could not update Rankings");
         }
-        //System.out.println("Done loading Rankings in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds :::"); // Keep
+        //Logger.println("Done loading Rankings in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds :::"); // Keep
     }
 
     private static void updateRanking(Connection con) throws Exception {

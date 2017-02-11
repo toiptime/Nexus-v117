@@ -25,6 +25,7 @@ import server.life.MobSkillFactory;
 import server.life.PlayerNPC;
 import server.maps.MapleMapFactory;
 import server.quest.MapleQuest;
+import tools.Logger;
 import tools.MapleAESOFB;
 import tools.MockIOSession;
 
@@ -32,8 +33,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -48,15 +47,17 @@ public class Start {
     }
 
     public void run() throws InterruptedException {
-        if (isPortInUse(LoginServer.PORT) || isPortInUse(CashShopServer.PORT)){
-            System.out.println("Server is already running somewhere....");
+        if (isPortInUse(LoginServer.PORT) || isPortInUse(CashShopServer.PORT) || isPortInUse(Logger.PORT)){
+            Logger.println("Server is already running somewhere....");
             System.exit(0);
         }
 
-        if (ServerConstants.ADMIN_ONLY || ServerConstants.Use_Localhost)
-            System.out.println("Maintenance is currently active.");
+        Logger.startListeningServer();
+
+        if (ServerConstants.ADMIN_ONLY || ServerConstants.USE_LOCALHOST)
+            Logger.println("Maintenance is currently active.");
         if (ServerConstants.LOG_PACKETS)
-            System.out.println("Logging Packets.");
+            Logger.println("Logging Packets.");
 
         try {
             final PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE accounts SET loggedin = 0");
@@ -68,7 +69,7 @@ public class Start {
 
         World.init();
 
-        System.out.println("Server Rates: " +
+        Logger.println("Server Rates: " +
                 "Exp " + WorldConstants.Servers.Scania.getExp() +
                 " / Meso " + WorldConstants.Servers.Scania.getMeso() +
                 " / Drop " + WorldConstants.Servers.Scania.getDrop());
@@ -81,7 +82,7 @@ public class Start {
             }
         }
         if (!encryptionfound)
-            System.out.println("System could not locate encryption for the current version, so it is using the latest Encryption");
+            Logger.println("System could not locate encryption for the current version, so it is using the latest Encryption");
 
         WorldTimer.getInstance().start();
         EtcTimer.getInstance().start();
@@ -90,47 +91,67 @@ public class Start {
         EventTimer.getInstance().start();
         BuffTimer.getInstance().start();
         PingTimer.getInstance().start();
+
         int i = 0;
-        updateProgress(i += 5);
+        updateProgress(i += 5,"Guild Rankings");
         MapleGuildRanking.getInstance().load();
-        updateProgress(i += 5);
+
+        updateProgress(i += 5, "Guilds");
         MapleGuild.loadAll();
-        updateProgress(i += 5);
+
+        updateProgress(i += 5, "Family");
         MapleFamily.loadAll();
-        updateProgress(i += 5);
+
+        updateProgress(i += 5, "Quests");
         MapleLifeFactory.loadQuestCounts();
-        updateProgress(i += 5);
+
+        updateProgress(i += 5, "Quest Init");
         MapleQuest.initQuests();
-        updateProgress(i += 5);
+
+        updateProgress(i += 5, "ETC Items");
         MapleItemInformationProvider.getInstance().runEtc();
-        updateProgress(i += 5);
+
+        updateProgress(i += 5, "Monsters");
         MapleMonsterInformationProvider.getInstance().load();
-        updateProgress(i += 5);
+
+        updateProgress(i += 5, "Items");
         MapleItemInformationProvider.getInstance().runItems();
-        updateProgress(i += 5);
+
+        updateProgress(i += 5, "Skill Factory");
         SkillFactory.load();
-        updateProgress(i += 5);
+
+        updateProgress(i += 5, "Login Information Provider");
         LoginInformationProvider.getInstance();
-        updateProgress(i += 5);
+
+        updateProgress(i += 5, "Random Rewards");
         RandomRewards.load();
-        updateProgress(i += 5);
+
+        updateProgress(i += 5, "Maple OX Quiz Factory");
         MapleOxQuizFactory.getInstance();
-        updateProgress(i += 5);
+
+        updateProgress(i += 5, "Maple Carnival");
         MapleCarnivalFactory.getInstance();
-        updateProgress(i += 5);
+
+        updateProgress(i += 5, "Character Card Factory");
         CharacterCardFactory.getInstance().initialize();
-        updateProgress(i += 5);
+
+        updateProgress(i += 5, "Monster Skills");
         MobSkillFactory.getInstance();
-        updateProgress(i += 5);
+
+        updateProgress(i += 5, "Speed Runner");
         SpeedRunner.loadSpeedRuns();
-        updateProgress(i += 5);
+
+        updateProgress(i += 5, "MTS Storage Handler");
         MTSStorage.load();
-        updateProgress(i += 5);
+
+        updateProgress(i += 5, "Inventory Identifier");
         MapleInventoryIdentifier.getInstance();
-        updateProgress(i += 5);
+
+        updateProgress(i += 5, "Map Factory");
         MapleMapFactory.loadCustomLife();
-        updateProgress(i += 5);
-        System.out.println("\n");
+
+        updateProgress(i += 5, "Complete");
+        Logger.println("\n");
 
         Connection con = DatabaseConnection.getConnection();
         PreparedStatement ps;
@@ -155,27 +176,23 @@ public class Start {
         LoginServer.setOn();
         RankingWorker.run();
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        final byte ivRecv[] = new byte[]{(byte) Randomizer.nextInt(255), (byte) Randomizer.nextInt(255), (byte) Randomizer.nextInt(255), (byte) Randomizer.nextInt(255)};
-        final byte ivSend[] = new byte[]{(byte) Randomizer.nextInt(255), (byte) Randomizer.nextInt(255), (byte) Randomizer.nextInt(255), (byte) Randomizer.nextInt(255)};
-
-        final MapleClient c = new MapleClient(
-                new MapleAESOFB(ivSend, (short) (0xFFFF - ServerConstants.MAPLE_VERSION)), // Sent Cypher
-                new MapleAESOFB(ivRecv, ServerConstants.MAPLE_VERSION), // Recv Cypher
-                new MockIOSession());
-        //c.setChannel(1);
-        MapleCharacter chr = MapleCharacter.loadCharFromDB(1, c, false);//Character ID 1 is the system
-        c.setPlayer(chr);
+        //Set up fake user to use commands
+        final MapleClient fakeClient = new MapleClient(null, null, new MockIOSession());
+        fakeClient.setChannel(-1);
+        MapleCharacter chr = MapleCharacter.loadCharFromDB(1, fakeClient, false);//Character ID 1 is the system
+        fakeClient.setPlayer(chr);
         chr.setMap(180000001);
-        System.out.println("\nProject Nexus was launched successfully in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds");
 
+        Logger.println("\nProject Nexus was launched successfully in %d seconds", (System.currentTimeMillis() - startTime) / 1000);
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
             try {
                 System.out.print('$');
                 String commandLine = br.readLine();
-                CommandProcessor.processCommand(c, commandLine, ServerConstants.CommandType.NORMAL);
+                CommandProcessor.processCommand(fakeClient, commandLine, ServerConstants.CommandType.NORMAL);
             }catch(IOException e) {
-                System.out.println("Command error");
+                Logger.println("Command error");
             }
         }
     }
@@ -187,8 +204,11 @@ public class Start {
             server.ShutdownServer.getInstance().run();
         }
     }
-    
+
     public static void updateProgress(float progressPercentage) {
+        updateProgress(progressPercentage, "");
+    }
+    public static void updateProgress(float progressPercentage, String message) {
         int p = (int) (progressPercentage / 2);
 
         System.out.print("\r[");
@@ -197,7 +217,7 @@ public class Start {
 
         for (; p < 50; p++)
             System.out.print(" ");
-        System.out.print("] " + (byte) progressPercentage + "%");
+        System.out.print("] " + (byte) progressPercentage + "% (" + message + ")");
     }
 
     private boolean isPortInUse(int port) {

@@ -3,11 +3,6 @@ package client.messages.commands;
 import client.MapleClient;
 import constants.ServerConstants.CommandType;
 
-/**
- * Interface for the executable part of a {@link CommandObject}.
- *
- * @author Emilyx3
- */
 public abstract class CommandExecute {
 
     /**

@@ -945,7 +945,7 @@ public class MTSCSPacket {
         // 67: This item cannot be\r\npurchased by anyone under 7.
         // 68: This item cannot be\r\nreceived by anyone under 7.
         // 66: You can no longer purchase or gift that Item of the Day.
-        // 70: NX use is restricted.\r\nPlease change your settings in the NX Security Settings menu\r\nin the Nexon Portal My Info section.
+        // 70: NX use is restricted.\r\nPlease change your settings in the NX Security Settings menu\r\nin the Nexon Portal My INFO section.
         // 74: This item is not currently for sale.
         // 81: You have too many Cash Items.\r\nPlease clear 1 Cash slot and try again.
         // 90: You have exceeded the purchase limit for this item.\r\nYou cannot buy anymore.

@@ -39,6 +39,7 @@ import server.life.MapleNPC;
 import server.maps.MapScriptMethods;
 import server.quest.MapleQuest;
 import tools.FileoutputUtil;
+import tools.Logger;
 import tools.Pair;
 import tools.data.LittleEndianAccessor;
 import tools.data.MaplePacketLittleEndianWriter;
@@ -195,7 +196,7 @@ public class NPCHandler {
                 if (GameConstants.canForfeit(q.getId())) {
                     q.forfeit(chr);
                 } else {
-                    chr.dropMessage(1, "You may not forfeit this quest.");
+                    chr.print(1, "You may not forfeit this quest.");
                 }
                 break;
             }
@@ -238,7 +239,7 @@ public class NPCHandler {
                 if (item != null) {
                     if (!MapleInventoryManipulator.checkSpace(c, item.getItemId(), item.getQuantity(), item.getOwner())) {
                         storage.store(item);
-                        chr.dropMessage(1, "Your inventory is full");
+                        chr.print(1, "Your inventory is full");
                     } else {
                         MapleInventoryManipulator.addFromDrop(c, item, false);
                         storage.sendTakenOut(c, GameConstants.getInventoryType(item.getItemId()));
@@ -269,7 +270,7 @@ public class NPCHandler {
                 }
 
                 if (chr.getMeso() < 100) {
-                    chr.dropMessage(1, "You don't have enough mesos to store the item");
+                    chr.print(1, "You don't have enough mesos to store the item");
                 } else {
                     Item item = chr.getInventory(type).getItem(slot).copy();
 
@@ -349,7 +350,7 @@ public class NPCHandler {
                 break;
             }
             default:
-                System.out.println("Unhandled Storage mode : " + mode);
+                Logger.println("Unhandled Storage mode : " + mode);
                 break;
         }
     }
@@ -594,7 +595,7 @@ public class NPCHandler {
                 c.removeClickedNPC();
                 NPCScriptManager.getInstance().dispose(c);
                 c.getSession().write(CWvsContext.enableActions());
-                //c.getPlayer().dropMessage(-1, "You already are talking to this NPC. Use @ea if this is not intended.");
+                //c.getPlayer().print(-1, "You already are talking to this NPC. Use @ea if this is not intended.");
             }
             return (Invocable) engine;
         } catch (Exception e) {

@@ -25,6 +25,7 @@ import server.life.MapleMonster;
 import server.maps.MapleMap;
 import server.maps.MapleMapItem;
 import tools.CollectionUtil;
+import tools.Logger;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
 import tools.packet.CWvsContext.*;
@@ -387,7 +388,7 @@ public class World {
                 if (ch > 0) {
                     MapleCharacter chr = ChannelServer.getInstance(ch).getPlayerStorage().getCharacterByName(partychar.getName());
                     if (chr != null) { // Extra check just in case
-                        chr.dropMessage(5, chattext);
+                        chr.print(5, chattext);
                     }
                 }
             }
@@ -1165,7 +1166,7 @@ public class World {
         }
 
         public static void save() {
-            System.out.println("Saving guilds...");
+            Logger.println("Saving guilds...");
             lock.writeLock().lock();
             try {
                 for (MapleGuild a : guilds.values()) {
@@ -1228,7 +1229,7 @@ public class World {
         public static void setGuildAndRank(int cid, int guildid, int rank, int contribution, int alliancerank) {
             int ch = Find.findChannel(cid);
             if (ch == -1) {
-                // System.out.println("ERROR: cannot find player in given channel");
+                // Logger.println("ERROR: cannot find player in given channel");
                 return;
             }
             MapleCharacter mc = getStorage(ch).getCharacterById(cid);
@@ -1344,7 +1345,7 @@ public class World {
             } finally {
                 lock.writeLock().unlock();
             }
-            //System.out.println("Char added: " + id + " " + name + " to channel " + channel);
+            //Logger.println("Char added: " + id + " " + name + " to channel " + channel);
         }
 
         public static void forceDeregister(int id) {
@@ -1354,7 +1355,7 @@ public class World {
             } finally {
                 lock.writeLock().unlock();
             }
-            //System.out.println("Char removed: " + id);
+            //Logger.println("Char removed: " + id);
         }
 
         public static void forceDeregister(String id) {
@@ -1364,7 +1365,7 @@ public class World {
             } finally {
                 lock.writeLock().unlock();
             }
-            //System.out.println("Char removed: " + id);
+            //Logger.println("Char removed: " + id);
         }
 
         public static void forceDeregister(int id, String name) {
@@ -1375,7 +1376,7 @@ public class World {
             } finally {
                 lock.writeLock().unlock();
             }
-            //System.out.println("Char removed: " + id + " " + name);
+            //Logger.println("Char removed: " + id + " " + name);
         }
 
         public static int findChannel(int id) {
@@ -1675,7 +1676,7 @@ public class World {
         }
 
         public static void save() {
-            System.out.println("Saving alliances...");
+            Logger.println("Saving alliances...");
             lock.writeLock().lock();
             try {
                 for (MapleGuildAlliance a : alliances.values()) {
@@ -1744,7 +1745,7 @@ public class World {
         }
 
         public static void save() {
-            System.out.println("Saving families...");
+            Logger.println("Saving families...");
             lock.writeLock().lock();
             try {
                 for (MapleFamily a : families.values()) {
@@ -1758,7 +1759,7 @@ public class World {
         public static void setFamily(int familyid, int seniorid, int junior1, int junior2, int currentrep, int totalrep, int cid) {
             int ch = Find.findChannel(cid);
             if (ch == -1) {
-                // System.out.println("ERROR: cannot find player in given channel");
+                // Logger.println("ERROR: cannot find player in given channel");
                 return;
             }
             MapleCharacter mc = getStorage(ch).getCharacterById(cid);
@@ -1807,7 +1808,7 @@ public class World {
                 //s.append(c + i).append(" ");
             }
             //s.append(".");
-            //System.out.println(s.toString());
+            //Logger.println(s.toString());
         }
 
         @Override

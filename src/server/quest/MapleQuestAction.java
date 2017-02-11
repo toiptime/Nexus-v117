@@ -279,8 +279,8 @@ public class MapleQuestAction implements Serializable {
                         final String name = MapleItemInformationProvider.getInstance().getName(id);
                         if (id / 10000 == 114 && name != null && name.length() > 0) { //medal
                             final String msg = "You have attained the Title <" + name + ">";
-                            c.dropMessage(-1, msg);
-                            c.dropMessage(5, msg);
+                            c.print(-1, msg);
+                            c.print(5, msg);
                         }
                         MapleInventoryManipulator.addById(c.getClient(), id, count, "", null, period, "Obtained from quest " + quest.getId() + " on " + FileoutputUtil.CurrentReadable_Date());
                         c.getClient().getSession().write(InfoPacket.getShowItemGain(id, count, true));
@@ -348,7 +348,7 @@ public class MapleQuestAction implements Serializable {
                 MapleItemInformationProvider.getInstance().getItemEffect(tobuff).applyTo(c);
                 break;
             case infoNumber: {
-//		System.out.println("quest : "+intStore+"");
+//		Logger.println("quest : "+intStore+"");
 //		MapleQuest.getInstance(intStore).forceComplete(c, 0);
                 break;
             }
@@ -430,12 +430,12 @@ public class MapleQuestAction implements Serializable {
                     final short count = (short) item.count;
                     if (count < 0) { // Remove items
                         if (!c.haveItem(id, count, false, true)) {
-                            c.dropMessage(1, "You are short of some item to complete quest.");
+                            c.print(1, "You are short of some item to complete quest.");
                             return false;
                         }
                     } else { // add items
                         if (MapleItemInformationProvider.getInstance().isPickupRestricted(id) && c.haveItem(id, 1, true, false)) {
-                            c.dropMessage(1, "You already have this item : " + MapleItemInformationProvider.getInstance().getName(id));
+                            c.print(1, "You already have this item : " + MapleItemInformationProvider.getInstance().getName(id));
                             return false;
                         }
                         switch (GameConstants.getInventoryType(id)) {
@@ -458,19 +458,19 @@ public class MapleQuestAction implements Serializable {
                     }
                 }
                 if (c.getInventory(MapleInventoryType.EQUIP).getNumFreeSlot() < eq) {
-                    c.dropMessage(1, "Please make some space for your Equip Inventory.");
+                    c.print(1, "Please make some space for your Equip Inventory.");
                     return false;
                 } else if (c.getInventory(MapleInventoryType.USE).getNumFreeSlot() < use) {
-                    c.dropMessage(1, "Please make some space for your Use Inventory.");
+                    c.print(1, "Please make some space for your Use Inventory.");
                     return false;
                 } else if (c.getInventory(MapleInventoryType.SETUP).getNumFreeSlot() < setup) {
-                    c.dropMessage(1, "Please make some space for your Setup Inventory.");
+                    c.print(1, "Please make some space for your Setup Inventory.");
                     return false;
                 } else if (c.getInventory(MapleInventoryType.ETC).getNumFreeSlot() < etc) {
-                    c.dropMessage(1, "Please make some space for your Etc Inventory.");
+                    c.print(1, "Please make some space for your Etc Inventory.");
                     return false;
                 } else if (c.getInventory(MapleInventoryType.CASH).getNumFreeSlot() < cash) {
-                    c.dropMessage(1, "Please make some space for your Cash Inventory.");
+                    c.print(1, "Please make some space for your Cash Inventory.");
                     return false;
                 }
                 return true;
@@ -478,10 +478,10 @@ public class MapleQuestAction implements Serializable {
             case money: {
                 final int meso = intStore;
                 if (c.getMeso() + meso < 0) { // Giving, overflow
-                    c.dropMessage(1, "Mesos has exceed the maximum amount of 2,147,483,647.");
+                    c.print(1, "Mesos has exceed the maximum amount of 2,147,483,647.");
                     return false;
                 } else if (meso < 0 && c.getMeso() < Math.abs(meso)) { //remove meso
-                    c.dropMessage(1, "Insufficient Mesos.");
+                    c.print(1, "Insufficient Mesos.");
                     return false;
                 }
                 return true;
@@ -534,8 +534,8 @@ public class MapleQuestAction implements Serializable {
                         final String name = MapleItemInformationProvider.getInstance().getName(id);
                         if (id / 10000 == 114 && name != null && name.length() > 0) { //medal
                             final String msg = "You have attained the Title <" + name + ">";
-                            c.dropMessage(-1, msg);
-                            c.dropMessage(5, msg);
+                            c.print(-1, msg);
+                            c.print(5, msg);
                         }
                         MapleInventoryManipulator.addById(c.getClient(), id, count, "", null, period + " on " + FileoutputUtil.CurrentReadable_Date());
                         c.getClient().getSession().write(InfoPacket.getShowItemGain(id, count, true));
@@ -593,7 +593,7 @@ public class MapleQuestAction implements Serializable {
                 break;
             }
             case infoNumber: {
-//		System.out.println("quest : "+intStore+"");
+//		Logger.println("quest : "+intStore+"");
 //		MapleQuest.getInstance(intStore).forceComplete(c, 0);
                 break;
             }

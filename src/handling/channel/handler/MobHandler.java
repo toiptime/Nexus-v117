@@ -13,7 +13,6 @@ import server.life.*;
 import server.maps.MapleMap;
 import server.maps.MapleNodes;
 import server.movement.AbsoluteLifeMovement;
-import server.movement.LifeMovement;
 import server.movement.LifeMovementFragment;
 import tools.FileoutputUtil;
 import tools.Pair;
@@ -295,7 +294,7 @@ public class MobHandler {
             mf.setName(newName);
             c.getSession().write(CField.renameFamiliar(mf));
         } else {
-            chr.dropMessage(1, "The name you have chosen was not eligible.");
+            chr.print(1, "The name you have chosen was not eligible.");
         }
         c.getSession().write(CWvsContext.enableActions());
     }
@@ -308,7 +307,7 @@ public class MobHandler {
         if ((c.getPlayer().getFamiliars().containsKey(Integer.valueOf(mId))) && (slea.readByte() > 0)) {
             MonsterFamiliar mf = c.getPlayer().getFamiliars().get(Integer.valueOf(mId));
             if (mf.getFatigue() > 0) {
-                c.getPlayer().dropMessage(1, "Please wait " + mf.getFatigue() + " seconds to summon it.");
+                c.getPlayer().print(1, "Please wait " + mf.getFatigue() + " seconds to summon it.");
             } else {
                 c.getPlayer().spawnFamiliar(mf, false);
             }

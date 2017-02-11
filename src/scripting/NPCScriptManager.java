@@ -23,6 +23,7 @@ import client.MapleClient;
 import constants.WorldConstants;
 import server.quest.MapleQuest;
 import tools.FileoutputUtil;
+import tools.Logger;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -85,7 +86,7 @@ public class NPCScriptManager extends AbstractScriptManager {
 
                 c.getPlayer().setConversation(1);
                 c.setClickedNPC();
-                //System.out.println("NPCID started: " + npc);
+                //Logger.println("NPCID started: " + npc);
                 try {
                     iv.invokeFunction("start"); // Temporary until I've removed all of start
                 } catch (NoSuchMethodException nsme) {
@@ -146,7 +147,7 @@ public class NPCScriptManager extends AbstractScriptManager {
 
                 c.getPlayer().setConversation(1);
                 c.setClickedNPC();
-                //System.out.println("NPCID started: " + npc + " startquest " + quest);
+                //Logger.println("NPCID started: " + npc + " startquest " + quest);
                 iv.invokeFunction("start", (byte) 1, (byte) 0, 0); // Start it off as something
             }
         } catch (final Exception e) {
@@ -242,7 +243,7 @@ public class NPCScriptManager extends AbstractScriptManager {
             if (!cms.containsKey(c) && c.canClickNPC()) {
                 final Invocable iv = getInvocable("item/" + script + ".js", c, true);
                 if (iv == null) {
-                    System.out.println("New scripted item : " + itemid);
+                    Logger.println("New scripted item : " + itemid);
                     dispose(c);
                     return;
                 }

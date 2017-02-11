@@ -2,6 +2,7 @@ package scripting;
 
 import handling.channel.ChannelServer;
 import tools.FileoutputUtil;
+import tools.Logger;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -47,7 +48,7 @@ public class EventScriptManager extends AbstractScriptManager {
                 ((ScriptEngine) entry.iv).put("em", entry.em);
                 entry.iv.invokeFunction("init", (Object) null);
             } catch (final Exception ex) {
-                System.out.println("Error initiating event: " + entry.script + ":" + ex);
+                Logger.println("Error initiating event: " + entry.script + ":" + ex);
                 FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Error initiating event: " + entry.script + ":" + ex);
             }
         }

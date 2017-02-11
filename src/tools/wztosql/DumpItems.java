@@ -25,6 +25,7 @@ import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import database.DatabaseConnection;
 import provider.*;
+import tools.Logger;
 import tools.Pair;
 
 import java.io.File;
@@ -79,14 +80,14 @@ public class DumpItems {
         int currentQuest = 0;
         try {
             final DumpItems dq = new DumpItems(update);
-            System.out.println("Dumping Items");
+            Logger.println("Dumping Items");
             dq.dumpItems();
             hadError |= dq.isHadError();
             currentQuest = dq.currentId();
         } catch (Exception e) {
             hadError = true;
             e.printStackTrace();
-            System.out.println(currentQuest + " quest.");
+            Logger.println(currentQuest + " quest.");
         }
         long endTime = System.currentTimeMillis();
         double elapsedSeconds = (endTime - startTime) / 1000.0;
@@ -97,7 +98,7 @@ public class DumpItems {
         if (hadError) {
             withErrors = " with errors";
         }
-        System.out.println("Finished" + withErrors + " in " + elapsedMinutes + " minutes " + elapsedSecs + " seconds");
+        Logger.println("Finished" + withErrors + " in " + elapsedMinutes + " minutes " + elapsedSecs + " seconds");
     }
 
     public boolean isHadError() {
@@ -113,7 +114,7 @@ public class DumpItems {
             try {
                 dumpItems(psa, psr, ps, pse);
             } catch (Exception e) {
-                System.out.println(id + " quest.");
+                Logger.println(id + " quest.");
                 e.printStackTrace();
                 hadError = true;
             } finally {
@@ -420,7 +421,7 @@ public class DumpItems {
                         }
                         break;
                     default:
-                        System.out.println("UNKNOWN EQ ADDITION : " + d.getName() + " from " + id);
+                        Logger.println("UNKNOWN EQ ADDITION : " + d.getName() + " from " + id);
                         break;
                 }
             }
@@ -459,14 +460,14 @@ public class DumpItems {
             delete("DELETE FROM wz_itemequipdata");
             delete("DELETE FROM wz_itemadddata");
             delete("DELETE FROM wz_itemrewarddata");
-            System.out.println("Deleted wz_itemdata successfully.");
+            Logger.println("Deleted wz_itemdata successfully.");
         }
-        System.out.println("Adding into wz_itemdata.....");
+        Logger.println("Adding into wz_itemdata.....");
         dumpItems(item, psa, psr, ps, pse, false);
         dumpItems(character, psa, psr, ps, pse, true);
-        System.out.println("Done wz_itemdata...");
-        System.out.println(subMain.toString());
-        System.out.println(subCon.toString());
+        Logger.println("Done wz_itemdata...");
+        Logger.println(subMain.toString());
+        Logger.println(subCon.toString());
     }
 
     public int currentId() {

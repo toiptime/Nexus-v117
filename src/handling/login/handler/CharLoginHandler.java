@@ -37,6 +37,7 @@ import handling.world.World;
 import server.MapleItemInformationProvider;
 import server.quest.MapleQuest;
 import tools.FileoutputUtil;
+import tools.Logger;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
@@ -73,7 +74,7 @@ public class CharLoginHandler {
 
         final Calendar tempbannedTill = c.getTempBanCalendar();
 
-        if (!c.isGm() && !c.isLocalhost() && ServerConstants.Use_Localhost) {
+        if (!c.isGm() && !c.isLocalhost() && ServerConstants.USE_LOCALHOST) {
             c.getSession().write(CWvsContext.serverNotice(1, "Project Nexus is currently on maintenanance. Therefore, only administrator are able to login.\r\nProject Nexus Maintenance :\r\nRevision : 0.0.1\r\nMaintenance From : DATE\r\nMaintenance To : DATE\r\n\r\nWhat's New For Revision 0.0.1?\r\nNew Rolling Feature\r\nText 1\r\nText 2\r\nText 3"));
             c.getSession().write(LoginPacket.getLoginFailed(1)); //Shows no message, used for unstuck the login button
         }
@@ -170,7 +171,7 @@ public class CharLoginHandler {
             return;
         }
 
-        //System.out.println("Client " + c.getSession().getRemoteAddress().toString().split(":")[0] + " is connecting to server " + server + " channel " + channel + "");
+        //Logger.println("Client " + c.getSession().getRemoteAddress().toString().split(":")[0] + " is connecting to server " + server + " channel " + channel + "");
 
         final List<MapleCharacter> chars = c.loadCharacters(server);
         if (chars != null && ChannelServer.getInstance(channel) != null) {
@@ -665,11 +666,11 @@ public class CharLoginHandler {
 
     public static final void CreateUltimate(final LittleEndianAccessor slea, final MapleClient c) {
         if (!c.getPlayer().isGM() && (!c.isLoggedIn() || c.getPlayer() == null || c.getPlayer().getLevel() < 120 || c.getPlayer().getMapId() != 130000000 || c.getPlayer().getQuestStatus(20734) != 0 || c.getPlayer().getQuestStatus(20616) != 2 || !GameConstants.isKOC(c.getPlayer().getJob()) || !c.canMakeCharacter(c.getPlayer().getWorld()))) {
-            c.getPlayer().dropMessage(1, "You have no character slots.");
+            c.getPlayer().print(1, "You have no character slots.");
             c.getSession().write(CField.createUltimate(1));
             return;
         }
-        //System.out.println(slea.toString());
+        //Logger.println(slea.toString());
         final String name = slea.readMapleAsciiString();
         final int job = slea.readInt(); //job ID
 
@@ -687,7 +688,7 @@ public class CharLoginHandler {
 
         //JobType errorCheck = JobType.Adventurer;
         //if (!LoginInformationProvider.getInstance().isEligibleItem(gender, 0, errorCheck.type, face)) {
-        //    c.getPlayer().dropMessage(1, "An error occurred.");
+        //    c.getPlayer().print(1, "An error occurred.");
         //    c.getSession().write(CField.createUltimate(0));
         //    return;
         //}
@@ -912,7 +913,7 @@ public class CharLoginHandler {
         byte mode = slea.readByte(); // 1 = start 2 = end
         int cid = slea.readInt(); // Character ID
         byte job = slea.readByte(); // Part time job
-        System.out.println("[Part Time Job] data: " + slea);
+        Logger.println("[Part Time Job] data: " + slea);
         if (mode == 0) {
             //LoginPacket.stopPartTime(cid, job);
         } else if (mode == 1) {

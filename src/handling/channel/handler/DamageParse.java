@@ -69,13 +69,13 @@ public class DamageParse {
             }
         }
         if (player.getClient().getChannelServer().isAdminOnly()) {
-            player.dropMessage(-1, new StringBuilder().append("Animation: ").append(Integer.toHexString((attack.display & 0x8000) != 0 ? attack.display - 32768 : attack.display)).toString());
+            player.print(-1, new StringBuilder().append("Animation: ").append(Integer.toHexString((attack.display & 0x8000) != 0 ? attack.display - 32768 : attack.display)).toString());
         }
         boolean useAttackCount = (attack.skill != 4211006) && (attack.skill != 3221007) && (attack.skill != 23121003) && ((attack.skill != 1311001) || (player.getJob() != 132)) && (attack.skill != 3211006);
 
         if ((attack.hits > 0) && (attack.targets > 0)) {
             if (!player.getStat().checkEquipDurabilitys(player, -1)) {
-                player.dropMessage(5, "An item has run out of durability but has no inventory room to go to.");
+                player.print(5, "An item has run out of durability but has no inventory room to go to.");
                 return;
             }
         }
@@ -402,7 +402,7 @@ public class DamageParse {
         }
         if ((attack.hits > 0) && (attack.targets > 0)
                 && (!player.getStat().checkEquipDurabilitys(player, -1))) {
-            player.dropMessage(5, "An item has run out of durability but has no inventory room to go to.");
+            player.print(5, "An item has run out of durability but has no inventory room to go to.");
             return;
         }
 
@@ -427,7 +427,7 @@ public class DamageParse {
         }
 
         if (player.getClient().getChannelServer().isAdminOnly()) {
-            player.dropMessage(-1, new StringBuilder().append("Animation: ").append(Integer.toHexString((attack.display & 0x8000) != 0 ? attack.display - 32768 : attack.display)).toString());
+            player.print(-1, new StringBuilder().append("Animation: ").append(Integer.toHexString((attack.display & 0x8000) != 0 ? attack.display - 32768 : attack.display)).toString());
         }
         PlayerStats stats = player.getStat();
         Element element = player.getBuffedValue(MapleBuffStat.ELEMENT_RESET) != null ? Element.NEUTRAL : theSkill.getElement();

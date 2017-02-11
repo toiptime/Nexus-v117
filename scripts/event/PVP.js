@@ -1,4 +1,4 @@
-importPackage(Packages.tools.packet);
+importClass(Packages.tools.packet);
 
 //pvp mode: 12 = "1.5 event", 13 = "2x event"
 

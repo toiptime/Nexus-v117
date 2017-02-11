@@ -63,31 +63,31 @@ public class FamilyHandler {
             case Teleport: // Teleport: need add check for if not a safe place
                 victim = c.getChannelServer().getPlayerStorage().getCharacterByName(slea.readMapleAsciiString());
                 if (FieldLimitType.VipRock.check(c.getPlayer().getMap().getFieldLimit()) || c.getPlayer().isInBlockedMap()) {
-                    c.getPlayer().dropMessage(5, "Summons failed. Your current location or state does not allow a summons.");
+                    c.getPlayer().print(5, "Summons failed. Your current location or state does not allow a summons.");
                     success = false;
                 } else if (victim == null || (victim.isGM() && !c.getPlayer().isGM())) {
-                    c.getPlayer().dropMessage(1, "Invalid name or you are not on the same channel.");
+                    c.getPlayer().print(1, "Invalid name or you are not on the same channel.");
                     success = false;
                 } else if (victim.getFamilyId() == c.getPlayer().getFamilyId() && !FieldLimitType.VipRock.check(victim.getMap().getFieldLimit()) && victim.getId() != c.getPlayer().getId() && !victim.isInBlockedMap()) {
                     c.getPlayer().changeMap(victim.getMap(), victim.getMap().getPortal(0));
                 } else {
-                    c.getPlayer().dropMessage(5, "Summons failed. Your current location or state does not allow a summons.");
+                    c.getPlayer().print(5, "Summons failed. Your current location or state does not allow a summons.");
                     success = false;
                 }
                 break;
             case Summon: // TODO: Give a check to the player being forced somewhere else..
                 victim = c.getChannelServer().getPlayerStorage().getCharacterByName(slea.readMapleAsciiString());
                 if (FieldLimitType.VipRock.check(c.getPlayer().getMap().getFieldLimit()) || c.getPlayer().isInBlockedMap()) {
-                    c.getPlayer().dropMessage(5, "Summons failed. Your current location or state does not allow a summons.");
+                    c.getPlayer().print(5, "Summons failed. Your current location or state does not allow a summons.");
                 } else if (victim == null || (victim.isGM() && !c.getPlayer().isGM())) {
-                    c.getPlayer().dropMessage(1, "Invalid name or you are not on the same channel.");
+                    c.getPlayer().print(1, "Invalid name or you are not on the same channel.");
                 } else if (victim.getTeleportName().length() > 0) {
-                    c.getPlayer().dropMessage(1, "Another character has requested to summon this character. Please try again later.");
+                    c.getPlayer().print(1, "Another character has requested to summon this character. Please try again later.");
                 } else if (victim.getFamilyId() == c.getPlayer().getFamilyId() && !FieldLimitType.VipRock.check(victim.getMap().getFieldLimit()) && victim.getId() != c.getPlayer().getId() && !victim.isInBlockedMap()) {
                     victim.getClient().getSession().write(FamilyPacket.familySummonRequest(c.getPlayer().getName(), c.getPlayer().getMap().getMapName()));
                     victim.setTeleportName(c.getPlayer().getName());
                 } else {
-                    c.getPlayer().dropMessage(5, "Summons failed. Your current location or state does not allow a summons.");
+                    c.getPlayer().print(5, "Summons failed. Your current location or state does not allow a summons.");
                 }
                 return; // RETURN not break
             case Drop_12_15: // Drop rate + 50% 15 min
@@ -139,7 +139,7 @@ public class FamilyHandler {
             c.getSession().write(FamilyPacket.changeRep(-entry.rep, c.getPlayer().getName()));
             c.getPlayer().useFamilyBuff(entry);
         } else {
-            c.getPlayer().dropMessage(5, "An error has occured.");
+            c.getPlayer().print(5, "An error has occured.");
         }
     }
 
@@ -149,23 +149,23 @@ public class FamilyHandler {
         }
         MapleCharacter addChr = c.getChannelServer().getPlayerStorage().getCharacterByName(slea.readMapleAsciiString());
         if (addChr == null) {
-            c.getPlayer().dropMessage(1, "The name you requested is incorrect or he / she is currently not logged in.");
+            c.getPlayer().print(1, "The name you requested is incorrect or he / she is currently not logged in.");
         } else if (addChr.getFamilyId() == c.getPlayer().getFamilyId() && addChr.getFamilyId() > 0) {
-            c.getPlayer().dropMessage(1, "You belong to the same family.");
+            c.getPlayer().print(1, "You belong to the same family.");
         } else if (addChr.getMapId() != c.getPlayer().getMapId()) {
-            c.getPlayer().dropMessage(1, "The character you wish to add as a Junior must be in the same map.");
+            c.getPlayer().print(1, "The character you wish to add as a Junior must be in the same map.");
         } else if (addChr.getSeniorId() != 0) {
-            c.getPlayer().dropMessage(1, "The character is already a junior of another character.");
+            c.getPlayer().print(1, "The character is already a junior of another character.");
         } else if (addChr.getLevel() >= c.getPlayer().getLevel()) {
-            c.getPlayer().dropMessage(1, "The Junior you wish to add must be at a lower rank.");
+            c.getPlayer().print(1, "The Junior you wish to add must be at a lower rank.");
         } else if (addChr.getLevel() < c.getPlayer().getLevel() - 20) {
-            c.getPlayer().dropMessage(1, "The level gap between you and your Junior must be within 20.");
+            c.getPlayer().print(1, "The level gap between you and your Junior must be within 20.");
             //} else if (c.getPlayer().getFamilyId() != 0 && c.getPlayer().getFamily().getGens() >= 1000) {
-            //	c.getPlayer().dropMessage(5, "Your family cannot extend more than 1000 generations from above and below.");
+            //	c.getPlayer().print(5, "Your family cannot extend more than 1000 generations from above and below.");
         } else if (addChr.getLevel() < 10) {
-            c.getPlayer().dropMessage(1, "The junior you wish to add must be over level 10.");
+            c.getPlayer().print(1, "The junior you wish to add must be over level 10.");
         } else if (c.getPlayer().getJunior1() > 0 && c.getPlayer().getJunior2() > 0) {
-            c.getPlayer().dropMessage(1, "You already have 2 juniors.");
+            c.getPlayer().print(1, "You already have 2 juniors.");
         } else if (c.getPlayer().isGM() || !addChr.isGM()) {
             addChr.getClient().getSession().write(FamilyPacket.sendFamilyInvite(c.getPlayer().getId(), c.getPlayer().getLevel(), c.getPlayer().getJob(), c.getPlayer().getName()));
         }
@@ -194,10 +194,10 @@ public class FamilyHandler {
                 tt.getClient().getSession().write(FamilyPacket.changeRep(-cost.rep, tt.getName()));
                 tt.useFamilyBuff(cost);
             } else {
-                tt.dropMessage(5, "Summons failed. Your current location or state does not allow a summons.");
+                tt.print(5, "Summons failed. Your current location or state does not allow a summons.");
             }
         } else {
-            c.getPlayer().dropMessage(5, "Summons failed. Your current location or state does not allow a summons.");
+            c.getPlayer().print(5, "Summons failed. Your current location or state does not allow a summons.");
         }
         c.getPlayer().setTeleportName("");
     }
@@ -232,7 +232,7 @@ public class FamilyHandler {
             }
             fam.resetPedigree();
         }
-        c.getPlayer().dropMessage(1, "Broke up with (" + other.getName() + ").\r\nFamily relationship has ended.");
+        c.getPlayer().print(1, "Broke up with (" + other.getName() + ").\r\nFamily relationship has ended.");
         c.getSession().write(CWvsContext.enableActions());
     }
 
@@ -262,7 +262,7 @@ public class FamilyHandler {
             }
             fam.resetPedigree();
         }
-        c.getPlayer().dropMessage(1, "Broke up with (" + mgc.getName() + ").\r\nFamily relationship has ended.");
+        c.getPlayer().print(1, "Broke up with (" + mgc.getName() + ").\r\nFamily relationship has ended.");
         c.getSession().write(CWvsContext.enableActions());
     }
 

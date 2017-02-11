@@ -163,7 +163,7 @@ public class MapleShop {
             return;
         }
         if (itemId / 10000 == 190 && !GameConstants.isMountItemAvailable(itemId, c.getPlayer().getJob())) {
-            c.getPlayer().dropMessage(1, "You may not buy this item.");
+            c.getPlayer().print(1, "You may not buy this item.");
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
@@ -186,7 +186,7 @@ public class MapleShop {
                     c.getPlayer().getRebuy().remove(index);
                     c.getSession().write(NPCPacket.confirmShopTransaction((byte) 0, this, c, x));
                 } else {
-                    c.getPlayer().dropMessage(1, "Your inventory is currently full.");
+                    c.getPlayer().print(1, "Your inventory is currently full.");
                     c.getSession().write(NPCPacket.confirmShopTransaction((byte) 0, this, c, -1));
                 }
             } else {
@@ -207,7 +207,7 @@ public class MapleShop {
                     y++;
                 }
                 if (!passed) {
-                    c.getPlayer().dropMessage(1, "You need a higher rank.");
+                    c.getPlayer().print(1, "You need a higher rank.");
                     c.getSession().write(CWvsContext.enableActions());
                     return;
                 }
@@ -228,7 +228,7 @@ public class MapleShop {
                         c.getPlayer().gainMeso(-price, false);
                     }
                 } else {
-                    c.getPlayer().dropMessage(1, "Your inventory is currently full.");
+                    c.getPlayer().print(1, "Your inventory is currently full.");
                 }
                 c.getSession().write(NPCPacket.confirmShopTransaction((byte) 0, this, c, -1));
             }
@@ -245,7 +245,7 @@ public class MapleShop {
                     MapleInventoryManipulator.addById(c, itemId, quantity, "Bought from shop " + id + ", " + npcId + " on " + FileoutputUtil.CurrentReadable_Date());
                 }
             } else {
-                c.getPlayer().dropMessage(1, "Your inventory is currently full");
+                c.getPlayer().print(1, "Your inventory is currently full");
             }
             c.getSession().write(NPCPacket.confirmShopTransaction((byte) 0, this, c, -1));
         }

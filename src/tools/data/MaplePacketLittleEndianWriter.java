@@ -61,8 +61,8 @@ public class MaplePacketLittleEndianWriter {
      * @return A <code>MaplePacket</code> with the bytes in this stream.
      */
     public final byte[] getPacket() {
-        //if (ServerConstants.Use_Localhost) {
-        //    System.out.println("Packet to be sent:\n" + HexTool.toString(baos.toByteArray()) + "\n" + HexTool.toStringFromAscii(baos.toByteArray()));
+        //if (ServerConstants.USE_LOCALHOST) {
+        //    Logger.println("Packet to be sent:\n" + HexTool.toString(baos.toByteArray()) + "\n" + HexTool.toStringFromAscii(baos.toByteArray()));
         //}
         return baos.toByteArray();
     }

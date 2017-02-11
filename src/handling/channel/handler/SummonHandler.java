@@ -146,17 +146,17 @@ public class SummonHandler {
         final MapleMap map = chr.getMap();
         final MapleMapObject obj = map.getMapObject(slea.readInt(), MapleMapObjectType.SUMMON);
         if (obj == null || !(obj instanceof MapleSummon)) {
-            chr.dropMessage(5, "The summon has disappeared.");
+            chr.print(5, "The summon has disappeared.");
             return;
         }
         final MapleSummon summon = (MapleSummon) obj;
         if (summon.getOwnerId() != chr.getId() || summon.getSkillLevel() <= 0) {
-            chr.dropMessage(5, "Error.");
+            chr.print(5, "Error.");
             return;
         }
         final SummonSkillEntry sse = SkillFactory.getSummonData(summon.getSkill());
         if (summon.getSkill() / 1000000 != 35 && summon.getSkill() != 33101008 && sse == null) {
-            chr.dropMessage(5, "Error in processing attack.");
+            chr.print(5, "Error in processing attack.");
             return;
         }
         if (!GameConstants.GMS) {
@@ -177,7 +177,7 @@ public class SummonHandler {
         }
         final byte numAttacked = slea.readByte();
         if (sse != null && numAttacked > sse.mobCount) {
-            chr.dropMessage(5, "Warning: Attacking more monster than summon can do");
+            chr.print(5, "WARNING: Attacking more monster than summon can do");
             chr.getCheatTracker().registerOffense(CheatingOffense.SUMMON_HACK_MOBS);
             //AutobanManager.getInstance().autoban(c, "Attacking more monster that summon can do (Skillid : "+summon.getSkill()+" Count : " + numAttacked + ", allowed : " + sse.mobCount + ")");
             return;
@@ -200,7 +200,7 @@ public class SummonHandler {
         final Skill summonSkill = SkillFactory.getSkill(summon.getSkill());
         final MapleStatEffect summonEffect = summonSkill.getEffect(summon.getSkillLevel());
         if (summonEffect == null) {
-            chr.dropMessage(5, "Error in attack.");
+            chr.print(5, "Error in attack.");
             return;
         }
         for (Pair<Integer, Integer> attackEntry : allDamage) {
@@ -227,7 +227,7 @@ public class SummonHandler {
                 }
             } else {
                 chr.getClient().getSession().write(MobPacket.killMonster(mob.getObjectId(), 1));
-                //chr.dropMessage(5, "Warning - high damage.");
+                //chr.print(5, "WARNING - high damage.");
                 //AutobanManager.getInstance().autoban(c, "High Summon Damage (" + toDamage + " to " + attackEntry.right + ")");
                 // TODO : Check player's stat for damage checking.
                 break;
@@ -251,7 +251,7 @@ public class SummonHandler {
         }
         final MapleSummon summon = (MapleSummon) obj;
         if (summon.getOwnerId() != c.getPlayer().getId() || summon.getSkillLevel() <= 0) {
-            c.getPlayer().dropMessage(5, "Error.");
+            c.getPlayer().print(5, "Error.");
             return;
         }
         if (summon.getSkill() == 35111002 || summon.getSkill() == 35121010) { // Rock n shock, amp
@@ -342,7 +342,7 @@ public class SummonHandler {
         final MapleMap map = chr.getMap();
         final MapleMapObject obj = map.getMapObject(slea.readInt(), MapleMapObjectType.SUMMON);
         if (obj == null || !(obj instanceof MapleSummon)) {
-            chr.dropMessage(5, "The summon has disappeared.");
+            chr.print(5, "The summon has disappeared.");
             return;
         }
         int tick = -1;
@@ -352,7 +352,7 @@ public class SummonHandler {
         }
         final MapleSummon summon = (MapleSummon) obj;
         if (summon.getOwnerId() != chr.getId() || summon.getSkillLevel() <= 0) {
-            chr.dropMessage(5, "Error.");
+            chr.print(5, "Error.");
             return;
         }
         final Skill skil = SkillFactory.getSkill(summon.getSkill());
@@ -369,7 +369,7 @@ public class SummonHandler {
 
         final SummonSkillEntry sse = SkillFactory.getSummonData(summon.getSkill());
         if (summon.getSkill() / 1000000 != 35 && summon.getSkill() != 33101008 && sse == null) {
-            chr.dropMessage(5, "Error in processing attack.");
+            chr.print(5, "Error in processing attack.");
             return;
         }
         Point lt, rb;

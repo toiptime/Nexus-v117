@@ -53,19 +53,19 @@ public abstract class MapleEvent {
         if (reward == 0) {
             final int mes = Randomizer.nextInt(9000000) + 1000000;
             chr.gainMeso(mes, true, false);
-            chr.dropMessage(5, "You have gained " + mes + " mesos.");
+            chr.print(5, "You have gained " + mes + " mesos.");
         } else if (reward == 1) {
             final int cs = Randomizer.nextInt(4000) + 1000;
             chr.modifyCSPoints(1, cs, true);
-            chr.dropMessage(5, "You have gained " + (GameConstants.GMS ? (cs / 2) : cs) + " cash.");
+            chr.print(5, "You have gained " + (GameConstants.GMS ? (cs / 2) : cs) + " cash.");
         } else if (reward == 2) {
             chr.setVPoints(chr.getVPoints() + 1);
-            chr.dropMessage(5, "You have gained 1 vote point.");
+            chr.print(5, "You have gained 1 vote point.");
         } else if (reward == 3) {
             chr.addFame(10);
-            chr.dropMessage(5, "You have gained 10 fame.");
+            chr.print(5, "You have gained 10 fame.");
         } else if (reward == 4) {
-            chr.dropMessage(5, "There was no reward.");
+            chr.print(5, "There was no reward.");
         } else {
             int max_quantity = 1;
             switch (reward) {
@@ -152,7 +152,7 @@ public abstract class MapleEvent {
                     if (chr.getMapId() == i) {
                         e.startEvent();
                         setEvent(chr.getClient().getChannelServer(), false);
-                        chr.dropMessage(5, String.valueOf(t) + " has been started.");
+                        chr.print(5, String.valueOf(t) + " has been started.");
                     }
                 }
             }

@@ -2,6 +2,7 @@ package handling.login.handler;
 
 import client.LoginCrypto;
 import database.DatabaseConnection;
+import tools.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,7 +26,7 @@ public class AutoRegister {
                 accountExists = true;
             }
         } catch (Exception ex) {
-            System.out.println(ex);
+            Logger.println(ex);
         }
         return accountExists;
     }
@@ -37,7 +38,7 @@ public class AutoRegister {
         try {
             con = DatabaseConnection.getConnection();
         } catch (Exception ex) {
-            System.out.println(ex);
+            Logger.println(ex);
             return;
         }
 
@@ -60,14 +61,14 @@ public class AutoRegister {
 
                         success = true;
                     } catch (SQLException ex) {
-                        System.out.println(ex);
+                        Logger.println(ex);
                         return;
                     }
                 }
             }
             rs.close();
         } catch (SQLException ex) {
-            System.out.println(ex);
+            Logger.println(ex);
         }
     }
 }

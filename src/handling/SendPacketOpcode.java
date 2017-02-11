@@ -20,7 +20,6 @@
 package handling;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -541,7 +540,7 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
 
     @Override
     public short getValue() {
-        //System.out.println("Packet to send: " + this.name() + " Value: " + this.code + "\r\nCaller: " + Thread.currentThread().getStackTrace()[2]);
+        //Logger.println("Packet to send: " + this.name() + " Value: " + this.code + "\r\nCaller: " + Thread.currentThread().getStackTrace()[2]);
         return code;
     }
 

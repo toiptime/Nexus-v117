@@ -21,6 +21,7 @@ import server.MapleItemInformationProvider;
 import server.Timer.EventTimer;
 import tools.CPUSampler;
 import tools.HexTool;
+import tools.Logger;
 import tools.StringUtil;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
@@ -85,8 +86,8 @@ public class AdminCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             AutoRegister.autoRegister = (!AutoRegister.autoRegister);
-            c.getPlayer().dropMessage(0, "Auto Register has been " + (AutoRegister.autoRegister ? "enabled" : "disabled") + ".");
-            System.out.println("Auto Register has been " + (AutoRegister.autoRegister ? "enabled" : "disabled") + ".");
+            c.getPlayer().print(0, "Auto Register has been " + (AutoRegister.autoRegister ? "enabled" : "disabled") + ".");
+            Logger.println("Auto Register has been " + (AutoRegister.autoRegister ? "enabled" : "disabled") + ".");
             return 1;
         }
     }
@@ -167,7 +168,7 @@ public class AdminCommand {
         public int execute(MapleClient c, String[] splitted) {
             //c.getChannelServer().broadcastMessage(CWvsContext.serverNotice(Integer.parseInt(splitted[1]), StringUtil.joinStringFrom(splitted, 2)));
             for (MapleCharacter all : c.getChannelServer().getPlayerStorage().getAllCharacters()) {
-                all.dropMessage(Integer.parseInt(splitted[1]), StringUtil.joinStringFrom(splitted, 2));
+                all.print(Integer.parseInt(splitted[1]), StringUtil.joinStringFrom(splitted, 2));
             }
             return 1;
         }
@@ -178,11 +179,11 @@ public class AdminCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 1) {
-                c.getPlayer().dropMessage(0, "[Syntax] !hottime [itemid]");
+                c.getPlayer().print(0, "[Syntax] !hottime [itemid]");
                 return 0;
             }
             if (!MapleItemInformationProvider.getInstance().itemExists(Integer.parseInt(splitted[1]))) {
-                c.getPlayer().dropMessage(0, "Item does not exists.");
+                c.getPlayer().print(0, "Item does not exists.");
                 return 0;
             }
             for (ChannelServer cserv : ChannelServer.getAllInstances()) {
@@ -191,7 +192,7 @@ public class AdminCommand {
                     mch.getClient().getSession().write(CField.NPCPacket.getNPCTalk(9010010, (byte) 0, "#bThanks for joining the Hot Time#k.\r\nYou have received #g#t" + Integer.parseInt(splitted[1]) + "##k.\r\n#rGo ahead and check your inventory now#k.", "00 00", (byte) 1, 9010010));
                 }
             }
-            System.out.println("Hot Time had been scheduled successfully.");
+            Logger.println("Hot Time had been scheduled successfully.");
             return 1;
         }
     }
@@ -243,13 +244,13 @@ public class AdminCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(6, "Shutting down...");
+            c.getPlayer().print(6, "Shutting down...");
             if (t == null || !t.isAlive()) {
                 t = new Thread(server.ShutdownServer.getInstance());
                 server.ShutdownServer.getInstance().shutdown();
                 t.start();
             } else {
-                c.getPlayer().dropMessage(6, "A shutdown thread is already in progress or shutdown has not been done. Please wait.");
+                c.getPlayer().print(6, "A shutdown thread is already in progress or shutdown has not been done. Please wait.");
             }
             return 1;
         }
@@ -263,7 +264,7 @@ public class AdminCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             minutesLeft = Integer.parseInt(splitted[1]);
-            c.getPlayer().dropMessage(6, "Shutting down... in " + minutesLeft + " minutes");
+            c.getPlayer().print(6, "Shutting down... in " + minutesLeft + " minutes");
             if (ts == null && (t == null || !t.isAlive())) {
                 t = new Thread(server.ShutdownServer.getInstance());
                 ts = EventTimer.getInstance().register(new Runnable() {
@@ -279,7 +280,7 @@ public class AdminCommand {
                     }
                 }, 60000);
             } else {
-                c.getPlayer().dropMessage(6, "A shutdown thread is already in progress or shutdown has not been done. Please wait.");
+                c.getPlayer().print(6, "A shutdown thread is already in progress or shutdown has not been done. Please wait.");
             }
             return 1;
         }
@@ -315,7 +316,7 @@ public class AdminCommand {
                 }
                 File file = new File(filename);
                 if (file.exists()) {
-                    c.getPlayer().dropMessage(6, "The entered filename already exists, choose a different one.");
+                    c.getPlayer().print(6, "The entered filename already exists, choose a different one.");
                     return 0;
                 }
                 sampler.stop();
@@ -339,7 +340,7 @@ public class AdminCommand {
                 PreparedStatement ps = (PreparedStatement) con.prepareStatement(StringUtil.joinStringFrom(splitted, 1));
                 ps.executeUpdate();
             } catch (SQLException e) {
-                c.getPlayer().dropMessage(0, "Failed to execute SQL command.");
+                c.getPlayer().print(0, "Failed to execute SQL command.");
                 return 0;
             }
             return 1;

@@ -15,6 +15,7 @@ import handling.world.exped.PartySearchType;
 import server.maps.Event_DojoAgent;
 import server.maps.FieldLimitType;
 import server.quest.MapleQuest;
+import tools.Logger;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CWvsContext;
 
@@ -41,7 +42,7 @@ public class PartyHandler {
             MapleParty party = World.Party.getParty(partyid);
             if (party != null) {
                 if (party.getExpeditionId() > 0) {
-                    c.getPlayer().dropMessage(5, "You may not do party operations while in a raid.");
+                    c.getPlayer().print(5, "You may not do party operations while in a raid.");
                     return;
                 }
                 if (action == 31) {
@@ -60,10 +61,10 @@ public class PartyHandler {
                     }
                 }
             } else {
-                c.getPlayer().dropMessage(5, "The party you are trying to join does not exist");
+                c.getPlayer().print(5, "The party you are trying to join does not exist");
             }
         } else {
-            c.getPlayer().dropMessage(5, "You can't join the party as you are already in one");
+            c.getPlayer().print(5, "You can't join the party as you are already in one");
         }
     }
 
@@ -80,13 +81,13 @@ public class PartyHandler {
                     c.getSession().write(CWvsContext.PartyPacket.partyCreated(party.getId()));
                 } else {
                     if (party.getExpeditionId() > 0) {
-                        c.getPlayer().dropMessage(5, "You may not do party operations while in a raid.");
+                        c.getPlayer().print(5, "You may not do party operations while in a raid.");
                         return;
                     }
                     if ((partyplayer.equals(party.getLeader())) && (party.getMembers().size() == 1)) {
                         c.getSession().write(CWvsContext.PartyPacket.partyCreated(party.getId()));
                     } else {
-                        c.getPlayer().dropMessage(5, "You can't create a party as you are already in one");
+                        c.getPlayer().print(5, "You can't create a party as you are already in one");
                     }
                 }
                 break;
@@ -95,7 +96,7 @@ public class PartyHandler {
                     break;
                 }
                 if (party.getExpeditionId() > 0) {
-                    c.getPlayer().dropMessage(5, "You may not do party operations while in a raid.");
+                    c.getPlayer().print(5, "You may not do party operations while in a raid.");
                     return;
                 }
                 if (partyplayer.equals(party.getLeader())) {
@@ -129,7 +130,7 @@ public class PartyHandler {
                     party = World.Party.getParty(partyid);
                     if (party != null) {
                         if (party.getExpeditionId() > 0) {
-                            c.getPlayer().dropMessage(5, "You may not do party operations while in a raid.");
+                            c.getPlayer().print(5, "You may not do party operations while in a raid.");
                             return;
                         }
                         if ((party.getMembers().size() < 6) && (c.getPlayer().getQuestNoAdd(MapleQuest.getInstance(122901)) == null)) {
@@ -141,10 +142,10 @@ public class PartyHandler {
                             c.getSession().write(CWvsContext.PartyPacket.partyStatusMessage(22, null));
                         }
                     } else {
-                        c.getPlayer().dropMessage(5, "The party you are trying to join does not exist");
+                        c.getPlayer().print(5, "The party you are trying to join does not exist");
                     }
                 } else {
-                    c.getPlayer().dropMessage(5, "You can't join the party as you are already in one");
+                    c.getPlayer().print(5, "You can't join the party as you are already in one");
                 }
                 break;
             case 4:
@@ -160,7 +161,7 @@ public class PartyHandler {
                     MapleCharacter invited = ChannelServer.getInstance(theCh).getPlayerStorage().getCharacterByName(theName);
                     if ((invited != null) && (invited.getParty() == null) && (invited.getQuestNoAdd(MapleQuest.getInstance(122901)) == null)) {
                         if (party.getExpeditionId() > 0) {
-                            c.getPlayer().dropMessage(5, "You may not do party operations while in a raid.");
+                            c.getPlayer().print(5, "You may not do party operations while in a raid.");
                             return;
                         }
                         if (party.getMembers().size() < 6) {
@@ -181,7 +182,7 @@ public class PartyHandler {
                     break;
                 }
                 if (party.getExpeditionId() > 0) {
-                    c.getPlayer().dropMessage(5, "You may not do party operations while in a raid.");
+                    c.getPlayer().print(5, "You may not do party operations while in a raid.");
                     return;
                 }
                 MaplePartyCharacter expelled = party.getMemberById(slea.readInt());
@@ -205,7 +206,7 @@ public class PartyHandler {
                     break;
                 }
                 if (party.getExpeditionId() > 0) {
-                    c.getPlayer().dropMessage(5, "You may not do party operations while in a raid.");
+                    c.getPlayer().print(5, "You may not do party operations while in a raid.");
                     return;
                 }
                 MaplePartyCharacter newleader = party.getMemberById(slea.readInt());
@@ -216,7 +217,7 @@ public class PartyHandler {
             case 7:
                 if (party != null) {
                     if ((c.getPlayer().getEventInstance() != null) || (c.getPlayer().getPyramidSubway() != null) || (party.getExpeditionId() > 0) || (GameConstants.isDojo(c.getPlayer().getMapId()))) {
-                        c.getPlayer().dropMessage(5, "You may not do party operations while in a raid.");
+                        c.getPlayer().print(5, "You may not do party operations while in a raid.");
                         return;
                     }
                     if (partyplayer.equals(party.getLeader())) {
@@ -232,7 +233,7 @@ public class PartyHandler {
                     break;
                 }
                 if (party.getExpeditionId() > 0) {
-                    c.getPlayer().dropMessage(5, "You may not do party operations while in a raid.");
+                    c.getPlayer().print(5, "You may not do party operations while in a raid.");
                     return;
                 }
                 MapleCharacter cfrom = c.getPlayer().getMap().getCharacterById(party.getLeader().getId());
@@ -240,7 +241,7 @@ public class PartyHandler {
                     c.getSession().write(CWvsContext.PartyPacket.partyStatusMessage(50, c.getPlayer().getName()));
                     cfrom.getClient().getSession().write(CWvsContext.PartyPacket.partyRequestInvite(c.getPlayer()));
                 } else {
-                    c.getPlayer().dropMessage(5, "Player was not found or player is not accepting party requests.");
+                    c.getPlayer().print(5, "Player was not found or player is not accepting party requests.");
                 }
                 break;
             case 8:
@@ -251,7 +252,7 @@ public class PartyHandler {
                 }
                 break;
             default:
-                System.out.println("Unhandled Party function." + operation);
+                Logger.println("Unhandled Party function." + operation);
         }
     }
 
@@ -265,7 +266,7 @@ public class PartyHandler {
 
     public static final void MemberSearch(LittleEndianAccessor slea, MapleClient c) {
         if ((c.getPlayer().isInBlockedMap()) || (FieldLimitType.VipRock.check(c.getPlayer().getMap().getFieldLimit()))) {
-            c.getPlayer().dropMessage(5, "You may not do party search here.");
+            c.getPlayer().print(5, "You may not do party search here.");
             return;
         }
         c.getSession().write(CWvsContext.PartyPacket.showMemberSearch(c.getPlayer().getMap().getCharactersThreadsafe()));
@@ -273,7 +274,7 @@ public class PartyHandler {
 
     public static final void PartySearch(LittleEndianAccessor slea, MapleClient c) {
         if ((c.getPlayer().isInBlockedMap()) || (FieldLimitType.VipRock.check(c.getPlayer().getMap().getFieldLimit()))) {
-            c.getPlayer().dropMessage(5, "You may not do party search here.");
+            c.getPlayer().print(5, "You may not do party search here.");
             return;
         }
         List parties = new ArrayList();
@@ -310,7 +311,7 @@ public class PartyHandler {
                     }
                     c.getSession().write(CWvsContext.PartyPacket.partyListingAdded(ps));
                 } else {
-                    c.getPlayer().dropMessage(1, "Unable to create. Please leave the party.");
+                    c.getPlayer().print(1, "Unable to create. Please leave the party.");
                 }
                 break;
             case -103:
@@ -382,7 +383,7 @@ public class PartyHandler {
                 if (!c.getPlayer().isGM()) {
                     break;
                 }
-                System.out.println("Unknown Party Listing : " + mode + "\n" + slea);
+                Logger.println("Unknown Party Listing : " + mode + "\n" + slea);
         }
     }
 
@@ -602,7 +603,7 @@ public class PartyHandler {
                                     if (partyIndexTo < exped.getParties().size()) {
                                         MapleParty party = World.Party.getParty(exped.getParties().get(partyIndexTo).intValue());
                                         if ((party == null) || (party.getMembers().size() >= 6)) {
-                                            c.getPlayer().dropMessage(5, "Invalid party.");
+                                            c.getPlayer().print(5, "Invalid party.");
                                             break;
                                         }
                                     }
@@ -647,7 +648,7 @@ public class PartyHandler {
                 if (!c.getPlayer().isGM()) {
                     break;
                 }
-                System.out.println("Unknown Expedition : " + mode + "\n" + slea);
+                Logger.println("Unknown Expedition : " + mode + "\n" + slea);
         }
     }
 }

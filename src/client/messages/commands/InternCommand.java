@@ -36,9 +36,6 @@ import java.util.*;
 import java.util.List;
 import java.util.Map.Entry;
 
-/**
- * @author Emilyx3
- */
 public class InternCommand {
 
     public static PlayerGMRank getPlayerLevelRequired() {
@@ -107,8 +104,8 @@ public class InternCommand {
             MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
             victim.canTalk(false);
 
-            victim.dropMessage(6, c.getPlayer().getName().toString() + " has muted you.");
-            c.getPlayer().dropMessage(5, victim.getName().toString() + " has been muted.");
+            victim.print(6, c.getPlayer().getName().toString() + " has muted you.");
+            c.getPlayer().print(5, victim.getName().toString() + " has been muted.");
             return 1;
         }
     }
@@ -120,8 +117,8 @@ public class InternCommand {
             MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
             victim.canTalk(true);
 
-            victim.dropMessage(6, c.getPlayer().getName().toString() + " has unmuted you.");
-            c.getPlayer().dropMessage(5, victim.getName().toString() + " has been unmuted.");
+            victim.print(6, c.getPlayer().getName().toString() + " has unmuted you.");
+            c.getPlayer().print(5, victim.getName().toString() + " has been unmuted.");
             return 1;
         }
     }
@@ -133,7 +130,7 @@ public class InternCommand {
             for (MapleCharacter chr : c.getPlayer().getMap().getCharactersThreadsafe()) {
                 chr.canTalk(false);
             }
-            c.getPlayer().dropMessage(6, "The map has been muted.");
+            c.getPlayer().print(6, "The map has been muted.");
             return 1;
         }
     }
@@ -145,7 +142,7 @@ public class InternCommand {
             for (MapleCharacter chr : c.getPlayer().getMap().getCharactersThreadsafe()) {
                 chr.canTalk(true);
             }
-            c.getPlayer().dropMessage(6, "The map has been unmuted.");
+            c.getPlayer().print(6, "The map has been unmuted.");
             return 1;
         }
     }
@@ -164,7 +161,7 @@ public class InternCommand {
 
             if (c.getPlayer().getGMLevel() == 2) {
                 if (num > 10) {
-                    c.getPlayer().dropMessage(5, "Maximum : 10");
+                    c.getPlayer().print(5, "Maximum : 10");
                     return 0;
                 }
             }
@@ -172,11 +169,11 @@ public class InternCommand {
             try {
                 onemob = MapleLifeFactory.getMonster(mid);
             } catch (RuntimeException e) {
-                c.getPlayer().dropMessage(5, "Error: " + e.getMessage());
+                c.getPlayer().print(5, "Error: " + e.getMessage());
                 return 0;
             }
             if (onemob == null) {
-                c.getPlayer().dropMessage(5, "Monster does not exist.");
+                c.getPlayer().print(5, "Monster does not exist.");
                 return 0;
             }
             long newhp = 0;
@@ -244,7 +241,7 @@ public class InternCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(5, "You are on map " + c.getPlayer().getMap().getId());
+            c.getPlayer().print(5, "You are on map " + c.getPlayer().getMap().getId());
             return 1;
         }
     }
@@ -285,7 +282,7 @@ public class InternCommand {
                     eqs.put(new Pair<Short, Short>(item.getPosition(), item.getQuantity()), MapleInventoryType.CASH);
                 }
             } else {
-                c.getPlayer().dropMessage(6, "[Syntax] !clear [all / equipped / equip / use / setup / etc / cash]");
+                c.getPlayer().print(6, "[Syntax] !clear [all / equipped / equip / use / setup / etc / cash]");
             }
             for (Entry<Pair<Short, Short>, MapleInventoryType> eq : eqs.entrySet()) {
                 MapleInventoryManipulator.removeFromSlot(c, eq.getValue(), eq.getKey().left, eq.getKey().right, false, false);
@@ -299,8 +296,8 @@ public class InternCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             for (int i = 1; i <= ChannelServer.getChannelCount(); i++) {
-                c.getPlayer().dropMessage(6, "Characters Connected To Channel " + i + ": " + ChannelServer.getInstance(i).getPlayerStorage().getAllCharacters().size());
-                c.getPlayer().dropMessage(6, ChannelServer.getInstance(i).getPlayerStorage().getOnlinePlayers(true));
+                c.getPlayer().print(6, "Characters Connected To Channel " + i + ": " + ChannelServer.getInstance(i).getPlayerStorage().getAllCharacters().size());
+                c.getPlayer().print(6, ChannelServer.getInstance(i).getPlayerStorage().getOnlinePlayers(true));
             }
             return 1;
         }
@@ -310,8 +307,8 @@ public class InternCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(6, "Characters Connected To Channel " + c.getChannel() + ":");
-            c.getPlayer().dropMessage(6, c.getChannelServer().getPlayerStorage().getOnlinePlayers(true));
+            c.getPlayer().print(6, "Characters Connected To Channel " + c.getChannel() + ":");
+            c.getPlayer().print(6, c.getChannelServer().getPlayerStorage().getOnlinePlayers(true));
             return 1;
         }
     }
@@ -320,8 +317,8 @@ public class InternCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(6, "Characters Connected To Channel " + Integer.parseInt(splitted[1]) + ":");
-            c.getPlayer().dropMessage(6, ChannelServer.getInstance(Integer.parseInt(splitted[1])).getPlayerStorage().getOnlinePlayers(true));
+            c.getPlayer().print(6, "Characters Connected To Channel " + Integer.parseInt(splitted[1]) + ":");
+            c.getPlayer().print(6, ChannelServer.getInstance(Integer.parseInt(splitted[1])).getPlayerStorage().getOnlinePlayers(true));
             return 1;
         }
     }
@@ -331,16 +328,16 @@ public class InternCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 3 || splitted[1] == null || splitted[1].equals("") || splitted[2] == null || splitted[2].equals("")) {
-                c.getPlayer().dropMessage(6, "!itemcheck [playername] [id]");
+                c.getPlayer().print(6, "!itemcheck [playername] [id]");
                 return 0;
             } else {
                 int item = Integer.parseInt(splitted[2]);
                 MapleCharacter chr = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
                 int itemamount = chr.getItemQuantity(item, true);
                 if (itemamount > 0) {
-                    c.getPlayer().dropMessage(6, chr.getName() + " have " + itemamount + " (" + item + ").");
+                    c.getPlayer().print(6, chr.getName() + " have " + itemamount + " (" + item + ").");
                 } else {
-                    c.getPlayer().dropMessage(6, chr.getName() + " doesn't have (" + item + ").");
+                    c.getPlayer().print(6, chr.getName() + " doesn't have (" + item + ").");
                 }
             }
             return 1;
@@ -361,14 +358,14 @@ public class InternCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 2) {
-                c.getPlayer().dropMessage(6, "[Syntax] !checkpoint [name]");
+                c.getPlayer().print(6, "[Syntax] !checkpoint [name]");
                 return 0;
             }
             MapleCharacter chrs = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
             if (chrs == null) {
-                c.getPlayer().dropMessage(6, "Make sure they are in the correct channel");
+                c.getPlayer().print(6, "Make sure they are in the correct channel");
             } else {
-                c.getPlayer().dropMessage(6, chrs.getName() + " have " + chrs.getPoints() + " points.");
+                c.getPlayer().print(6, chrs.getName() + " have " + chrs.getPoints() + " points.");
             }
             return 1;
         }
@@ -379,14 +376,14 @@ public class InternCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 2) {
-                c.getPlayer().dropMessage(6, "[Syntax] !checkvotepoint [name]");
+                c.getPlayer().print(6, "[Syntax] !checkvotepoint [name]");
                 return 0;
             }
             MapleCharacter chrs = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
             if (chrs == null) {
-                c.getPlayer().dropMessage(6, "Make sure they are in the correct channel");
+                c.getPlayer().print(6, "Make sure they are in the correct channel");
             } else {
-                c.getPlayer().dropMessage(6, chrs.getName() + " have " + chrs.getVPoints() + " vote points.");
+                c.getPlayer().print(6, chrs.getName() + " have " + chrs.getVPoints() + " vote points.");
             }
             return 1;
         }
@@ -399,15 +396,15 @@ public class InternCommand {
             if (c.getPlayer().getMap().getPermanentWeather() > 0) {
                 c.getPlayer().getMap().setPermanentWeather(0);
                 c.getPlayer().getMap().broadcastMessage(CField.removeMapEffect());
-                c.getPlayer().dropMessage(5, "Map weather has been disabled.");
+                c.getPlayer().print(5, "Map weather has been disabled.");
             } else {
                 final int weather = CommandProcessorUtil.getOptionalIntArg(splitted, 1, 5120000);
                 if (!MapleItemInformationProvider.getInstance().itemExists(weather) || weather / 10000 != 512) {
-                    c.getPlayer().dropMessage(5, "Invalid ID.");
+                    c.getPlayer().print(5, "Invalid ID.");
                 } else {
                     c.getPlayer().getMap().setPermanentWeather(weather);
                     c.getPlayer().getMap().broadcastMessage(CField.startMapEffect("", weather, false));
-                    c.getPlayer().dropMessage(5, "Map weather has been enabled.");
+                    c.getPlayer().print(5, "Map weather has been enabled.");
                 }
             }
             return 1;
@@ -437,7 +434,7 @@ public class InternCommand {
                     conStr.append(connected.get(i));
                 }
             }
-            c.getPlayer().dropMessage(6, conStr.toString());
+            c.getPlayer().print(6, conStr.toString());
             return 1;
         }
     }
@@ -456,7 +453,7 @@ public class InternCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             for (Entry<MapleSquad.MapleSquadType, MapleSquad> squads : c.getChannelServer().getAllSquads().entrySet()) {
-                c.getPlayer().dropMessage(5, "TYPE: " + squads.getKey().name() + ", Leader: " + squads.getValue().getLeader().getName() + ", Status: " + squads.getValue().getStatus() + ", Total Members: " + squads.getValue().getSquadSize() + ", Total Banned: " + squads.getValue().getBannedMemberSize());
+                c.getPlayer().print(5, "TYPE: " + squads.getKey().name() + ", Leader: " + squads.getValue().getLeader().getName() + ", Status: " + squads.getValue().getStatus() + ", Total Members: " + squads.getValue().getSquadSize() + ", Total Banned: " + squads.getValue().getBannedMemberSize());
             }
             return 0;
         }
@@ -468,10 +465,10 @@ public class InternCommand {
         public int execute(MapleClient c, String[] splitted) {
             EventManager em = c.getChannelServer().getEventSM().getEventManager(StringUtil.joinStringFrom(splitted, 1));
             if (em == null || em.getInstances().size() <= 0) {
-                c.getPlayer().dropMessage(5, "None");
+                c.getPlayer().print(5, "None");
             } else {
                 for (EventInstanceManager eim : em.getInstances()) {
-                    c.getPlayer().dropMessage(5, "Event " + eim.getName() + ", Total Players: " + eim.getPlayers().size() + ", Total Disconnected: " + eim.getDisconnected().size() + ", Total Monster: " + eim.getMobs().size() + ", Event Name: " + em.getName() + ", Time Left: " + eim.getTimeLeft() + ", Iprops: " + eim.getProperties().toString() + ", Eprops: " + em.getProperties().toString());
+                    c.getPlayer().print(5, "Event " + eim.getName() + ", Total Players: " + eim.getPlayers().size() + ", Total Disconnected: " + eim.getDisconnected().size() + ", Total Monster: " + eim.getMobs().size() + ", Event Name: " + em.getName() + ", Time Left: " + eim.getTimeLeft() + ", Iprops: " + eim.getProperties().toString() + ", Eprops: " + em.getProperties().toString());
                 }
             }
             return 0;
@@ -483,10 +480,10 @@ public class InternCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (c.getPlayer().getEventInstance() == null) {
-                c.getPlayer().dropMessage(5, "None");
+                c.getPlayer().print(5, "None");
             } else {
                 EventInstanceManager eim = c.getPlayer().getEventInstance();
-                c.getPlayer().dropMessage(5, "Event " + eim.getName() + ", Total Players: " + eim.getPlayers().size() + ", Total Disconnected: " + eim.getDisconnected().size() + ", Total Monster: " + eim.getMobs().size() + ", Event Manager: " + eim.getEventManager().getName() + ", Time Left: " + eim.getTimeLeft() + ", Iprops: " + eim.getProperties().toString() + ", Eprops: " + eim.getEventManager().getProperties().toString());
+                c.getPlayer().print(5, "Event " + eim.getName() + ", Total Players: " + eim.getPlayers().size() + ", Total Disconnected: " + eim.getDisconnected().size() + ", Total Monster: " + eim.getMobs().size() + ", Event Manager: " + eim.getEventManager().getName() + ", Time Left: " + eim.getTimeLeft() + ", Iprops: " + eim.getProperties().toString() + ", Eprops: " + eim.getEventManager().getProperties().toString());
             }
             return 1;
         }
@@ -506,26 +503,26 @@ public class InternCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 2) {
-                c.getPlayer().dropMessage(6, "[Syntax] !go <map>");
+                c.getPlayer().print(6, "[Syntax] !go <map>");
             } else {
                 if (gotomaps.containsKey(splitted[1])) {
                     MapleMap target = c.getChannelServer().getMapFactory().getMap(gotomaps.get(splitted[1]));
                     if (target == null) {
-                        c.getPlayer().dropMessage(6, "Map does not exist");
+                        c.getPlayer().print(6, "Map does not exist");
                         return 0;
                     }
                     MaplePortal targetPortal = target.getPortal(0);
                     c.getPlayer().changeMap(target, targetPortal);
                 } else {
                     if (splitted[1].equals("location")) {
-                        c.getPlayer().dropMessage(6, "[Syntax] Use !go location. Locations are as follows:");
+                        c.getPlayer().print(6, "[Syntax] Use !go location. Locations are as follows:");
                         StringBuilder sb = new StringBuilder();
                         for (String s : gotomaps.keySet()) {
                             sb.append(s).append(", ");
                         }
-                        c.getPlayer().dropMessage(6, sb.substring(0, sb.length() - 2));
+                        c.getPlayer().print(6, sb.substring(0, sb.length() - 2));
                     } else {
-                        c.getPlayer().dropMessage(6, "[Syntax] Use !go [map]. For a list of locations, use !go locations.");
+                        c.getPlayer().print(6, "[Syntax] Use !go [map]. For a list of locations, use !go locations.");
                     }
                 }
             }
@@ -550,13 +547,13 @@ public class InternCommand {
                 }
             }
             if (map == null) {
-                c.getPlayer().dropMessage(6, "Map does not exist");
+                c.getPlayer().print(6, "Map does not exist");
                 return 0;
             }
             MapleMonster mob;
             for (MapleMapObject monstermo : map.getMapObjectsInRange(c.getPlayer().getPosition(), range, Arrays.asList(MapleMapObjectType.MONSTER))) {
                 mob = (MapleMonster) monstermo;
-                c.getPlayer().dropMessage(6, "Monster " + mob.toString());
+                c.getPlayer().print(6, "Monster " + mob.toString());
             }
             return 1;
         }
@@ -568,7 +565,7 @@ public class InternCommand {
         public int execute(MapleClient c, String[] splitted) {
             for (MapleMapObject reactor1l : c.getPlayer().getMap().getAllNPCsThreadsafe()) {
                 MapleNPC reactor2l = (MapleNPC) reactor1l;
-                c.getPlayer().dropMessage(5, "NPC ID: " + reactor2l.getObjectId() + " NPC ID: " + reactor2l.getId() + " Position: " + reactor2l.getPosition().toString() + " Name: " + reactor2l.getName());
+                c.getPlayer().print(5, "NPC ID: " + reactor2l.getObjectId() + " NPC ID: " + reactor2l.getId() + " Position: " + reactor2l.getPosition().toString() + " Name: " + reactor2l.getName());
             }
             return 0;
         }
@@ -580,7 +577,7 @@ public class InternCommand {
         public int execute(MapleClient c, String[] splitted) {
             for (MapleMapObject reactor1l : c.getPlayer().getMap().getAllReactorsThreadsafe()) {
                 MapleReactor reactor2l = (MapleReactor) reactor1l;
-                c.getPlayer().dropMessage(5, "Reactor OID: " + reactor2l.getObjectId() + " Reactor ID: " + reactor2l.getReactorId() + " Position: " + reactor2l.getPosition().toString() + " State: " + reactor2l.getState() + " Name: " + reactor2l.getName());
+                c.getPlayer().print(5, "Reactor OID: " + reactor2l.getObjectId() + " Reactor ID: " + reactor2l.getReactorId() + " Position: " + reactor2l.getPosition().toString() + " State: " + reactor2l.getState() + " Name: " + reactor2l.getName());
             }
             return 0;
         }
@@ -591,7 +588,7 @@ public class InternCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             for (MaplePortal portal : c.getPlayer().getMap().getPortals()) {
-                c.getPlayer().dropMessage(5, "Portal ID: " + portal.getId() + " Script: " + portal.getScriptName() + " Name: " + portal.getName() + " Position: " + portal.getPosition().x + "," + portal.getPosition().y + " Target: " + portal.getTargetMapId() + " / " + portal.getTarget());
+                c.getPlayer().print(5, "Portal ID: " + portal.getId() + " Script: " + portal.getScriptName() + " Name: " + portal.getName() + " Position: " + portal.getPosition().x + "," + portal.getPosition().y + " Target: " + portal.getTargetMapId() + " / " + portal.getTarget());
             }
             return 0;
         }
@@ -602,7 +599,7 @@ public class InternCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             Point pos = c.getPlayer().getPosition();
-            c.getPlayer().dropMessage(6, "X: " + pos.x + " | Y: " + pos.y + " | RX0: " + (pos.x + 50) + " | RX1: " + (pos.x - 50) + " | FH: " + c.getPlayer().getFH());
+            c.getPlayer().print(6, "X: " + pos.x + " | Y: " + pos.y + " | RX0: " + (pos.x + 50) + " | RX1: " + (pos.x - 50) + " | FH: " + c.getPlayer().getFH());
             return 1;
         }
     }
@@ -627,7 +624,7 @@ public class InternCommand {
                 } else {
                     MapleMap target = ChannelServer.getInstance(c.getChannel()).getMapFactory().getMap(Integer.parseInt(splitted[2]));
                     if (target == null) {
-                        c.getPlayer().dropMessage(6, "Map does not exist");
+                        c.getPlayer().print(6, "Map does not exist");
                         return 0;
                     }
                     MaplePortal targetPortal = null;
@@ -636,7 +633,7 @@ public class InternCommand {
                             targetPortal = target.getPortal(Integer.parseInt(splitted[3]));
                         } catch (IndexOutOfBoundsException e) {
                             // noop, assume the gm didn't know how many portals there are
-                            c.getPlayer().dropMessage(5, "Invalid portal selected.");
+                            c.getPlayer().print(5, "Invalid portal selected.");
                         } catch (NumberFormatException a) {
                             // noop, assume that the gm is drunk
                         }
@@ -653,7 +650,7 @@ public class InternCommand {
                     if (ch < 0) {
                         MapleMap target = c.getChannelServer().getMapFactory().getMap(Integer.parseInt(splitted[1]));
                         if (target == null) {
-                            c.getPlayer().dropMessage(6, "Map does not exist");
+                            c.getPlayer().print(6, "Map does not exist");
                             return 0;
                         }
                         MaplePortal targetPortal = null;
@@ -662,7 +659,7 @@ public class InternCommand {
                                 targetPortal = target.getPortal(Integer.parseInt(splitted[2]));
                             } catch (IndexOutOfBoundsException e) {
                                 // noop, assume the gm didn't know how many portals there are
-                                c.getPlayer().dropMessage(5, "Invalid portal selected.");
+                                c.getPlayer().print(5, "Invalid portal selected.");
                             } catch (NumberFormatException a) {
                                 // noop, assume that the gm is drunk
                             }
@@ -673,7 +670,7 @@ public class InternCommand {
                         c.getPlayer().changeMap(target, targetPortal);
                     } else {
                         victim = ChannelServer.getInstance(ch).getPlayerStorage().getCharacterByName(splitted[1]);
-                        c.getPlayer().dropMessage(6, "Cross changing channel. Please wait for a moment.");
+                        c.getPlayer().print(6, "Cross changing channel. Please wait for a moment.");
                         if (victim.getMapId() != c.getPlayer().getMapId()) {
                             final MapleMap mapp = c.getChannelServer().getMapFactory().getMap(victim.getMapId());
                             c.getPlayer().changeMap(mapp, mapp.findClosestPortal(victim.getTruePosition()));
@@ -681,7 +678,7 @@ public class InternCommand {
                         c.getPlayer().changeChannel(ch);
                     }
                 } catch (Exception e) {
-                    c.getPlayer().dropMessage(6, "Something went wrong " + e.getMessage());
+                    c.getPlayer().print(6, "Something went wrong " + e.getMessage());
                     return 0;
                 }
             }
@@ -695,7 +692,7 @@ public class InternCommand {
         public int execute(MapleClient c, String[] splitted) {
             for (ChannelServer cserv : ChannelServer.getAllInstances()) {
                 for (Entry<MapleSquad.MapleSquadType, MapleSquad> squads : cserv.getAllSquads().entrySet()) {
-                    c.getPlayer().dropMessage(5, "[Channel " + cserv.getChannel() + "] TYPE: " + squads.getKey().name() + ", Leader: " + squads.getValue().getLeader().getName() + ", Status: " + squads.getValue().getStatus() + ", Total Members: " + squads.getValue().getSquadSize() + ", Total Banned: " + squads.getValue().getBannedMemberSize());
+                    c.getPlayer().print(5, "[Channel " + cserv.getChannel() + "] TYPE: " + squads.getKey().name() + ", Leader: " + squads.getValue().getLeader().getName() + ", Status: " + squads.getValue().getStatus() + ", Total Members: " + squads.getValue().getSquadSize() + ", Total Banned: " + squads.getValue().getBannedMemberSize());
                 }
             }
             return 1;
@@ -717,7 +714,7 @@ public class InternCommand {
                 sb.append(StringUtil.joinStringFrom(splitted, 1));
                 World.Broadcast.broadcastMessage(CWvsContext.serverNotice(c.getPlayer().isGM() ? 6 : 5, sb.toString()));
             } else {
-                c.getPlayer().dropMessage(6, "[Syntax] !say [message]");
+                c.getPlayer().print(6, "[Syntax] !say [message]");
                 return 0;
             }
             return 1;
@@ -729,7 +726,7 @@ public class InternCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 3) {
-                c.getPlayer().dropMessage(6, "[Syntax] !letter [green / red] [word]");
+                c.getPlayer().print(6, "[Syntax] !letter [green / red] [word]");
                 return 0;
             }
             int start, nstart;
@@ -740,13 +737,13 @@ public class InternCommand {
                 start = 3991000;
                 nstart = 3990009;
             } else {
-                c.getPlayer().dropMessage(6, "Unknown color!");
+                c.getPlayer().print(6, "Unknown color!");
                 return 0;
             }
             String splitString = StringUtil.joinStringFrom(splitted, 2);
             List<Integer> chars = new ArrayList<Integer>();
             splitString = splitString.toUpperCase();
-            // System.out.println(splitString);
+            // Logger.println(splitString);
             for (int i = 0; i < splitString.length(); i++) {
                 char chr = splitString.charAt(i);
                 if (chr == ' ') {
@@ -795,7 +792,7 @@ public class InternCommand {
             for (Pair<String, Long> z : players) {
                 sb.append(z.left).append(", ");
             }
-            c.getPlayer().dropMessage(6, sb.toString().substring(0, sb.length() - 2));
+            c.getPlayer().print(6, sb.toString().substring(0, sb.length() - 2));
             return 0;
         }
 
@@ -823,7 +820,7 @@ public class InternCommand {
                 for (MapleSquadType t : MapleSquadType.values()) {
                     sb.append(t.name()).append(", ");
                 }
-                c.getPlayer().dropMessage(6, sb.toString().substring(0, sb.length() - 2));
+                c.getPlayer().print(6, sb.toString().substring(0, sb.length() - 2));
                 return 0;
             }
             final MapleSquadType t = MapleSquadType.valueOf(splitted[1].toLowerCase());
@@ -832,19 +829,19 @@ public class InternCommand {
                 for (MapleSquadType z : MapleSquadType.values()) {
                     sb.append(z.name()).append(", ");
                 }
-                c.getPlayer().dropMessage(6, sb.toString().substring(0, sb.length() - 2));
+                c.getPlayer().print(6, sb.toString().substring(0, sb.length() - 2));
                 return 0;
             }
             if (t.queuedPlayers.get(c.getChannel()) == null) {
-                c.getPlayer().dropMessage(6, "The queue has not been initialized in this channel yet.");
+                c.getPlayer().print(6, "The queue has not been initialized in this channel yet.");
                 return 0;
             }
-            c.getPlayer().dropMessage(6, "Queued Players: " + t.queuedPlayers.get(c.getChannel()).size());
+            c.getPlayer().print(6, "Queued Players: " + t.queuedPlayers.get(c.getChannel()).size());
             StringBuilder sb = new StringBuilder("List Of Participants:  ");
             for (Pair<String, String> z : t.queuedPlayers.get(c.getChannel())) {
                 sb.append(z.left).append('(').append(z.right).append(')').append(", ");
             }
-            c.getPlayer().dropMessage(6, sb.toString().substring(0, sb.length() - 2));
+            c.getPlayer().print(6, sb.toString().substring(0, sb.length() - 2));
             return 0;
         }
     }
@@ -858,7 +855,7 @@ public class InternCommand {
                 for (MapleSquadType t : MapleSquadType.values()) {
                     sb.append(t.name()).append(", ");
                 }
-                c.getPlayer().dropMessage(6, sb.toString().substring(0, sb.length() - 2));
+                c.getPlayer().print(6, sb.toString().substring(0, sb.length() - 2));
                 return 0;
             }
             final MapleSquadType t = MapleSquadType.valueOf(splitted[1].toLowerCase());
@@ -867,20 +864,20 @@ public class InternCommand {
                 for (MapleSquadType z : MapleSquadType.values()) {
                     sb.append(z.name()).append(", ");
                 }
-                c.getPlayer().dropMessage(6, sb.toString().substring(0, sb.length() - 2));
+                c.getPlayer().print(6, sb.toString().substring(0, sb.length() - 2));
                 return 0;
             }
             if (t.queue.get(c.getChannel()) == null) {
-                c.getPlayer().dropMessage(6, "The queue has not been initialized in this channel yet.");
+                c.getPlayer().print(6, "The queue has not been initialized in this channel yet.");
                 return 0;
             }
-            c.getPlayer().dropMessage(6, "Queued Players: " + t.queue.get(c.getChannel()).size());
+            c.getPlayer().print(6, "Queued Players: " + t.queue.get(c.getChannel()).size());
             StringBuilder sb = new StringBuilder("List Of Participants:  ");
             final long now = System.currentTimeMillis();
             for (Pair<String, Long> z : t.queue.get(c.getChannel())) {
                 sb.append(z.left).append('(').append(StringUtil.getReadableMillis(z.right, now)).append(" ago),");
             }
-            c.getPlayer().dropMessage(6, sb.toString().substring(0, sb.length() - 2));
+            c.getPlayer().print(6, sb.toString().substring(0, sb.length() - 2));
             return 0;
         }
     }
@@ -914,7 +911,7 @@ public class InternCommand {
             try {
                 final MapleMap target = c.getChannelServer().getMapFactory().getMap(Integer.parseInt(splitted[1]));
                 if (target == null) {
-                    c.getPlayer().dropMessage(6, "Map does not exist");
+                    c.getPlayer().print(6, "Map does not exist");
                     return 0;
                 }
                 final MapleMap from = c.getPlayer().getMap();
@@ -922,7 +919,7 @@ public class InternCommand {
                     chr.changeMap(target, target.getPortal(0));
                 }
             } catch (Exception e) {
-                c.getPlayer().dropMessage(5, "Error: " + e.getMessage());
+                c.getPlayer().print(5, "Error: " + e.getMessage());
                 return 0; // Assume drunk Game Master
             }
             return 1;
@@ -945,7 +942,7 @@ public class InternCommand {
                 }
             }
             if (map == null) {
-                c.getPlayer().dropMessage(6, "Map does not exist");
+                c.getPlayer().print(6, "Map does not exist");
                 return 0;
             }
             MapleMonster mob;
@@ -964,15 +961,15 @@ public class InternCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length == 1) {
-                c.getPlayer().dropMessage(6, splitted[0] + ": [NPC] [MOB] [ITEM] [MAP] [SKILL] [QUEST]");
+                c.getPlayer().print(6, splitted[0] + ": [NPC] [MOB] [ITEM] [MAP] [SKILL] [QUEST]");
             } else if (splitted.length == 2) {
-                c.getPlayer().dropMessage(6, "Provide something to search.");
+                c.getPlayer().print(6, "Provide something to search.");
             } else {
                 String type = splitted[1];
                 String search = StringUtil.joinStringFrom(splitted, 2);
                 MapleData data = null;
                 MapleDataProvider dataProvider = MapleDataProviderFactory.getDataProvider(new File("wz/" + "String.wz"));
-                c.getPlayer().dropMessage(6, "<<Type: " + type + " | Search: " + search + ">>");
+                c.getPlayer().print(6, "<<Type: " + type + " | Search: " + search + ">>");
 
                 if (type.equalsIgnoreCase("NPC")) {
                     List<String> retNpcs = new ArrayList<String>();
@@ -988,10 +985,10 @@ public class InternCommand {
                     }
                     if (retNpcs != null && retNpcs.size() > 0) {
                         for (String singleRetNpc : retNpcs) {
-                            c.getPlayer().dropMessage(6, singleRetNpc);
+                            c.getPlayer().print(6, singleRetNpc);
                         }
                     } else {
-                        c.getPlayer().dropMessage(6, "No NPC's Found");
+                        c.getPlayer().print(6, "No NPC's Found");
                     }
 
                 } else if (type.equalsIgnoreCase("MAP")) {
@@ -1010,10 +1007,10 @@ public class InternCommand {
                     }
                     if (retMaps != null && retMaps.size() > 0) {
                         for (String singleRetMap : retMaps) {
-                            c.getPlayer().dropMessage(6, singleRetMap);
+                            c.getPlayer().print(6, singleRetMap);
                         }
                     } else {
-                        c.getPlayer().dropMessage(6, "No Maps Found");
+                        c.getPlayer().print(6, "No Maps Found");
                     }
                 } else if (type.equalsIgnoreCase("MOB")) {
                     List<String> retMobs = new ArrayList<String>();
@@ -1029,10 +1026,10 @@ public class InternCommand {
                     }
                     if (retMobs != null && retMobs.size() > 0) {
                         for (String singleRetMob : retMobs) {
-                            c.getPlayer().dropMessage(6, singleRetMob);
+                            c.getPlayer().print(6, singleRetMob);
                         }
                     } else {
-                        c.getPlayer().dropMessage(6, "No Mobs Found");
+                        c.getPlayer().print(6, "No Mobs Found");
                     }
 
                 } else if (type.equalsIgnoreCase("ITEM")) {
@@ -1044,10 +1041,10 @@ public class InternCommand {
                     }
                     if (retItems != null && retItems.size() > 0) {
                         for (String singleRetItem : retItems) {
-                            c.getPlayer().dropMessage(6, singleRetItem);
+                            c.getPlayer().print(6, singleRetItem);
                         }
                     } else {
-                        c.getPlayer().dropMessage(6, "No Items Found");
+                        c.getPlayer().print(6, "No Items Found");
                     }
                 } else if (type.equalsIgnoreCase("QUEST")) {
                     List<String> retItems = new ArrayList<String>();
@@ -1058,10 +1055,10 @@ public class InternCommand {
                     }
                     if (retItems != null && retItems.size() > 0) {
                         for (String singleRetItem : retItems) {
-                            c.getPlayer().dropMessage(6, singleRetItem);
+                            c.getPlayer().print(6, singleRetItem);
                         }
                     } else {
-                        c.getPlayer().dropMessage(6, "No Quests Found");
+                        c.getPlayer().print(6, "No Quests Found");
                     }
                 } else if (type.equalsIgnoreCase("SKILL")) {
                     List<String> retSkills = new ArrayList<String>();
@@ -1072,13 +1069,13 @@ public class InternCommand {
                     }
                     if (retSkills != null && retSkills.size() > 0) {
                         for (String singleRetSkill : retSkills) {
-                            c.getPlayer().dropMessage(6, singleRetSkill);
+                            c.getPlayer().print(6, singleRetSkill);
                         }
                     } else {
-                        c.getPlayer().dropMessage(6, "No Skills Found");
+                        c.getPlayer().print(6, "No Skills Found");
                     }
                 } else {
-                    c.getPlayer().dropMessage(6, "Sorry, that search call is unavailable");
+                    c.getPlayer().print(6, "Sorry, that search call is unavailable");
                 }
             }
             return 0;
@@ -1093,7 +1090,7 @@ public class InternCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length <= 2) {
-                c.getPlayer().dropMessage(6, "[Syntax] !jail [name] [minutes] (0 = Forever)");
+                c.getPlayer().print(6, "[Syntax] !jail [name] [minutes] (0 = Forever)");
                 return 0;
             }
             MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
@@ -1103,14 +1100,14 @@ public class InternCommand {
                 victim.getQuestNAdd(MapleQuest.getInstance(GameConstants.JAIL_QUEST)).setCustomData(String.valueOf(minutes * 60));
                 victim.changeMap(target, target.getPortal(0));
                 if (minutes == 0) {
-                    victim.dropMessage(5, "[Notice] You have been jailed.");
-                    c.getPlayer().dropMessage(6, "You have jailed " + victim.getName().toString() + " for a long time.");
+                    victim.print(5, "[Notice] You have been jailed.");
+                    c.getPlayer().print(6, "You have jailed " + victim.getName().toString() + " for a long time.");
                 } else {
-                    victim.dropMessage(5, "[Notice] You have been jailed for " + minutes + " minutes.");
-                    c.getPlayer().dropMessage(6, "You have jailed " + victim.getName().toString() + " for " + minutes + " minutes.");
+                    victim.print(5, "[Notice] You have been jailed for " + minutes + " minutes.");
+                    c.getPlayer().print(6, "You have jailed " + victim.getName().toString() + " for " + minutes + " minutes.");
                 }
             } else {
-                c.getPlayer().dropMessage(6, "Please be on their channel.");
+                c.getPlayer().print(6, "Please be on their channel.");
                 return 0;
             }
             return 1;
@@ -1127,7 +1124,7 @@ public class InternCommand {
                 if (ch < 0) {
                     MapleMap target = c.getChannelServer().getMapFactory().getMap(Integer.parseInt(splitted[1]));
                     if (target == null) {
-                        c.getPlayer().dropMessage(6, "Map does not exist");
+                        c.getPlayer().print(6, "Map does not exist");
                         return 0;
                     }
                     MaplePortal targetPortal = null;
@@ -1136,7 +1133,7 @@ public class InternCommand {
                             targetPortal = target.getPortal(Integer.parseInt(splitted[2]));
                         } catch (IndexOutOfBoundsException e) {
                             // Noop, assume the gm didn't know how many portals there are
-                            c.getPlayer().dropMessage(5, "Invalid portal selected.");
+                            c.getPlayer().print(5, "Invalid portal selected.");
                         } catch (NumberFormatException a) {
                             // Noop, assume that the gm is drunk
                         }
@@ -1147,7 +1144,7 @@ public class InternCommand {
                     c.getPlayer().changeMap(target, targetPortal);
                 } else {
                     victim = ChannelServer.getInstance(ch).getPlayerStorage().getCharacterByName(splitted[1]);
-                    c.getPlayer().dropMessage(6, "Cross changing channel. Please wait.");
+                    c.getPlayer().print(6, "Cross changing channel. Please wait.");
                     if (victim.getMapId() != c.getPlayer().getMapId()) {
                         final MapleMap mapp = c.getChannelServer().getMapFactory().getMap(victim.getMapId());
                         c.getPlayer().changeMap(mapp, mapp.findClosestPortal(victim.getTruePosition()));
@@ -1155,7 +1152,7 @@ public class InternCommand {
                     c.getPlayer().changeChannel(ch);
                 }
             } catch (Exception e) {
-                c.getPlayer().dropMessage(6, "Something went wrong " + e.getMessage());
+                c.getPlayer().print(6, "Something went wrong " + e.getMessage());
                 return 0;
             }
             return 1;
@@ -1169,23 +1166,23 @@ public class InternCommand {
             MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
             if (victim != null) {
                 if (c.getPlayer().inPVP() || (!c.getPlayer().isGM() && (victim.isInBlockedMap() || victim.isGM()))) {
-                    c.getPlayer().dropMessage(5, "Try again later.");
+                    c.getPlayer().print(5, "Try again later.");
                     return 0;
                 }
                 victim.changeMap(c.getPlayer().getMap(), c.getPlayer().getMap().findClosestPortal(c.getPlayer().getTruePosition()));
             } else {
                 int ch = World.Find.findChannel(splitted[1]);
                 if (ch < 0) {
-                    c.getPlayer().dropMessage(5, "Not found.");
+                    c.getPlayer().print(5, "Not found.");
                     return 0;
                 }
                 victim = ChannelServer.getInstance(ch).getPlayerStorage().getCharacterByName(splitted[1]);
                 if (victim == null || victim.inPVP() || (!c.getPlayer().isGM() && (victim.isInBlockedMap() || victim.isGM()))) {
-                    c.getPlayer().dropMessage(5, "Try again later.");
+                    c.getPlayer().print(5, "Try again later.");
                     return 0;
                 }
-                c.getPlayer().dropMessage(5, "Victim is cross changing channel.");
-                victim.dropMessage(5, "Cross changing channel.");
+                c.getPlayer().print(5, "Victim is cross changing channel.");
+                victim.print(5, "Cross changing channel.");
                 if (victim.getMapId() != c.getPlayer().getMapId()) {
                     final MapleMap mapp = victim.getClient().getChannelServer().getMapFactory().getMap(c.getPlayer().getMapId());
                     victim.changeMap(mapp, mapp.findClosestPortal(c.getPlayer().getTruePosition()));
@@ -1200,7 +1197,7 @@ public class InternCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(6, c.getPlayer().getMap().spawnDebug());
+            c.getPlayer().print(6, c.getPlayer().getMap().spawnDebug());
             return 1;
         }
     }
@@ -1210,7 +1207,7 @@ public class InternCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             MaplePortal portal = c.getPlayer().getMap().findClosestPortal(c.getPlayer().getTruePosition());
-            c.getPlayer().dropMessage(6, portal.getName() + " ID: " + portal.getId() + " Script: " + portal.getScriptName());
+            c.getPlayer().print(6, portal.getName() + " ID: " + portal.getId() + " Script: " + portal.getScriptName());
 
             return 1;
         }
@@ -1226,12 +1223,12 @@ public class InternCommand {
                     ret.append(type.theId).append('/');
                 }
                 ret.setLength(ret.length() - 1);
-                c.getPlayer().dropMessage(6, ret.append(']').toString());
+                c.getPlayer().print(6, ret.append(']').toString());
                 return 0;
             }
             final MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
             if (victim == null) {
-                c.getPlayer().dropMessage(5, "Does not exist");
+                c.getPlayer().print(5, "Does not exist");
                 return 0;
             }
             final ReportType type = ReportType.getByString(splitted[2]);
@@ -1240,7 +1237,7 @@ public class InternCommand {
             } else {
                 victim.clearReports();
             }
-            c.getPlayer().dropMessage(5, "Done.");
+            c.getPlayer().print(5, "Done.");
             return 1;
         }
     }
@@ -1252,7 +1249,7 @@ public class InternCommand {
             List<CheaterData> cheaters = World.getCheaters();
             for (int x = cheaters.size() - 1; x >= 0; x--) {
                 CheaterData cheater = cheaters.get(x);
-                c.getPlayer().dropMessage(6, cheater.getInfo());
+                c.getPlayer().print(6, cheater.getInfo());
             }
             return 1;
         }
@@ -1265,7 +1262,7 @@ public class InternCommand {
             List<CheaterData> cheaters = World.getReports();
             for (int x = cheaters.size() - 1; x >= 0; x--) {
                 CheaterData cheater = cheaters.get(x);
-                c.getPlayer().dropMessage(6, cheater.getInfo());
+                c.getPlayer().print(6, cheater.getInfo());
             }
             return 1;
         }
@@ -1290,7 +1287,7 @@ public class InternCommand {
                 victim.getClient().disconnect(true, false);
                 return 1;
             } else {
-                c.getPlayer().dropMessage(6, "The victim does not exist.");
+                c.getPlayer().print(6, "The victim does not exist.");
                 return 0;
             }
         }
@@ -1325,9 +1322,9 @@ public class InternCommand {
             MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
             if (victim != null) {
                 victim.setChalkboard("");
-                victim.dropMessage(5, "Your chalkboard has been took off by " + c.getPlayer().getName());
+                victim.print(5, "Your chalkboard has been took off by " + c.getPlayer().getName());
             }
-            c.getPlayer().dropMessage(5, "Took off " + victim.getName() + "'s chalkboard.");
+            c.getPlayer().print(5, "Took off " + victim.getName() + "'s chalkboard.");
             return 0;
         }
     }
@@ -1339,10 +1336,10 @@ public class InternCommand {
             for (MapleCharacter chr : c.getPlayer().getMap().getCharactersThreadsafe()) {
                 if (chr.getChalkboard() != null) {
                     chr.setChalkboard("");
-                    chr.dropMessage(5, "Your chalkboard has been taken off.");
+                    chr.print(5, "Your chalkboard has been taken off.");
                 }
             }
-            c.getPlayer().dropMessage(5, "Took off all Chalkboards.");
+            c.getPlayer().print(5, "Took off all Chalkboards.");
             return 1;
         }
     }
@@ -1353,7 +1350,7 @@ public class InternCommand {
         public int execute(MapleClient c, String[] splitted) {
             MapleCharacter player = c.getPlayer();
             if (splitted.length < 2) {
-                c.getPlayer().dropMessage(6, "[Syntax] !kill [name]");
+                c.getPlayer().print(6, "[Syntax] !kill [name]");
                 return 0;
             }
             MapleCharacter victim = null;
@@ -1361,7 +1358,7 @@ public class InternCommand {
                 try {
                     victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[i]);
                 } catch (Exception e) {
-                    c.getPlayer().dropMessage(6, "Player " + splitted[i] + " not found.");
+                    c.getPlayer().print(6, "Player " + splitted[i] + " not found.");
                 }
                 if (player.allowedToTarget(victim) && player.getGMLevel() >= victim.getGMLevel()) {
                     victim.getStat().setHp((short) 0, victim);
@@ -1385,8 +1382,8 @@ public class InternCommand {
                 if (playernear.isAlive() && playernear != c.getPlayer() && !playernear.isGM()) {
                     if (playernear.isAlive() && playernear != c.getPlayer() && !playernear.isGM()) {
                         // playernear.updateSingleStat(MapleStat.HP, 0);
-                        playernear.dropMessage(5, "You have been tagged by " + c.getPlayer().getName());
-                        c.getPlayer().dropMessage(5, "You tagged" + playernear.getName());
+                        playernear.print(5, "You have been tagged by " + c.getPlayer().getName());
+                        c.getPlayer().print(5, "You tagged" + playernear.getName());
                         MapleMap target = c.getChannelServer().getMapFactory().getMap(910000000);
                         playernear.changeMap(target);
                     }

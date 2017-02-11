@@ -261,12 +261,12 @@ public class Event_DojoAgent {
                 for (MaplePartyCharacter mem : c.getParty().getMembers()) {
                     MapleCharacter chr = currentmap.getCharacterById(mem.getId());
                     if (chr != null) {
-                        chr.dropMessage(5, "An error has occurred and you shall be brought back to the beginning.");
+                        chr.print(5, "An error has occurred and you shall be brought back to the beginning.");
                         chr.changeMap(mappz, mappz.getPortal(0));
                     }
                 }
             } else {
-                c.dropMessage(5, "An error has occurred and you shall be brought back to the beginning.");
+                c.print(5, "An error has occurred and you shall be brought back to the beginning.");
                 c.changeMap(mappz, mappz.getPortal(0));
             }
         } catch (Exception rm) {

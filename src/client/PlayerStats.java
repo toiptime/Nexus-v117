@@ -1761,7 +1761,7 @@ public class PlayerStats implements Serializable {
                 }
                 bx = SkillFactory.getSkill(4341002);
                 bof = chra.getTotalSkillLevel(bx);
-                if (bof > 0) { // Fatal Blow, Slash Storm, Tornado Spin, Bloody Storm, Upper Stab, and Flying Assaulter
+                if (bof > 0) { // FATAL Blow, Slash Storm, Tornado Spin, Bloody Storm, Upper Stab, and Flying Assaulter
                     eff = bx.getEffect(bof);
                     damageIncrease.put(4311002, eff.getDAMRate());
                     damageIncrease.put(4311003, eff.getDAMRate());
@@ -2513,7 +2513,7 @@ public class PlayerStats implements Serializable {
                             final Skill skil = SkillFactory.getSkill(zzz);
                             if (skil != null && skil.canBeLearnedBy(chr.getJob())) { // Don't go over masterlevel :D
                                 eq.setIncSkill(skil.getId());
-                                chr.dropMessage(5, "Your skill has gained a levelup: " + skil.getName() + " +1");
+                                chr.print(5, "Your skill has gained a levelup: " + skil.getName() + " +1");
                             }
                         }
                     }

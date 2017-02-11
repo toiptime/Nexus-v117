@@ -1,13 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package server.shops;
+
+import tools.Error;
+import tools.Logger;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Emy
@@ -59,12 +56,12 @@ public class HiredMerchantSave {
                     TimeTaken += (System.currentTimeMillis() - Start);
                     ShopsSaved++;
                 }
-                System.out.println("[Hired Merchant Save Thread " + ThreadID + "] Shops Saved: " + ShopsSaved + " | Time Taken: " + TimeTaken + " Milliseconds");
+                Logger.println("[Hired Merchant Save Thread " + ThreadID + "] Shops Saved: " + ShopsSaved + " | Time Taken: " + TimeTaken + " Milliseconds");
                 synchronized (ToNotify) {
                     ToNotify.notify();
                 }
             } catch (InterruptedException ex) {
-                Logger.getLogger(HiredMerchantSave.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.println(Error.FATAL, ex);
             }
         }
 

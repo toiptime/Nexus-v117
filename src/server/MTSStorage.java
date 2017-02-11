@@ -27,6 +27,7 @@ import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import database.DatabaseConnection;
 import handling.cashshop.handler.MTSOperation;
+import tools.Logger;
 import tools.Pair;
 import tools.packet.MTSCSPacket;
 
@@ -171,7 +172,7 @@ public class MTSStorage {
         }
         this.end = isShutDown;
         if (isShutDown) {
-            System.out.println("Saving MTS...");
+            Logger.println("Saving MTS...");
         }
         final Map<Integer, ArrayList<Item>> expire = new HashMap<Integer, ArrayList<Item>>();
         final List<Integer> toRemove = new ArrayList<Integer>();
@@ -216,7 +217,7 @@ public class MTSStorage {
             mutex.writeLock().unlock();
         }
         if (isShutDown) {
-            System.out.println("Saving MTS items...");
+            Logger.println("Saving MTS items...");
         }
         try {
             for (Entry<Integer, ArrayList<Pair<Item, MapleInventoryType>>> ite : items.entrySet()) {
@@ -225,9 +226,8 @@ public class MTSStorage {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if (isShutDown) {
-            System.out.println("Saving MTS carts...");
-        }
+        if (isShutDown) Logger.println("Saving MTS carts...");
+
         cart_mutex.writeLock().lock();
         try {
             for (Entry<Integer, MTSCart> c : idToCart.entrySet()) {

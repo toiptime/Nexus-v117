@@ -43,7 +43,7 @@ import java.util.Arrays;
 public class PlayerInteractionHandler {
 
     public static final void PlayerInteraction(final LittleEndianAccessor slea, final MapleClient c, final MapleCharacter chr) throws Exception {
-        //System.out.println("player interaction.." + slea.toString());
+        //Logger.println("player interaction.." + slea.toString());
         final Interaction action = Interaction.getByAction(slea.readByte());
         if (chr == null || action == null) {
             return;
@@ -65,12 +65,12 @@ public class PlayerInteractionHandler {
                     //    return;
                     //}
                     if (chr.getMap().getMapObjectsInRange(chr.getTruePosition(), 20000, Arrays.asList(MapleMapObjectType.SHOP, MapleMapObjectType.HIRED_MERCHANT)).size() != 0 || chr.getMap().getPortalsInRange(chr.getTruePosition(), 20000).size() != 0) {
-                        chr.dropMessage(1, "You may not establish a store here.");
+                        chr.print(1, "You may not establish a store here.");
                         c.getSession().write(CWvsContext.enableActions());
                         return;
                     } else if (createType == 1 || createType == 2) {
                         if (FieldLimitType.Minigames.check(chr.getMap().getFieldLimit()) || chr.getMap().allowPersonalShop()) {
-                            chr.dropMessage(1, "You may not use minigames here.");
+                            chr.print(1, "You may not use minigames here.");
                             c.getSession().write(CWvsContext.enableActions());
                             return;
                         }
@@ -156,12 +156,12 @@ public class PlayerInteractionHandler {
                                 c.getSession().write(PlayerShopPacket.getHiredMerch(chr, merchant, false));
                             } else {*/
                             if (!merchant.isOpen() || !merchant.isAvailable()) {
-                                chr.dropMessage(1, "This shop is in maintenance, please come by later.");
+                                chr.print(1, "This shop is in maintenance, please come by later.");
                             } else {
                                 if (ips.getFreeSlot() == -1) {
-                                    chr.dropMessage(1, "This shop has reached it's maximum capacity, please come by later.");
+                                    chr.print(1, "This shop has reached it's maximum capacity, please come by later.");
                                 } else if (merchant.isInBlackList(chr.getName())) {
-                                    chr.dropMessage(1, "You have been banned from this store.");
+                                    chr.print(1, "You have been banned from this store.");
                                 } else {
                                     chr.setPlayerShop(ips);
                                     merchant.addVisitor(chr);
@@ -171,7 +171,7 @@ public class PlayerInteractionHandler {
                             //}
                         } else {
                             if (ips instanceof MaplePlayerShop && ((MaplePlayerShop) ips).isBanned(chr.getName())) {
-                                chr.dropMessage(1, "You have been banned from this store.");
+                                chr.print(1, "You have been banned from this store.");
                                 return;
                             } else {
                                 if (ips.getFreeSlot() < 0 || ips.getVisitorSlot(chr) > -1 || !ips.isOpen() || !ips.isAvailable()) {
@@ -180,11 +180,11 @@ public class PlayerInteractionHandler {
                                     if (slea.available() > 0 && slea.readByte() > 0) { // A password has been entered
                                         String pass = slea.readMapleAsciiString();
                                         if (!pass.equals(ips.getPassword())) {
-                                            c.getPlayer().dropMessage(1, "The password you entered is incorrect.");
+                                            c.getPlayer().print(1, "The password you entered is incorrect.");
                                             return;
                                         }
                                     } else if (ips.getPassword().length() > 0) {
-                                        c.getPlayer().dropMessage(1, "The password you entered is incorrect.");
+                                        c.getPlayer().print(1, "The password you entered is incorrect.");
                                         return;
                                     }
                                     chr.setPlayerShop(ips);
@@ -214,7 +214,7 @@ public class PlayerInteractionHandler {
                 }
                 final String password = slea.readMapleAsciiString();
                 //if (!c.CheckSecondPassword(password) || password.length() < 6 || password.length() > 16) {
-                //	chr.dropMessage(5, "Please enter a valid PIC.");
+                //	chr.print(5, "Please enter a valid PIC.");
                 //	c.getSession().write(CWvsContext.enableActions());
                 //	return;
                 //}
@@ -275,7 +275,7 @@ public class PlayerInteractionHandler {
                 if (shop != null && shop.isOwner(chr) && shop.getShopType() < 3 && !shop.isAvailable()) {
                     if (chr.getMap().allowPersonalShop()) {
                         if (c.getChannelServer().isShutdown()) {
-                            chr.dropMessage(1, "Project Nexus is about to shut down.");
+                            chr.print(1, "Project Nexus is about to shut down.");
                             c.getSession().write(CWvsContext.enableActions());
                             shop.closeShop(shop.getShopType() == 1, false);
                             return;
@@ -365,7 +365,7 @@ public class PlayerInteractionHandler {
                             c.setMonitored(true); // Hack check
                         }
                         if (GameConstants.getLowestPrice(ivItem.getItemId()) > price) {
-                            c.getPlayer().dropMessage(1, "The lowest you can sell this for is " + GameConstants.getLowestPrice(ivItem.getItemId()));
+                            c.getPlayer().print(1, "The lowest you can sell this for is " + GameConstants.getLowestPrice(ivItem.getItemId()));
                             c.getSession().write(CWvsContext.enableActions());
                             return;
                         }
@@ -708,7 +708,7 @@ public class PlayerInteractionHandler {
             }
             default: {
                 // some idiots try to send huge amounts of data to this (:
-                //System.out.println("Unhandled interaction action by " + chr.getName() + " : " + action + ", " + slea.toString());
+                //Logger.println("Unhandled interaction action by " + chr.getName() + " : " + action + ", " + slea.toString());
                 // 19 (0x13) - 00 OR 01 -> itemid(maple leaf) ? who knows what this is
                 break;
             }

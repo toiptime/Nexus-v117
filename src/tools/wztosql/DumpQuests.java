@@ -29,6 +29,7 @@ import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
 import server.quest.MapleQuestActionType;
 import server.quest.MapleQuestRequirementType;
+import tools.Logger;
 import tools.Pair;
 
 import java.io.File;
@@ -65,14 +66,14 @@ public class DumpQuests {
         int currentQuest = 0;
         try {
             final DumpQuests dq = new DumpQuests(update);
-            System.out.println("Dumping quests");
+            Logger.println("Dumping quests");
             dq.dumpQuests();
             hadError |= dq.isHadError();
             currentQuest = dq.currentId();
         } catch (Exception e) {
             hadError = true;
             e.printStackTrace();
-            System.out.println(currentQuest + " quest.");
+            Logger.println(currentQuest + " quest.");
         }
         long endTime = System.currentTimeMillis();
         double elapsedSeconds = (endTime - startTime) / 1000.0;
@@ -83,7 +84,7 @@ public class DumpQuests {
         if (hadError) {
             withErrors = " with errors";
         }
-        System.out.println("Finished" + withErrors + " in " + elapsedMinutes + " minutes " + elapsedSecs + " seconds");
+        Logger.println("Finished" + withErrors + " in " + elapsedMinutes + " minutes " + elapsedSecs + " seconds");
     }
 
     public boolean isHadError() {
@@ -102,7 +103,7 @@ public class DumpQuests {
             try {
                 dumpQuests(psai, psas, psaq, ps, psr, psq, psa);
             } catch (Exception e) {
-                System.out.println(id + " quest.");
+                Logger.println(id + " quest.");
                 e.printStackTrace();
                 hadError = true;
             } finally {
@@ -149,13 +150,13 @@ public class DumpQuests {
             delete("DELETE FROM wz_questactquestdata");
             delete("DELETE FROM wz_questreqdata");
             delete("DELETE FROM wz_questpartydata");
-            System.out.println("Deleted wz_questdata successfully.");
+            Logger.println("Deleted wz_questdata successfully.");
         }
         final MapleData checkz = quest.getData("Check.img");
         final MapleData actz = quest.getData("Act.img");
         final MapleData infoz = quest.getData("QuestInfo.img");
         final MapleData pinfoz = quest.getData("PQuest.img");
-        System.out.println("Adding into wz_questdata.....");
+        Logger.println("Adding into wz_questdata.....");
         int uniqueid = 0;
         for (MapleData qz : checkz.getChildren()) { //requirements first
             this.id = Integer.parseInt(qz.getName());
@@ -373,9 +374,9 @@ public class DumpQuests {
                     }
                 }
             }
-            System.out.println("Added quest: " + id);
+            Logger.println("Added quest: " + id);
         }
-        System.out.println("Done wz_questdata...");
+        Logger.println("Done wz_questdata...");
     }
 
     public int currentId() {

@@ -52,13 +52,13 @@ public class HiredMerchantHandler {
 
             switch (state) {
                 case 1:
-                    c.getPlayer().dropMessage(1, "Please claim your items from Fredrick first.");
+                    c.getPlayer().print(1, "Please claim your items from Fredrick first.");
                     break;
                 case 0:
                     boolean merch = World.hasMerchant(c.getPlayer().getAccountID(), c.getPlayer().getId());
                     if (!merch) {
                         if (c.getChannelServer().isShutdown()) {
-                            c.getPlayer().dropMessage(1, "Project Nexus is about to shut down.");
+                            c.getPlayer().print(1, "Project Nexus is about to shut down.");
                             return false;
                         }
                         if (packet) {
@@ -66,11 +66,11 @@ public class HiredMerchantHandler {
                         }
                         return true;
                     } else {
-                        c.getPlayer().dropMessage(1, "Please close the existing store and try again.");
+                        c.getPlayer().print(1, "Please close the existing store and try again.");
                     }
                     break;
                 default:
-                    c.getPlayer().dropMessage(1, "An unknown error occured.");
+                    c.getPlayer().print(1, "An unknown error occured.");
                     break;
             }
         } else {
@@ -105,16 +105,16 @@ public class HiredMerchantHandler {
         final int conv = c.getPlayer().getConversation();
         boolean merch = World.hasMerchant(c.getPlayer().getAccountID(), c.getPlayer().getId());
         if (merch) {
-            c.getPlayer().dropMessage(1, "Please close the existing store and try again.");
+            c.getPlayer().print(1, "Please close the existing store and try again.");
             c.getPlayer().setConversation(0);
         } else if (c.getChannelServer().isShutdown()) {
-            c.getPlayer().dropMessage(1, "Project Nexus is going to shut down.");
+            c.getPlayer().print(1, "Project Nexus is going to shut down.");
             c.getPlayer().setConversation(0);
         } else if (conv == 3) { // Hired Merch
             final MerchItemPackage pack = loadItemFrom_Database(c.getPlayer().getAccountID());
 
             if (pack == null) {
-                c.getPlayer().dropMessage(1, "You do not have any items with Fredrick.");
+                c.getPlayer().print(1, "You do not have any items with Fredrick.");
                 c.getPlayer().setConversation(0);
             } else if (pack.getItems().size() <= 0) { // Error fix for complainers.
                 if (!check(c.getPlayer(), pack)) {
@@ -125,9 +125,9 @@ public class HiredMerchantHandler {
                     //c.getPlayer().fakeRelog();
                     c.getPlayer().gainMeso(pack.getMesos(), false);
                     c.getSession().write(PlayerShopPacket.merchItem_Message((byte) 0x1d));
-                    c.getPlayer().dropMessage(1, "You have retrieved your mesos.");
+                    c.getPlayer().print(1, "You have retrieved your mesos.");
                 } else {
-                    c.getPlayer().dropMessage(1, "An unknown error occured.");
+                    c.getPlayer().print(1, "An unknown error occured.");
                 }
                 c.getPlayer().setConversation(0);
             } else {
@@ -136,7 +136,7 @@ public class HiredMerchantHandler {
                 for (final Item item : pack.getItems()) {
                     if (c.getPlayer().getInventory(GameConstants.getInventoryType(item.getItemId())).isFull()) {
                         c.removeClickedNPC();
-                        c.getPlayer().dropMessage(1, "Sir, if you want your items back please clean up your inventory before you come here!");
+                        c.getPlayer().print(1, "Sir, if you want your items back please clean up your inventory before you come here!");
                         c.getPlayer().setConversation(0);
                         break;
                     }
@@ -144,7 +144,7 @@ public class HiredMerchantHandler {
                     deletePackage(c.getPlayer().getAccountID(), pack.getPackageid(), c.getPlayer().getId());
                     //c.getPlayer().fakeRelog();
                     c.removeClickedNPC();
-                    c.getPlayer().dropMessage(1, "You have retrived your items.");
+                    c.getPlayer().print(1, "You have retrived your items.");
                     c.getPlayer().setConversation(0);
                 }
 
@@ -171,16 +171,16 @@ public class HiredMerchantHandler {
         }
         boolean merch = World.hasMerchant(c.getPlayer().getAccountID(), c.getPlayer().getId());
         if (merch) {
-            c.getPlayer().dropMessage(1, "Please close the existing store and try again.");
+            c.getPlayer().print(1, "Please close the existing store and try again.");
             c.getPlayer().setConversation(0);
             return;
         }
         final MerchItemPackage pack = loadItemFrom_Database(c.getPlayer().getAccountID());
         if (pack == null) {
-            c.getPlayer().dropMessage(1, "An unknown error occured.");
+            c.getPlayer().print(1, "An unknown error occured.");
             return;
         } else if (c.getChannelServer().isShutdown()) {
-            c.getPlayer().dropMessage(1, "Project Nexus is going to shut down.");
+            c.getPlayer().print(1, "Project Nexus is going to shut down.");
             c.getPlayer().setConversation(0);
             return;
         }
@@ -213,7 +213,7 @@ public class HiredMerchantHandler {
             }
             c.getSession().write(PlayerShopPacket.merchItem_Message(32));
         } else {
-            c.getPlayer().dropMessage(1, "An unknown error occured.");
+            c.getPlayer().print(1, "An unknown error occured.");
         }
     }
 

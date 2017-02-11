@@ -74,7 +74,7 @@ public class CheatTracker {
         // For lagging, it isn't an issue since TIME is running simotaniously, client
         // will be sending values of older time
 
-//	System.out.println("Delay [" + skillId + "] = " + (tickcount - lastAttackTickCount) + ", " + (Server_ClientAtkTickDiff - STime_TC));
+//	Logger.println("Delay [" + skillId + "] = " + (tickcount - lastAttackTickCount) + ", " + (Server_ClientAtkTickDiff - STime_TC));
         Attack_tickResetCount++; // Without this, the difference will always be at 100
         if (Attack_tickResetCount >= (AtkDelay <= 200 ? 1 : 4)) {
             Attack_tickResetCount = 0;
@@ -102,9 +102,9 @@ public class CheatTracker {
         numSequentialDamage++;
         lastDamageTakenTime = System.currentTimeMillis();
 
-        // System.out.println("tb" + timeBetweenDamage);
-        // System.out.println("ns" + numSequentialDamage);
-        // System.out.println(timeBetweenDamage / 1500 + "(" + timeBetweenDamage / numSequentialDamage + ")");
+        // Logger.println("tb" + timeBetweenDamage);
+        // Logger.println("ns" + numSequentialDamage);
+        // Logger.println(timeBetweenDamage / 1500 + "(" + timeBetweenDamage / numSequentialDamage + ")");
 
         if (lastDamageTakenTime - takingDamageSince / 500 < numSequentialDamage) {
             registerOffense(CheatingOffense.FAST_TAKE_DAMAGE);
@@ -165,7 +165,7 @@ public class CheatTracker {
     public final boolean checkSummonAttack() {
         numSequentialSummonAttack++;
         //estimated
-        // System.out.println(numMPRegens + "/" + allowedRegens);
+        // Logger.println(numMPRegens + "/" + allowedRegens);
         return (System.currentTimeMillis() - summonSummonTime) / (1000 + 1) >= numSequentialSummonAttack;
     }
 
@@ -195,7 +195,7 @@ public class CheatTracker {
         lastFamiliarTickCount = tickcount;*/
         numSequentialFamiliarAttack++;
         //estimated
-        // System.out.println(numMPRegens + "/" + allowedRegens);
+        // Logger.println(numMPRegens + "/" + allowedRegens);
         if ((System.currentTimeMillis() - familiarSummonTime) / (600 + 1) < numSequentialFamiliarAttack) {
             registerOffense(CheatingOffense.FAST_SUMMON_ATTACK);
             return false;
@@ -256,7 +256,7 @@ public class CheatTracker {
         if (chrhardref == null || !offense.isEnabled() || chrhardref.isClone() || chrhardref.isGM()) {
             return;
         }
-        //System.out.println("OFFENSE REGISTERED: " + offense.name() + " on " + chrhardref.getName());
+        //Logger.println("OFFENSE REGISTERED: " + offense.name() + " on " + chrhardref.getName());
         CheatingOffenseEntry entry = null;
         rL.lock();
         try {

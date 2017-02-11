@@ -118,7 +118,7 @@ public class MaplePortal {
                 }
                 if (!c.getPlayer().isGM()) {
                     if (to.getLevelLimit() > 0 && to.getLevelLimit() > c.getPlayer().getLevel()) {
-                        c.getPlayer().dropMessage(-1, "Your level is too low to enter this place.");
+                        c.getPlayer().print(-1, "Your level is too low to enter this place.");
                         c.getSession().write(CWvsContext.enableActions());
                         return;
                     }

@@ -34,11 +34,11 @@ import org.apache.mina.common.IdleStatus;
 import org.apache.mina.common.IoHandlerAdapter;
 import org.apache.mina.common.IoSession;
 import scripting.NPCScriptManager;
-import server.*;
-import tools.FileoutputUtil;
-import tools.HexTool;
-import tools.MapleAESOFB;
-import tools.Pair;
+import server.CashItemFactory;
+import server.CashItemInfo;
+import server.MTSStorage;
+import server.Randomizer;
+import tools.*;
 import tools.data.ByteArrayByteStream;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CField;
@@ -102,8 +102,8 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
                     fw.flush(); //Just in case.
                     fw.close();
                 } catch (IOException ex) {
-                    System.out.println("Error closing Packet Log.");
-                    System.out.println(ex);
+                    Logger.println("Error closing Packet Log.");
+                    Logger.println(ex);
                 }
             }
         }
@@ -117,8 +117,8 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
                 }
             }
         } catch (Exception e) {
-            System.out.println("Could not reload packet logged IPs.");
-            System.out.println(e);
+            Logger.println("Could not reload packet logged IPs.");
+            Logger.println(e);
         }
 //        } finally {
 //            IPLoggingLock.writeLock().unlock();
@@ -180,7 +180,7 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
             //The log is a static object, so we can just use this hacky method.
             mBeanServer.registerMBean(mbean, new ObjectName("handling:type=MapleServerHandler"));
         } catch (Exception e) {
-            System.out.println("Error registering PacketLog MBean");
+            Logger.println("Error registering PacketLog MBean");
             e.printStackTrace();
         }
     }
@@ -208,7 +208,7 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
 
     public static final void handlePacket(final RecvPacketOpcode header, final LittleEndianAccessor slea, final MapleClient c) throws Exception {
         if (ServerConstants.LOG_PACKETS && !isSpamHeader(header)) {
-            System.out.println("OffPacket::" + header.name() + " :: " + header.getValue() + " :: " + HexTool.getOpcodeToString(header.getValue()));
+            Logger.println("OffPacket::" + header.name() + " :: " + header.getValue() + " :: " + HexTool.getOpcodeToString(header.getValue()));
             FileoutputUtil.log("OffPacket.txt", "\r\n\r\nOffPacket::" + header.name() + " :: " + header.getValue() + " :: " + HexTool.getOpcodeToString(header.getValue()) + "\r\n\r\n");
         }
         switch (header) {
@@ -297,7 +297,7 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
                 //CharLoginHandler.updateCCards(slea, c);
                 break;
             case CLIENT_ERROR:
-                System.out.println("Client error: " + slea.toString());
+                Logger.println("Client error: " + slea.toString());
                 if (slea.available() < 8) {
                     return;
                 }
@@ -758,19 +758,19 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
                 break;
             case COUPON_CODE:
                 //FileoutputUtil.log(FileoutputUtil.PacketEx_Log, "Coupon : \n" + slea.toString(true));
-                //System.out.println(slea.toString());
+                //Logger.println(slea.toString());
                 //CashShopOperation.CouponCode(slea.readMapleAsciiString(), c);
                 //PAUL   c.getSession().write(MTSCSPacket.showOneADayInfo(true, 10003055));
                 CashShopOperation.doCSPackets(c);
                 break;
             case TWIN_DRAGON_EGG:
-                System.out.println("TWIN_DRAGON_EGG: " + slea.toString());
+                Logger.println("TWIN_DRAGON_EGG: " + slea.toString());
                 final CashItemInfo item = CashItemFactory.getInstance().getItem(10003055);
                 Item itemz = c.getPlayer().getCashInventory().toItem(item);
                 //Aristocat c.getSession().write(MTSCSPacket.sendTwinDragonEgg(true, true, 38, itemz, 1));
                 break;
             case XMAS_SURPRISE:
-                System.out.println("XMAS_SURPRISE: " + slea.toString());
+                Logger.println("XMAS_SURPRISE: " + slea.toString());
                 break;
             case CS_UPDATE:
                 CashShopOperation.CSUpdate(c);
@@ -822,7 +822,7 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
                 PetHandler.MovePet(slea, c.getPlayer());
                 break;
             case PET_CHAT:
-                //System.out.println("Pet chat: " + slea.toString());
+                //Logger.println("Pet chat: " + slea.toString());
                 if (slea.available() < 12) {
                     break;
                 }
@@ -843,7 +843,7 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
                 PetHandler.PetFood(slea, c, c.getPlayer());
                 break;
             case PET_LOOT:
-                //System.out.println("PET_LOOT ACCESSED");
+                //Logger.println("PET_LOOT ACCESSED");
                 InventoryHandler.Pickup_Pet(slea, c, c.getPlayer());
                 break;
             case PET_AUTO_POT:
@@ -988,7 +988,7 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
                 PlayersHandler.ChooseSkill(slea, c);
                 break;
             case MAGIC_WHEEL:
-                System.out.println("[MAGIC_WHEEL] [" + slea.toString() + "]");
+                Logger.println("[MAGIC_WHEEL] [" + slea.toString() + "]");
                 final byte mode = slea.readByte(); // 0 = open, 2 = start.
                 if (mode == 2) {
                     final int idk = slea.readInt(); // 4? o.o
@@ -1004,7 +1004,7 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
                 PlayersHandler.updateRedLeafHigh(slea, c);
                 break;
             default:
-                System.out.println("[UNHANDLED] Recv [" + header.toString() + "] found");
+                Logger.println("[UNHANDLED] Recv [" + header.toString() + "] found");
                 break;
         }
     }
@@ -1040,7 +1040,7 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
                 fw.write(nl);
             }
             final String logString = "Log has been written at " + lastDC + " [" + FileoutputUtil.CurrentReadable_Time() + "] - " + numDC + " have disconnected, within " + (System.currentTimeMillis() - lastDC) + " milliseconds. (" + System.currentTimeMillis() + ")";
-            System.out.println(logString);
+            Logger.println(logString);
             fw.write(logString);
             fw.write(nl);
             fw.flush();
@@ -1052,7 +1052,7 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
                 Log_Packets = false;
             }
         } catch (IOException ex) {
-            System.out.println("Error writing log to file.");
+            Logger.println("Error writing log to file.");
         } finally {
             Packet_Log_Lock.readLock().unlock();
         }
@@ -1122,12 +1122,12 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
 
 
         session.write(LoginPacket.getHello(ServerConstants.MAPLE_VERSION, ivSend, ivRecv));
-        //System.out.println("GETHELLO SENT TO " + address);
+        //Logger.println("GETHELLO SENT TO " + address);
         session.setAttribute(MapleClient.CLIENT_KEY, client);
         session.setIdleTime(IdleStatus.READER_IDLE, 60);
         session.setIdleTime(IdleStatus.WRITER_IDLE, 60);
 
-        if (ServerConstants.Use_Localhost) {
+        if (ServerConstants.USE_LOCALHOST) {
             RecvPacketOpcode.reloadValues();
             SendPacketOpcode.reloadValues();
         }
@@ -1135,7 +1135,7 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
         if (LoginServer.isAdminOnly()) {
             StringBuilder sb = new StringBuilder();
             sb.append("IoSession opened ").append(address);
-            System.out.println(sb.toString());
+            Logger.println(sb.toString());
         }
 
         FileWriter fw = isLoggedIP(session);
@@ -1158,7 +1158,7 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
                 if (System.currentTimeMillis() - lastDC < 60000) { // Within the minute
                     numDC++;
                     if (numDC > 100) { // 100+ people have dc'd in minute in channelserver
-                        System.out.println("Writing log...");
+                        Logger.println("Writing log...");
                         writeLog();
                         numDC = 0;
                         lastDC = System.currentTimeMillis(); // Intentionally place here
@@ -1191,7 +1191,7 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
 
         /*
          * if (client != null && client.getPlayer() != null) {
-         * System.out.println("Player "+ client.getPlayer().getName() +" went
+         * Logger.println("Player "+ client.getPlayer().getName() +" went
          * idle"); }
          */
         if (client != null) {
@@ -1217,7 +1217,7 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
 
         // final StringBuilder sb = new StringBuilder("Received data :\n");
         // sb.append(HexTool.toString((byte[]) message)).append("\n").append(HexTool.toStringFromAscii((byte[]) message));
-        //System.out.println(sb.toString());
+        //Logger.println(sb.toString());
 
         for (final RecvPacketOpcode recv : RecvPacketOpcode.values()) {
             if (recv.getValue() == header_num) {
@@ -1254,13 +1254,13 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
                     }
                 } catch (NegativeArraySizeException e) {
                     // Swallow, no one cares
-                    if (ServerConstants.Use_Localhost) {
+                    if (ServerConstants.USE_LOCALHOST) {
                         FileoutputUtil.outputFileError(FileoutputUtil.PacketEx_Log, e);
                         FileoutputUtil.log(FileoutputUtil.PacketEx_Log, "Packet: " + header_num + "\n" + slea.toString(true));
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {
                     // Swallow, no one cares
-                    if (ServerConstants.Use_Localhost) {
+                    if (ServerConstants.USE_LOCALHOST) {
                         FileoutputUtil.outputFileError(FileoutputUtil.PacketEx_Log, e);
                         FileoutputUtil.log(FileoutputUtil.PacketEx_Log, "Packet: " + header_num + "\n" + slea.toString(true));
                     }
@@ -1274,7 +1274,7 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
         }
         //final StringBuilder sb = new StringBuilder("Received data : (Unhandled)\n");
         //sb.append(HexTool.toString((byte[]) message)).append("\n").append(HexTool.toStringFromAscii((byte[]) message));
-        //System.out.println(sb.toString());
+        //Logger.println(sb.toString());
     }
 
     private static class LoggedPacket {

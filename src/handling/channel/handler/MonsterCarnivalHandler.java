@@ -51,7 +51,7 @@ public class MonsterCarnivalHandler {
         if (tab == 0) {
             final List<Pair<Integer, Integer>> mobs = c.getPlayer().getMap().getMobsToSpawn();
             if (num >= mobs.size() || c.getPlayer().getAvailableCP() < mobs.get(num).right) {
-                c.getPlayer().dropMessage(5, "You do not have the CP.");
+                c.getPlayer().print(5, "You do not have the CP.");
                 c.getSession().write(CWvsContext.enableActions());
                 return;
             }
@@ -65,20 +65,20 @@ public class MonsterCarnivalHandler {
                 c.getPlayer().getMap().broadcastMessage(MonsterCarnivalPacket.playerSummoned(c.getPlayer().getName(), tab, num));
                 c.getSession().write(CWvsContext.enableActions());
             } else {
-                c.getPlayer().dropMessage(5, "You may no longer summon the monster.");
+                c.getPlayer().print(5, "You may no longer summon the monster.");
                 c.getSession().write(CWvsContext.enableActions());
             }
 
         } else if (tab == 1) { // Debuff
             final List<Integer> skillid = c.getPlayer().getMap().getSkillIds();
             if (num >= skillid.size()) {
-                c.getPlayer().dropMessage(5, "An error occurred.");
+                c.getPlayer().print(5, "An error occurred.");
                 c.getSession().write(CWvsContext.enableActions());
                 return;
             }
             final MCSkill skil = MapleCarnivalFactory.getInstance().getSkill(skillid.get(num)); // Ugh wtf
             if (skil == null || c.getPlayer().getAvailableCP() < skil.cpLoss) {
-                c.getPlayer().dropMessage(5, "You do not have the CP.");
+                c.getPlayer().print(5, "You do not have the CP.");
                 c.getSession().write(CWvsContext.enableActions());
                 return;
             }
@@ -106,18 +106,18 @@ public class MonsterCarnivalHandler {
                 c.getPlayer().CPUpdate(false, c.getPlayer().getAvailableCP(), c.getPlayer().getTotalCP(), 0);
                 for (MapleCharacter chr : c.getPlayer().getMap().getCharactersThreadsafe()) {
                     chr.CPUpdate(true, c.getPlayer().getCarnivalParty().getAvailableCP(), c.getPlayer().getCarnivalParty().getTotalCP(), c.getPlayer().getCarnivalParty().getTeam());
-                    //chr.dropMessage(5, "[" + (c.getPlayer().getCarnivalParty().getTeam() == 0 ? "Red" : "Blue") + "] " + c.getPlayer().getName() + " has used a skill. [" + dis.name() + "].");
+                    //chr.print(5, "[" + (c.getPlayer().getCarnivalParty().getTeam() == 0 ? "Red" : "Blue") + "] " + c.getPlayer().getName() + " has used a skill. [" + dis.name() + "].");
                 }
                 c.getPlayer().getMap().broadcastMessage(MonsterCarnivalPacket.playerSummoned(c.getPlayer().getName(), tab, num));
                 c.getSession().write(CWvsContext.enableActions());
             } else {
-                c.getPlayer().dropMessage(5, "An error occurred.");
+                c.getPlayer().print(5, "An error occurred.");
                 c.getSession().write(CWvsContext.enableActions());
             }
         } else if (tab == 2) { // Skill
             final MCSkill skil = MapleCarnivalFactory.getInstance().getGuardian(num);
             if (skil == null || c.getPlayer().getAvailableCP() < skil.cpLoss) {
-                c.getPlayer().dropMessage(5, "You do not have the CP.");
+                c.getPlayer().print(5, "You do not have the CP.");
                 c.getSession().write(CWvsContext.enableActions());
                 return;
             }
@@ -130,7 +130,7 @@ public class MonsterCarnivalHandler {
                 c.getPlayer().getMap().broadcastMessage(MonsterCarnivalPacket.playerSummoned(c.getPlayer().getName(), tab, num));
                 c.getSession().write(CWvsContext.enableActions());
             } else {
-                c.getPlayer().dropMessage(5, "You may no longer summon the being.");
+                c.getPlayer().print(5, "You may no longer summon the being.");
                 c.getSession().write(CWvsContext.enableActions());
             }
         }

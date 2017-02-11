@@ -1,14 +1,5 @@
 package tools;
 
-// Simple Java Math Expression Evaluator
-// Usage example: hmm
-// java Evaluator "1+-min(-33,+4)*sin(0.5-0.1e-7) -atan2(3,4)  +1/(0.051e-5)"
-// 1+-min(-33,+4)*sin(0.5-0.1e-7)-atan2(3,4)+1/(0.051e-5) = 1960801.7782690835
-//
-// (c) 2008 Julian Bunn, Caltech. Julian.Bunn@caltech.edu
-// You are free to use this code however you see fit. Please let me know if
-// you find any bugs, or would like to suggest enhancements
-
 import java.util.Vector;
 
 public class CaltechEval {
@@ -30,7 +21,7 @@ public class CaltechEval {
         }
 
         CaltechEval m = new CaltechEval(args[0]);
-        System.out.println(args[0].replace(" ", "") + " = " + m.evaluate());
+        Logger.println(args[0].replace(" ", "") + " = " + m.evaluate());
     }
 
     private void init() {
@@ -202,18 +193,18 @@ public class CaltechEval {
         while (i < s.length()) {
             char c = s.charAt(i);
             char cnext = ' ';
-            // System.out.println("Looking at " + c);
+            // Logger.println("Looking at " + c);
             if (i < s.length() - 1)
                 cnext = s.charAt(i + 1);
 
             if (nt > 0 && operator.equals("atan") && c == '2') {
-                // System.out.println("    1");
+                // Logger.println("    1");
                 tokenStrings.addElement("atan2");
                 operator = "";
                 nt = 0;
                 i++;
             } else if (inOperand(c)) {
-                // System.out.println("    2");
+                // Logger.println("    2");
                 operand += s.charAt(i);
                 nd++;
                 if (nt > 0) {
@@ -224,14 +215,14 @@ public class CaltechEval {
                 i++;
             } else if (c == 'e' && nd > 0 && i < s.length() - 2
                     && ((cnext == '+' || cnext == '-') || inOperand(cnext))) {
-                // System.out.println("    3");
+                // Logger.println("    3");
                 operand += c;
                 operand += cnext;
                 nd += 2;
                 nt = 0;
                 i += 2;
             } else if (c == '(' || c == ')') {
-                // System.out.println("    4");
+                // Logger.println("    4");
                 if (nd > 0) {
                     tokenStrings.addElement(operand);
                 }
@@ -246,7 +237,7 @@ public class CaltechEval {
                 operator = "";
                 i++;
             } else {
-                // System.out.println("    5");
+                // Logger.println("    5");
                 if (nd > 0) {
                     tokenStrings.addElement(operand);
                 }
@@ -277,7 +268,7 @@ public class CaltechEval {
 
     private double eval(String s) {
         Double D = new Double(0);
-        // System.out.println("Evaluating " + s);
+        // Logger.println("Evaluating " + s);
 
         Vector tokens = toTokens(s);
 
@@ -287,7 +278,7 @@ public class CaltechEval {
         // System.out.print((String) tokens.elementAt(it) + " ");
 
         // }
-        // System.out.println("");
+        // Logger.println("");
 
         while (tokens.size() > 1) {
             tokens = reduceTokens(tokens);
@@ -303,7 +294,7 @@ public class CaltechEval {
         // System.out.print("Simplify Tokens :");
         // for (int i = 0; i < tokens.size(); i++)
         // System.out.print(" " + (String) tokens.elementAt(i));
-        // System.out.println("");
+        // Logger.println("");
         while (tokens.indexOf("(") != -1) {
             int ib = tokens.indexOf("(");
             Vector bracketTokens = new Vector();
@@ -316,22 +307,22 @@ public class CaltechEval {
                     brackets++;
                 }
                 if (brackets == 0) {
-                    // System.out.println("Start brackets: " + ib +
+                    // Logger.println("Start brackets: " + ib +
                     // " end brackets " + it);
                     for (int i3 = ib + 1; i3 < it; i3++) {
                         bracketTokens.addElement(tokens.elementAt(i3));
                     }
                     int startsize = bracketTokens.size();
-                    // System.out.println("call reduceTokens with");
+                    // Logger.println("call reduceTokens with");
                     // for (int i = 0; i < bracketTokens.size(); i++)
-                    // System.out.println(" " +
+                    // Logger.println(" " +
                     // (String)bracketTokens.elementAt(i));
                     bracketTokens = reduceTokens(bracketTokens);
                     int endsize = bracketTokens.size();
-                    //System.out.println("After reduce tokens Diff "+(startsize-
+                    //Logger.println("After reduce tokens Diff "+(startsize-
                     // endsize));
                     // for (int i = 0; i < bracketTokens.size(); i++)
-                    // System.out.println(" " +
+                    // Logger.println(" " +
                     // (String)bracketTokens.elementAt(i));
                     int ip = ib;
                     for (int i3 = 0; i3 < bracketTokens.size(); i3++) {
@@ -339,16 +330,16 @@ public class CaltechEval {
                     }
                     for (int i = 0; i < startsize - endsize + 2; i++)
                         tokens.removeElementAt(ip);
-                    // System.out.println("Replaced tokens ");
+                    // Logger.println("Replaced tokens ");
                     // for (int i = 0; i < tokens.size(); i++)
-                    // System.out.println(" " + (String)tokens.elementAt(i));
+                    // Logger.println(" " + (String)tokens.elementAt(i));
                     break;
                 }
             }
             // System.out.print("After bracket reduction: ");
             // for (int i = 0; i < tokens.size(); i++);
             // System.out.print(" " + (String) tokens.elementAt(i));
-            // System.out.println("");
+            // Logger.println("");
         }
 
         // Treat the operators in order of precedence
@@ -358,7 +349,7 @@ public class CaltechEval {
             // System.out.print("Iterating expression: ");
             // for (int i = 0; i < tokens.size(); i++)
             // System.out.print(" " + (String) tokens.elementAt(i));
-            // System.out.println("");
+            // Logger.println("");
 
             int maxprec = 0;
             int ipos = -1;
@@ -380,7 +371,7 @@ public class CaltechEval {
 
             String st = (String) tokens.elementAt(it);
             int iop = getOperator(st);
-            // System.out.println("     Precedence Operator: "+it+" " + st);
+            // Logger.println("     Precedence Operator: "+it+" " + st);
 
             if (OperatorsLeftRight[iop]) {
                 if (!st.equals(",")) {
@@ -402,14 +393,14 @@ public class CaltechEval {
                     // System.out.print("DoOp " + leftValue + st + rightValue1);
                     double value = doOp(st, leftValue, rightValue1);
                     stright = "" + value;
-                    // System.out.println(" = " + stright);
+                    // Logger.println(" = " + stright);
                     tokens.setElementAt(stright, ipt);
-                    // System.out.println("After Op:");
+                    // Logger.println("After Op:");
                     tokens.removeElementAt(ipt + 1);
                     if (it > 0 && ipt != it)
                         tokens.removeElementAt(ipt + 1);
                     // for (int i = 0; i < tokens.size(); i++)
-                    // System.out.println(" " + (String)tokens.elementAt(i));
+                    // Logger.println(" " + (String)tokens.elementAt(i));
                     continue;
                 } else {
                     tokens.removeElementAt(it);
@@ -428,16 +419,16 @@ public class CaltechEval {
                 // rightValue1+" "+rightValue2);
                 double value = doOp(st, rightValue1, rightValue2);
                 stright = "" + value;
-                // System.out.println(" = " + stright);
+                // Logger.println(" = " + stright);
                 tokens.setElementAt(stright, it);
 
-                // System.out.println("After Op:");
+                // Logger.println("After Op:");
                 tokens.removeElementAt(it + 1);
                 if (nargs > 1) {
                     tokens.removeElementAt(it + 1);
                 }
                 // for (int i = 0; i < tokens.size(); i++)
-                // System.out.println(" " + (String)tokens.elementAt(i));
+                // Logger.println(" " + (String)tokens.elementAt(i));
                 continue;
             }
         }
@@ -445,7 +436,7 @@ public class CaltechEval {
         // System.out.print("Return from reduceTokens with: ");
         // for (int i = 0; i < tokens.size(); i++) System.out.print(" " +
         // (String)tokens.elementAt(i));
-        // System.out.println("");
+        // Logger.println("");
 
         return tokens;
     }

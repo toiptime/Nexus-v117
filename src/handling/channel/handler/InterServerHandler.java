@@ -59,27 +59,27 @@ public class InterServerHandler {
             return;
         }
         if (ServerConstants.BLOCK_CS == true) {
-            chr.dropMessage(1, "Cash Shop has been blocked.");
+            chr.print(1, "Cash Shop has been blocked.");
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
         if (mts && chr.getLevel() < 50) {
-            chr.dropMessage(1, "You may not enter the Maple Trading System until you are level 50.");
+            chr.print(1, "You may not enter the Maple Trading System until you are level 50.");
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
         if (World.getPendingCharacterSize() >= 10) {
-            chr.dropMessage(1, "The server is busy at the moment. Please try again in a minute or less.");
+            chr.print(1, "The server is busy at the moment. Please try again in a minute or less.");
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
         if (chr.getMapId() == 910530000 || chr.getMapId() == 910530001) {
-            chr.dropMessage(5, "You may not skip the Jumping Quest by going into the Cash Shop");
+            chr.print(5, "You may not skip the Jumping Quest by going into the Cash Shop");
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
         //if (c.getChannel() == 1 && !c.getPlayer().isGM()) {
-        //    c.getPlayer().dropMessage(5, "You may not enter on this channel. Please change channels and try again.");
+        //    c.getPlayer().print(5, "You may not enter on this channel. Please change channels and try again.");
         //    c.getSession().write(CWvsContext.enableActions());
         //    return;
         //}
@@ -106,27 +106,27 @@ public class InterServerHandler {
 
     public static final void EnterMTS(final MapleClient c, final MapleCharacter chr) {
         if (chr.hasBlockedInventory() || chr.getMap() == null || chr.getEventInstance() != null || c.getChannelServer() == null) {
-            chr.dropMessage(1, "Please try again later.");
+            chr.print(1, "Please try again later.");
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
         if (chr.getLevel() < 15) {
-            chr.dropMessage(1, "You may not enter the Free Market until you are level 15.");
+            chr.print(1, "You may not enter the Free Market until you are level 15.");
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
         if (chr.getMapId() >= 910000000 && chr.getMapId() <= 910000022) {
-            chr.dropMessage(1, "You are already in the Free Market.");
+            chr.print(1, "You are already in the Free Market.");
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
-        chr.dropMessage(5, "You will be transported to the Free Market Entrance.");
+        chr.print(5, "You will be transported to the Free Market Entrance.");
         chr.saveLocation(SavedLocationType.fromString("FREE_MARKET"));
         final MapleMap warpz = ChannelServer.getInstance(c.getChannel()).getMapFactory().getMap(910000000);
         if (warpz != null) {
             chr.changeMap(warpz, warpz.getPortal("st00"));
         } else {
-            chr.dropMessage(5, "Please try again later.");
+            chr.print(5, "Please try again later.");
         }
         c.getSession().write(CWvsContext.enableActions());
     }
@@ -293,7 +293,7 @@ public class InterServerHandler {
             return;
         }
         if (World.getPendingCharacterSize() >= 10) {
-            chr.dropMessage(1, "The server is busy at the moment. Please try again in a less than a minute.");
+            chr.print(1, "The server is busy at the moment. Please try again in a less than a minute.");
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
@@ -304,19 +304,19 @@ public class InterServerHandler {
         }
         chr.updateTick(slea.readInt());
         if (!World.isChannelAvailable(chc)) {
-            chr.dropMessage(1, "The channel is full at the moment.");
+            chr.print(1, "The channel is full at the moment.");
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
         if (room && (mapid < 910000001 || mapid > 910000022)) {
-            chr.dropMessage(1, "The channel is full at the moment.");
+            chr.print(1, "The channel is full at the moment.");
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
         if (room) {
             if (chr.getMapId() == mapid) {
                 if (c.getChannel() == chc) {
-                    chr.dropMessage(1, "You are already in " + chr.getMap().getMapName());
+                    chr.print(1, "You are already in " + chr.getMap().getMapName());
                     c.getSession().write(CWvsContext.enableActions());
                 } else { // Diff channel
                     chr.changeChannel(chc);
@@ -329,7 +329,7 @@ public class InterServerHandler {
                 if (warpz != null) {
                     chr.changeMap(warpz, warpz.getPortal("out00"));
                 } else {
-                    chr.dropMessage(1, "The channel is full at the moment.");
+                    chr.print(1, "The channel is full at the moment.");
                     c.getSession().write(CWvsContext.enableActions());
                 }
             }

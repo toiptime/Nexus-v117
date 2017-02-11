@@ -45,6 +45,7 @@ import server.maps.MapleNodes.MaplePlatform;
 import server.maps.MapleNodes.MonsterPoint;
 import server.quest.MapleQuest;
 import tools.FileoutputUtil;
+import tools.Logger;
 import tools.Pair;
 import tools.StringUtil;
 import tools.packet.CField;
@@ -2393,8 +2394,8 @@ public final class MapleMap {
             chr.getClient().getSession().write(CField.getUpdateEnvironment(this));
         }
         //if (partyBonusRate > 0) {
-        //    chr.dropMessage(-1, partyBonusRate + "% additional EXP will be applied per each party member here.");
-        //    chr.dropMessage(-1, "You've entered the party play zone.");
+        //    chr.print(-1, partyBonusRate + "% additional EXP will be applied per each party member here.");
+        //    chr.print(-1, "You've entered the party play zone.");
         //}
         if (isTown()) {
             chr.cancelEffectFromBuffStat(MapleBuffStat.RAINING_MINES);
@@ -3007,7 +3008,7 @@ public final class MapleMap {
             pos3.y -= 1;
         }
         if (pos1 == null && pos2 == null && pos3 == null) {
-            System.out.println("WARNING: Map ID " + mapid + ", Monster " + monster.getId() + " could not be spawned.");
+            Logger.println("WARNING: Map ID " + mapid + ", Monster " + monster.getId() + " could not be spawned.");
 
             return;
         } else if (pos1 != null) {
@@ -3241,7 +3242,7 @@ public final class MapleMap {
             player.getMap().broadcastMessage(CField.removeItemFromMap(i.getObjectId(), 0, player.getId()));
         }
         if (drops) {// If drops = true
-            player.dropMessage(6, "Cleared " + items.size() + " Drops");
+            player.print(6, "Cleared " + items.size() + " Drops");
         }
     }
 
@@ -3483,7 +3484,7 @@ public final class MapleMap {
             player.getMap().broadcastMessage(CField.removeItemFromMap(i.getObjectId(), 0, player.getId()));
         }
         if (command) {
-            player.dropMessage(6, "Cleared drops and destroyed: " + items.size() + " items");
+            player.print(6, "Cleared drops and destroyed: " + items.size() + " items");
         }
     }
 

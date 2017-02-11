@@ -95,7 +95,7 @@ public class UserInterfaceHandler {
          }
          break;
          default:
-         System.out.println("Unhandled ship object, MapID : " + mapid);
+         Logger.println("Unhandled ship object, MapID : " + mapid);
          break;
          }
          c.getSession().write(CField.boatPacket(effect));*/

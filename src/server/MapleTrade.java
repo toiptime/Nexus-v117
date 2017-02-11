@@ -101,8 +101,8 @@ public class MapleTrade {
             c1.getTrade().inTrade = true;
             c2.getClient().getSession().write(PlayerShopPacket.shopVisitorAdd(c1, 1));
             c1.getClient().getSession().write(InteractionPacket.getTradeStart(c1.getClient(), c1.getTrade(), (byte) 1));
-            c1.dropMessage(-2, "System : Use @tradehelp to see the list of trading commands");
-            c2.dropMessage(-2, "System : Use @tradehelp to see the list of trading commands");
+            c1.print(-2, "System : Use @tradehelp to see the list of trading commands");
+            c2.print(-2, "System : Use @tradehelp to see the list of trading commands");
         } else {
             c1.getClient().getSession().write(CWvsContext.serverNotice(5, "The other player has already closed the trade"));
         }
@@ -116,7 +116,7 @@ public class MapleTrade {
                 if (other != null && other.getTrade() != null) {
                     other.getTrade().cancel(other.getClient(), other);
                     other.setTrade(null);
-                    other.dropMessage(5, c.getName() + " has declined your trade request");
+                    other.print(5, c.getName() + " has declined your trade request");
                 }
             }
             trade.cancel(c.getClient(), c);
@@ -200,7 +200,7 @@ public class MapleTrade {
 
     public final void chat(final String message) throws Exception {
         if (!CommandProcessor.processCommand(chr.get().getClient(), message, CommandType.TRADE)) {
-            chr.get().dropMessage(-2, chr.get().getName() + " : " + message);
+            chr.get().print(-2, chr.get().getName() + " : " + message);
             if (partner != null) {
                 partner.getChr().getClient().getSession().write(PlayerShopPacket.shopChat(chr.get().getName() + " : " + message, 1));
             }
@@ -213,7 +213,7 @@ public class MapleTrade {
     }
 
     public final void chatAuto(final String message) {
-        chr.get().dropMessage(-2, message);
+        chr.get().print(-2, message);
         if (partner != null) {
             partner.getChr().getClient().getSession().write(PlayerShopPacket.shopChat(message, 1));
         }

@@ -8,6 +8,7 @@ import server.life.MobSkill;
 import server.maps.MapleMap;
 import server.maps.MapleNodes;
 import server.movement.LifeMovementFragment;
+import tools.Logger;
 import tools.Pair;
 import tools.data.MaplePacketLittleEndianWriter;
 
@@ -81,7 +82,7 @@ public class MobPacket {
             mplew.writeInt(-1);
         }
 
-        System.out.println("killAswanMonster: " + mplew.getPacket());
+        Logger.println("killAswanMonster: " + mplew.getPacket());
         return mplew.getPacket();
     }
 
@@ -295,7 +296,7 @@ public class MobPacket {
         mplew.writeInt(0);
         mplew.writeInt(0);
         mplew.write(-1);
-        System.out.println("spawnAswanMonster: " + mplew.getPacket());
+        Logger.println("spawnAswanMonster: " + mplew.getPacket());
         return mplew.getPacket();
     }
 
@@ -395,7 +396,7 @@ public class MobPacket {
         mplew.writeInt(0);
         mplew.write(-1);
 
-        System.out.println("controlAswanMonster: " + mplew.getPacket());
+        Logger.println("controlAswanMonster: " + mplew.getPacket());
         return mplew.getPacket();
     }
 
@@ -416,12 +417,12 @@ public class MobPacket {
         mplew.write(0);
         mplew.writeInt(oid);
 
-        System.out.println("stopControllingAswanMonster: " + mplew.getPacket());
+        Logger.println("stopControllingAswanMonster: " + mplew.getPacket());
         return mplew.getPacket();
     }
 
     public static byte[] makeAswanMonsterInvisible(MapleMonster life) {
-        System.out.println("accessing makeAswanMonsterInvisible");
+        Logger.println("accessing makeAswanMonsterInvisible");
         return spawnAswanMonster(life, -4, 0);
     }
 
@@ -430,7 +431,7 @@ public class MobPacket {
     }
 
     public static byte[] makeAswanMonsterReal(MapleMonster life) {
-        System.out.println("accessing makeAswanMonsterReal");
+        Logger.println("accessing makeAswanMonsterReal");
         return spawnAswanMonster(life, -1, 0);
     }
 

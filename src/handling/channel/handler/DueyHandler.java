@@ -155,7 +155,7 @@ public class DueyHandler {
         return;
         }
         final int packageid = slea.readInt();
-        //System.out.println("Item attempted : " + packageid);
+        //Logger.println("Item attempted : " + packageid);
         final MapleDueyActions dp = loadSingleItem(packageid, c.getPlayer().getId());
         if (dp == null) {
         return;
@@ -168,7 +168,7 @@ public class DueyHandler {
         return;
         }
         removeItemFromDB(packageid, c.getPlayer().getId()); // Remove first
-        //System.out.println("Item removed : " + packageid);
+        //Logger.println("Item removed : " + packageid);
         if (dp.getItem() != null) {
         MapleInventoryManipulator.addFromDrop(c, dp.getItem(), false);
         }
@@ -192,7 +192,7 @@ public class DueyHandler {
         break;
         }
         default: {
-        System.out.println("Unhandled Duey operation : " + slea.toString());
+        Logger.println("Unhandled Duey operation : " + slea.toString());
         break;
         }
         }
