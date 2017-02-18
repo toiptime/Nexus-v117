@@ -1,14 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package constants;
 
 import client.MapleCharacter;
 
-/**
- * @author Itzik
- */
 public class MultiMirror {
 
     public static final int version = ServerConstants.MAPLE_VERSION; // Change as you wish

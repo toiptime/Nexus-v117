@@ -139,7 +139,7 @@ public class ChannelServer {
 
         try {
             acceptor.bind(new InetSocketAddress(port), new MapleServerHandler(), acceptor_config);
-            Logger.println("Channel " + channel + " is listening on port " + port);
+            Logger.println("Channel %s is listening on port %s", channel, port);
             eventSM = new EventScriptManager(this, ServerConstants.EVENTS.split(","));
             eventSM.init();
         } catch (IOException e) {

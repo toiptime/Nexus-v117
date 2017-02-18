@@ -1,0 +1,91 @@
+
+------------------------ 2017-02-16 17:27:59 ------------------------
+java.lang.NullPointerException
+	at handling.login.handler.CharLoginHandler.login(CharLoginHandler.java:101)
+	at handling.MapleServerHandler.handlePacket(MapleServerHandler.java:222)
+	at handling.MapleServerHandler.messageReceived(MapleServerHandler.java:1241)
+	at org.apache.mina.common.support.AbstractIoFilterChain$TailFilter.messageReceived(AbstractIoFilterChain.java:570)
+	at org.apache.mina.common.support.AbstractIoFilterChain.callNextMessageReceived(AbstractIoFilterChain.java:299)
+	at org.apache.mina.common.support.AbstractIoFilterChain.access$1100(AbstractIoFilterChain.java:53)
+	at org.apache.mina.common.support.AbstractIoFilterChain$EntryImpl$1.messageReceived(AbstractIoFilterChain.java:648)
+	at org.apache.mina.filter.codec.support.SimpleProtocolDecoderOutput.flush(SimpleProtocolDecoderOutput.java:58)
+	at org.apache.mina.filter.codec.ProtocolCodecFilter.messageReceived(ProtocolCodecFilter.java:180)
+	at org.apache.mina.common.support.AbstractIoFilterChain.callNextMessageReceived(AbstractIoFilterChain.java:299)
+	at org.apache.mina.common.support.AbstractIoFilterChain.access$1100(AbstractIoFilterChain.java:53)
+	at org.apache.mina.common.support.AbstractIoFilterChain$EntryImpl$1.messageReceived(AbstractIoFilterChain.java:648)
+	at org.apache.mina.filter.executor.ExecutorFilter.processEvent(ExecutorFilter.java:220)
+	at org.apache.mina.filter.executor.ExecutorFilter$ProcessEventsRunnable.run(ExecutorFilter.java:264)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at org.apache.mina.util.NamePreservingRunnable.run(NamePreservingRunnable.java:51)
+	at java.lang.Thread.run(Thread.java:745)
+
+------------------------ 2017-02-16 17:27:59 ------------------------
+Packet: 21
+All: 15 00 06 00 67 6C 61 64 6F 73 09 00 74 72 61 69 6C 73 65 6E 64 00 00 00 00 00 00 E2 0A 2C E0 00 00 00 00 80 62 00 00 00 00 02 00 00 00 00 00 00 00
+Now: 00 00 00 00 00 00 E2 0A 2C E0 00 00 00 00 80 62 00 00 00 00 02 00 00 00 00 00 00 00
+------------------------ 2017-02-16 17:37:46 ------------------------
+com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'nexus117.battlelog' doesn't exist
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:526)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:409)
+	at com.mysql.jdbc.Util.getInstance(Util.java:384)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:1054)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3562)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3494)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:1960)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2114)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2696)
+	at com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:2105)
+	at com.mysql.jdbc.PreparedStatement.executeQuery(PreparedStatement.java:2264)
+	at client.MapleCharacter.loadCharFromDB(MapleCharacter.java:949)
+	at client.MapleCharacter.loadCharFromDB(MapleCharacter.java:516)
+	at handling.channel.handler.InterServerHandler.Loggedin(InterServerHandler.java:162)
+	at handling.MapleServerHandler.handlePacket(MapleServerHandler.java:336)
+	at handling.MapleServerHandler.messageReceived(MapleServerHandler.java:1241)
+	at org.apache.mina.common.support.AbstractIoFilterChain$TailFilter.messageReceived(AbstractIoFilterChain.java:570)
+	at org.apache.mina.common.support.AbstractIoFilterChain.callNextMessageReceived(AbstractIoFilterChain.java:299)
+	at org.apache.mina.common.support.AbstractIoFilterChain.access$1100(AbstractIoFilterChain.java:53)
+	at org.apache.mina.common.support.AbstractIoFilterChain$EntryImpl$1.messageReceived(AbstractIoFilterChain.java:648)
+	at org.apache.mina.filter.codec.support.SimpleProtocolDecoderOutput.flush(SimpleProtocolDecoderOutput.java:58)
+	at org.apache.mina.filter.codec.ProtocolCodecFilter.messageReceived(ProtocolCodecFilter.java:180)
+	at org.apache.mina.common.support.AbstractIoFilterChain.callNextMessageReceived(AbstractIoFilterChain.java:299)
+	at org.apache.mina.common.support.AbstractIoFilterChain.access$1100(AbstractIoFilterChain.java:53)
+	at org.apache.mina.common.support.AbstractIoFilterChain$EntryImpl$1.messageReceived(AbstractIoFilterChain.java:648)
+	at org.apache.mina.filter.executor.ExecutorFilter.processEvent(ExecutorFilter.java:220)
+	at org.apache.mina.filter.executor.ExecutorFilter$ProcessEventsRunnable.run(ExecutorFilter.java:264)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at org.apache.mina.util.NamePreservingRunnable.run(NamePreservingRunnable.java:51)
+	at java.lang.Thread.run(Thread.java:745)
+
+------------------------ 2017-02-16 17:37:47 ------------------------
+java.lang.NullPointerException
+	at tools.data.MaplePacketLittleEndianWriter.writeMapleAsciiString(MaplePacketLittleEndianWriter.java:161)
+	at tools.packet.CWvsContext.serverMessage(CWvsContext.java:599)
+	at tools.packet.CWvsContext.serverMessage(CWvsContext.java:575)
+	at handling.channel.handler.InterServerHandler.Loggedin(InterServerHandler.java:262)
+	at handling.MapleServerHandler.handlePacket(MapleServerHandler.java:336)
+	at handling.MapleServerHandler.messageReceived(MapleServerHandler.java:1241)
+	at org.apache.mina.common.support.AbstractIoFilterChain$TailFilter.messageReceived(AbstractIoFilterChain.java:570)
+	at org.apache.mina.common.support.AbstractIoFilterChain.callNextMessageReceived(AbstractIoFilterChain.java:299)
+	at org.apache.mina.common.support.AbstractIoFilterChain.access$1100(AbstractIoFilterChain.java:53)
+	at org.apache.mina.common.support.AbstractIoFilterChain$EntryImpl$1.messageReceived(AbstractIoFilterChain.java:648)
+	at org.apache.mina.filter.codec.support.SimpleProtocolDecoderOutput.flush(SimpleProtocolDecoderOutput.java:58)
+	at org.apache.mina.filter.codec.ProtocolCodecFilter.messageReceived(ProtocolCodecFilter.java:180)
+	at org.apache.mina.common.support.AbstractIoFilterChain.callNextMessageReceived(AbstractIoFilterChain.java:299)
+	at org.apache.mina.common.support.AbstractIoFilterChain.access$1100(AbstractIoFilterChain.java:53)
+	at org.apache.mina.common.support.AbstractIoFilterChain$EntryImpl$1.messageReceived(AbstractIoFilterChain.java:648)
+	at org.apache.mina.filter.executor.ExecutorFilter.processEvent(ExecutorFilter.java:220)
+	at org.apache.mina.filter.executor.ExecutorFilter$ProcessEventsRunnable.run(ExecutorFilter.java:264)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at org.apache.mina.util.NamePreservingRunnable.run(NamePreservingRunnable.java:51)
+	at java.lang.Thread.run(Thread.java:745)
+
+------------------------ 2017-02-16 17:37:47 ------------------------
+Packet: 38
+All: 26 00 9D 01 00 00 00 00 00 00 00 00 E2 0A 2C E0 00 00 00 00 80 62 00 00 00 E7 3B 42 C3 DE E0 12
+Now: 00 00 00 00 00 00 E2 0A 2C E0 00 00 00 00 80 62 00 00 00 E7 3B 42 C3 DE E0 12

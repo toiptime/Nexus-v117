@@ -644,6 +644,7 @@ public class MapleClient implements Serializable {
 
     public int login(String login, String pwd, boolean ipMacBanned) {
         int loginok = 5;
+        boolean emptyPass = false;
         try {
             Connection con = DatabaseConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("SELECT * FROM accounts WHERE name = ?");

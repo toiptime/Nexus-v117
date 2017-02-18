@@ -81,17 +81,6 @@ public class AdminCommand {
         }
     }
 
-    public static class autoregister extends CommandExecute {
-
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            AutoRegister.autoRegister = (!AutoRegister.autoRegister);
-            c.getPlayer().print(0, "Auto Register has been " + (AutoRegister.autoRegister ? "enabled" : "disabled") + ".");
-            Logger.println("Auto Register has been " + (AutoRegister.autoRegister ? "enabled" : "disabled") + ".");
-            return 1;
-        }
-    }
-
     public static class Packet extends CommandExecute {
 
         @Override

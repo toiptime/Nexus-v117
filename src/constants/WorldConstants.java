@@ -16,7 +16,7 @@ public class WorldConstants {
     public static String getNameById(int serverid) {
         switch (serverid) {
             case 0:
-                return "Scania";
+                return "Project Nexus";
             case 1:
                 return "Bera";
             case 2:

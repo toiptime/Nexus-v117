@@ -61,7 +61,7 @@ public class CharLoginHandler {
         final boolean macBan = c.hasBannedMac();
 
         int loginok = 0;
-        if (AutoRegister.autoRegister && !AutoRegister.getAccountExists(login) && (!c.hasBannedIP() || !c.hasBannedMac())) {
+        if (AutoRegister.AUTO_REGISTER && !AutoRegister.getAccountExists(login) && (!c.hasBannedIP() || !c.hasBannedMac())) {
             AutoRegister.createAccount(login, pwd, c.getSession().getRemoteAddress().toString());
             if (AutoRegister.success) {
                 c.getSession().write(CWvsContext.serverNotice(1, "Your account has been successfully created!\r\nPlease login again to enter your new account."));

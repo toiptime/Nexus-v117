@@ -55,7 +55,7 @@ public class DatabaseConnection {
             }
 
             try {
-                Logger.println("Attempting to connect to " + host + ":3306 as " + user + " to schema " + schema);
+                //Logger.println("Attempting to connect to " + host + ":3306 as " + user + " to schema " + schema);
                 Connection con = DriverManager.getConnection("jdbc:mysql://" + host + ":3306/" + schema + "?autoReconnect=true", user, password);
                 allConnections.add(con);
                 return con;

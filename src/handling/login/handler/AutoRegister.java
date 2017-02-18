@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class AutoRegister {
 
     private static final int ACCOUNTS_PER_IP = 2;
-    public static boolean autoRegister = true;
+    public static final boolean AUTO_REGISTER = true;
     public static boolean success = false;
 
     public static boolean getAccountExists(String login) {

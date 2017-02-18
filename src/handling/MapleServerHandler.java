@@ -1074,6 +1074,7 @@ public class MapleServerHandler extends IoHandlerAdapter implements MapleServerH
     public void sessionOpened(final IoSession session) throws Exception {
         // Start of IP checking
         final String address = session.getRemoteAddress().toString().split(":")[0];
+        Logger.print("Session started on %s", address);
 
         if (BlockedIP.contains(address)) {
             session.close();

@@ -2,9 +2,6 @@ package provider;
 
 import java.util.*;
 
-/**
- * @author Matze
- */
 public class MapleDataDirectoryEntry extends MapleDataEntry {
 
     private List<MapleDataDirectoryEntry> subdirs = new ArrayList<MapleDataDirectoryEntry>();
