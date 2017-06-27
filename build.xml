@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="nexus-v117" default="all">
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="300m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*.yarb/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/wz/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+    <include name="*.ear"/>
+    <include name="*.swc"/>
+    <include name="*.war"/>
+    <include name="*.ane"/>
+    <include name="*.zip"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+    <exclude name="**/?*.aj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.7" value="${jdk.home.1.7}/bin"/>
+  <path id="jdk.classpath.1.7">
+    <fileset dir="${jdk.home.1.7}">
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/ext/access-bridge-64.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/jaccess.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/sunec.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunmscapi.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
+      <include name="jre/lib/javaws.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jfr.jar"/>
+      <include name="jre/lib/jfxrt.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/plugin.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/rt.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.7}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.7}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.7"/>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.libs.classpath">
+    <pathelement location="${basedir}/libs/mina-core.jar"/>
+    <pathelement location="${basedir}/libs/mysql-connector-java-bin.jar"/>
+    <pathelement location="${basedir}/libs/slf4j-api.jar"/>
+    <pathelement location="${basedir}/libs/slf4j-jdk14.jar"/>
+    <pathelement location="${basedir}/libs/sqljdbc42.jar"/>
+  </path>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module Nexus-v117 -->
+  
+  <dirname property="module.nexus-v117.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.nexus-v117" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.nexus-v117" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.nexus-v117" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.nexus-v117" value="-encoding UTF-8 -source 1.7 -target 1.7 ${compiler.args}"/>
+  
+  <property name="nexus-v117.output.dir" value="${module.nexus-v117.basedir}/out/production/Nexus-v117"/>
+  <property name="nexus-v117.testoutput.dir" value="${module.nexus-v117.basedir}/out/test/Nexus-v117"/>
+  
+  <path id="nexus-v117.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="nexus-v117.module.production.classpath">
+    <path refid="${module.jdk.classpath.nexus-v117}"/>
+    <path refid="library.libs.classpath"/>
+  </path>
+  
+  <path id="nexus-v117.runtime.production.module.classpath">
+    <pathelement location="${nexus-v117.output.dir}"/>
+    <path refid="library.libs.classpath"/>
+  </path>
+  
+  <path id="nexus-v117.module.classpath">
+    <path refid="${module.jdk.classpath.nexus-v117}"/>
+    <pathelement location="${nexus-v117.output.dir}"/>
+    <path refid="library.libs.classpath"/>
+  </path>
+  
+  <path id="nexus-v117.runtime.module.classpath">
+    <pathelement location="${nexus-v117.testoutput.dir}"/>
+    <pathelement location="${nexus-v117.output.dir}"/>
+    <path refid="library.libs.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.nexus-v117">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.nexus-v117">
+    <patternset refid="excluded.from.module.nexus-v117"/>
+  </patternset>
+  
+  <path id="nexus-v117.module.sourcepath">
+    <dirset dir="${module.nexus-v117.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.nexus-v117" depends="compile.module.nexus-v117.production,compile.module.nexus-v117.tests" description="Compile module Nexus-v117"/>
+  
+  <target name="compile.module.nexus-v117.production" description="Compile module Nexus-v117; production classes">
+    <mkdir dir="${nexus-v117.output.dir}"/>
+    <javac destdir="${nexus-v117.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.nexus-v117}/javac">
+      <compilerarg line="${compiler.args.nexus-v117}"/>
+      <bootclasspath refid="nexus-v117.module.bootclasspath"/>
+      <classpath refid="nexus-v117.module.production.classpath"/>
+      <src refid="nexus-v117.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.nexus-v117"/>
+    </javac>
+    
+    <copy todir="${nexus-v117.output.dir}">
+      <fileset dir="${module.nexus-v117.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.nexus-v117.tests" depends="compile.module.nexus-v117.production" description="compile module Nexus-v117; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.nexus-v117" description="cleanup module">
+    <delete dir="${nexus-v117.output.dir}"/>
+    <delete dir="${nexus-v117.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.nexus-v117" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.nexus-v117" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.nexus-v117:jar" value="${basedir}/out/artifacts/Nexus_v117_jar"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.Nexus-v117.jar" value="${artifacts.temp.dir}/Nexus-v117.jar"/>
+  </target>
+  
+  <target name="artifact.nexus-v117:jar" depends="init.artifacts, compile.module.nexus-v117" description="Build &#39;Nexus-v117:jar&#39; artifact">
+    <property name="artifact.temp.output.nexus-v117:jar" value="${artifacts.temp.dir}/Nexus_v117_jar"/>
+    <mkdir dir="${artifact.temp.output.nexus-v117:jar}"/>
+    <jar destfile="${temp.jar.path.Nexus-v117.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset dir="${nexus-v117.output.dir}"/>
+      <zipfileset src="${basedir}/libs/slf4j-jdk14.jar"/>
+      <zipfileset src="${basedir}/libs/sqljdbc42.jar"/>
+      <zipfileset src="${basedir}/libs/slf4j-api.jar"/>
+      <zipfileset src="${basedir}/libs/mysql-connector-java-bin.jar"/>
+      <zipfileset src="${basedir}/libs/mina-core.jar"/>
+    </jar>
+    <copy file="${temp.jar.path.Nexus-v117.jar}" tofile="${artifact.temp.output.nexus-v117:jar}/Nexus-v117.jar"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.nexus-v117:jar" description="Build all artifacts">
+    <mkdir dir="${artifact.output.nexus-v117:jar}"/>
+    <copy todir="${artifact.output.nexus-v117:jar}">
+      <fileset dir="${artifact.temp.output.nexus-v117:jar}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>
