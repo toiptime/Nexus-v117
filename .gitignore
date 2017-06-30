@@ -1,6 +1,7 @@
 #Project Custom
 out
 wz
+database.properties
 .idea
 *.iml
 #database.properties
