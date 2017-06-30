@@ -68,3 +68,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 database.properties
+/nbproject/private/
+/build/
+/dist/
