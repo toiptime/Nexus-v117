@@ -1,189 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="nexus-v117" default="all">
-  
-  
-  <property file="build.properties"/>
-  <!-- Uncomment the following property if no tests compilation is needed -->
-  <!-- 
-  <property name="skip.tests" value="true"/>
-   -->
-  
-  <!-- Compiler options -->
-  
-  <property name="compiler.debug" value="on"/>
-  <property name="compiler.generate.no.warnings" value="off"/>
-  <property name="compiler.args" value=""/>
-  <property name="compiler.max.memory" value="700m"/>
-  <patternset id="ignored.files">
-    <exclude name="**/*.hprof/**"/>
-    <exclude name="**/*.pyc/**"/>
-    <exclude name="**/*.pyo/**"/>
-    <exclude name="**/*.rbc/**"/>
-    <exclude name="**/*.yarb/**"/>
-    <exclude name="**/*~/**"/>
-    <exclude name="**/.DS_Store/**"/>
-    <exclude name="**/.git/**"/>
-    <exclude name="**/.hg/**"/>
-    <exclude name="**/.svn/**"/>
-    <exclude name="**/CVS/**"/>
-    <exclude name="**/__pycache__/**"/>
-    <exclude name="**/_svn/**"/>
-    <exclude name="**/vssver.scc/**"/>
-    <exclude name="**/vssver2.scc/**"/>
-  </patternset>
-  <patternset id="library.patterns">
-    <include name="*.egg"/>
-    <include name="*.jar"/>
-    <include name="*.ear"/>
-    <include name="*.swc"/>
-    <include name="*.war"/>
-    <include name="*.ane"/>
-    <include name="*.zip"/>
-  </patternset>
-  <patternset id="compiler.resources">
-    <exclude name="**/?*.java"/>
-    <exclude name="**/?*.form"/>
-    <exclude name="**/?*.class"/>
-    <exclude name="**/?*.groovy"/>
-    <exclude name="**/?*.scala"/>
-    <exclude name="**/?*.flex"/>
-    <exclude name="**/?*.kt"/>
-    <exclude name="**/?*.clj"/>
-    <exclude name="**/?*.aj"/>
-  </patternset>
-  
-  
-  <!-- Project Libraries -->
-  
-  <path id="library.libs.classpath">
-    <pathelement location="${basedir}/libs/mina-core.jar"/>
-    <pathelement location="${basedir}/libs/mysql-connector-java-bin.jar"/>
-    <pathelement location="${basedir}/libs/slf4j-api.jar"/>
-    <pathelement location="${basedir}/libs/slf4j-jdk14.jar"/>
-    <pathelement location="${basedir}/libs/sqljdbc42.jar"/>
-    <pathelement location="."/>
-  </path>
-  
-  <!-- Modules -->
-  
-  
-  <!-- Module Nexus-v117 -->
-  
-  <dirname property="module.nexus-v117.basedir" file="${ant.file}"/>
-  
-  
-  
-  <property name="compiler.args.nexus-v117" value="-encoding UTF-8 -source 1.7 -target 1.7 ${compiler.args}"/>
-  
-  <property name="nexus-v117.output.dir" value="${module.nexus-v117.basedir}/bin/production/Nexus-v117"/>
-  <property name="nexus-v117.testoutput.dir" value="${module.nexus-v117.basedir}/bin/test/Nexus-v117"/>
-  
-  <path id="nexus-v117.module.bootclasspath">
-    <!-- Paths to be included in compilation bootclasspath -->
-  </path>
-  
-  <path id="nexus-v117.module.production.classpath">
-    <path refid="library.libs.classpath"/>
-  </path>
-  
-  <path id="nexus-v117.runtime.production.module.classpath">
-    <pathelement location="${nexus-v117.output.dir}"/>
-    <path refid="library.libs.classpath"/>
-  </path>
-  
-  <path id="nexus-v117.module.classpath">
-    <pathelement location="${nexus-v117.output.dir}"/>
-    <path refid="library.libs.classpath"/>
-  </path>
-  
-  <path id="nexus-v117.runtime.module.classpath">
-    <pathelement location="${nexus-v117.testoutput.dir}"/>
-    <pathelement location="${nexus-v117.output.dir}"/>
-    <path refid="library.libs.classpath"/>
-  </path>
-  
-  
-  <patternset id="excluded.from.module.nexus-v117">
-    <patternset refid="ignored.files"/>
-  </patternset>
-  
-  <patternset id="excluded.from.compilation.nexus-v117">
-    <patternset refid="excluded.from.module.nexus-v117"/>
-  </patternset>
-  
-  <path id="nexus-v117.module.sourcepath">
-    <dirset dir="${module.nexus-v117.basedir}">
-      <include name="src"/>
-    </dirset>
-  </path>
-  
-  
-  <target name="compile.module.nexus-v117" depends="compile.module.nexus-v117.production,compile.module.nexus-v117.tests" description="Compile module Nexus-v117"/>
-  
-  <target name="compile.module.nexus-v117.production" description="Compile module Nexus-v117; production classes">
-    <mkdir dir="${nexus-v117.output.dir}"/>
-    <javac destdir="${nexus-v117.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
-      <compilerarg line="${compiler.args.nexus-v117}"/>
-      <bootclasspath refid="nexus-v117.module.bootclasspath"/>
-      <classpath refid="nexus-v117.module.production.classpath"/>
-      <src refid="nexus-v117.module.sourcepath"/>
-      <patternset refid="excluded.from.compilation.nexus-v117"/>
-    </javac>
-    
-    <copy todir="${nexus-v117.output.dir}">
-      <fileset dir="${module.nexus-v117.basedir}/src">
-        <patternset refid="compiler.resources"/>
-        <type type="file"/>
-      </fileset>
-    </copy>
-  </target>
-  
-  <target name="compile.module.nexus-v117.tests" depends="compile.module.nexus-v117.production" description="compile module Nexus-v117; test classes" unless="skip.tests"/>
-  
-  <target name="clean.module.nexus-v117" description="cleanup module">
-    <delete dir="${nexus-v117.output.dir}"/>
-    <delete dir="${nexus-v117.testoutput.dir}"/>
-  </target>
-  
-  <target name="init" description="Build initialization">
-    <!-- Perform any build initialization in this target -->
-  </target>
-  
-  <target name="clean" depends="clean.module.nexus-v117" description="cleanup all"/>
-  
-  <target name="build.modules" depends="init, clean, compile.module.nexus-v117" description="build all modules"/>
-  
-  <target name="init.artifacts">
-    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
-    <property name="artifact.output.nexus-v117:jar" value="${basedir}/out/artifacts/Nexus_v117_jar"/>
-    <mkdir dir="${artifacts.temp.dir}"/>
-    <property name="temp.jar.path.Nexus-v117.jar" value="${artifacts.temp.dir}/Nexus-v117.jar"/>
-  </target>
-  
-  <target name="artifact.nexus-v117:jar" depends="init.artifacts, compile.module.nexus-v117" description="Build &#39;Nexus-v117:jar&#39; artifact">
-    <property name="artifact.temp.output.nexus-v117:jar" value="${artifacts.temp.dir}/Nexus_v117_jar"/>
-    <mkdir dir="${artifact.temp.output.nexus-v117:jar}"/>
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<!-- By default, only the Clean and Build commands use this build script. -->
+<!-- Commands such as Run, Debug, and Test only use this build script if -->
+<!-- the Compile on Save feature is turned off for the project. -->
+<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
+<!-- in the project's Project Properties dialog box.-->
+<project name="Nexus-v117" default="default" basedir=".">
+    <description>Builds, tests, and runs the project Nexus-v117.</description>
+    <import file="nbproject/build-impl.xml"/>
+    <!--
 
-    <jar destfile="${temp.jar.path.Nexus-v117.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
-      <zipfileset dir="${nexus-v117.output.dir}"/>
-      <zipfileset src="${basedir}/libs/slf4j-jdk14.jar"/>
-      <zipfileset src="${basedir}/libs/sqljdbc42.jar"/>
-      <zipfileset src="${basedir}/libs/slf4j-api.jar"/>
-      <zipfileset src="${basedir}/libs/mysql-connector-java-bin.jar"/>
-      <zipfileset src="${basedir}/libs/mina-core.jar"/>
-    </jar>
-    <copy file="${temp.jar.path.Nexus-v117.jar}" tofile="${artifact.temp.output.nexus-v117:jar}/Nexus-v117.jar"/>
-  </target>
-  
-  <target name="build.all.artifacts" depends="artifact.nexus-v117:jar" description="Build all artifacts">
-    <mkdir dir="${artifact.output.nexus-v117:jar}"/>
-    <copy todir="${artifact.output.nexus-v117:jar}">
-      <fileset dir="${artifact.temp.output.nexus-v117:jar}"/>
-    </copy>
-    
-    <!-- Delete temporary files -->
-    <delete dir="${artifacts.temp.dir}"/>
-  </target>
-  
-  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+    There exist several targets which are by default empty and which can be 
+    used for execution of your tasks. These targets are usually executed 
+    before and after some main targets. They are: 
+
+      -pre-init:                 called before initialization of project properties
+      -post-init:                called after initialization of project properties
+      -pre-compile:              called before javac compilation
+      -post-compile:             called after javac compilation
+      -pre-compile-single:       called before javac compilation of single file
+      -post-compile-single:      called after javac compilation of single file
+      -pre-compile-test:         called before javac compilation of JUnit tests
+      -post-compile-test:        called after javac compilation of JUnit tests
+      -pre-compile-test-single:  called before javac compilation of single JUnit test
+      -post-compile-test-single: called after javac compilation of single JUunit test
+      -pre-jar:                  called before JAR building
+      -post-jar:                 called after JAR building
+      -post-clean:               called after cleaning build products
+
+    (Targets beginning with '-' are not intended to be called on their own.)
+
+    Example of inserting an obfuscator after compilation could look like this:
+
+        <target name="-post-compile">
+            <obfuscate>
+                <fileset dir="${build.classes.dir}"/>
+            </obfuscate>
+        </target>
+
+    For list of available properties check the imported 
+    nbproject/build-impl.xml file. 
+
+
+    Another way to customize the build is by overriding existing main targets.
+    The targets of interest are: 
+
+      -init-macrodef-javac:     defines macro for javac compilation
+      -init-macrodef-junit:     defines macro for junit execution
+      -init-macrodef-debug:     defines macro for class debugging
+      -init-macrodef-java:      defines macro for class execution
+      -do-jar:                  JAR building
+      run:                      execution of project 
+      -javadoc-build:           Javadoc generation
+      test-report:              JUnit report generation
+
+    An example of overriding the target for project execution could look like this:
+
+        <target name="run" depends="Nexus-v117-impl.jar">
+            <exec dir="bin" executable="launcher.exe">
+                <arg file="${dist.jar}"/>
+            </exec>
+        </target>
+
+    Notice that the overridden target depends on the jar target and not only on 
+    the compile target as the regular run target does. Again, for a list of available 
+    properties which you can use, check the target you are overriding in the
+    nbproject/build-impl.xml file. 
+
+    -->
 </project>
