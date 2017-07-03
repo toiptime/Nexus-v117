@@ -1,5 +1,3 @@
 #!/bin/sh
-export CLASSPATH=".:dist/*"
 echo "Starting Server"
-java server.Start
-
+java -jar bin/Nexus-v117.jar
